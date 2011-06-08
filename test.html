@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+<script src="http://code.jquery.com/qunit/git/qunit.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script src="./event.js"></script>
+<script src="./logic.js"></script>
+
+<script>
+$(document).ready(function () {
+	module('Event');
+	asyncTest('Create and fire an event', function() {
+		var evt = new Event(),
+			obj = {
+				test:function(e, data) {
+					//console.debug('tested', arguments, this.name);
+					equal(eventData, data, 'event fired and arguments are ok');
+					start();
+				},
+				name: 'hello'
+			},
+			name = 'sample-event',
+			action = obj.test,
+			binding = obj,
+			eventData = {v1:'abc', v2:'123'};
+
+		evt.addListener(obj, name, action/*, binding*/);
+		evt.fireEvent({}, obj, name, eventData);
+	});
+
+	test('Can unbind an event', function() {
+		var evt = new Event(),
+		obj = { test:function(e, data) {} },
+		name = 'sample-event',
+		action = obj.test,
+		binding = obj;
+
+		evt.addListener(obj, name, action/*, binding*/);
+		evt.removeListener(obj, name, action/*, binding*/);
+		ok(true, 'event should be unbound');
+	});
+
+	module("Cards");
+	test("Creating a card", function () {
+		var c = new Card();
+		ok(c, "new card created successfully");
+	});
+
+	test("isEmpty works correctly", function () {
+		ok(new Card().isEmpty(), "A card with no params IS empty");
+		ok(new Card( 1, "Oval", "striped").isEmpty(), "A card with only 3 params IS empty");
+
+		ok(!(new Card( 1, "Oval", "striped", "green").isEmpty()), "A card with all 4 params is NOT empty");
+	});
+
+	test('select/deselect/toggle', function () {
+		var c = new Card();
+
+		c.select();
+		ok(c.isSelected, 'card gets selected');
+		c.deselect();
+		ok(!c.isSelected, 'card gets UNselected');
+		c.toggleSelect();
+		ok(c.isSelected, 'card gets toggled');
+	});
+
+
+	module("Decks");
+	test("A Deck is created", function() {
+
+		var deck = new Deck();
+		equals(3*3*3*3, deck.size, 'the size of the deck is reported');
+		equals(3*3*3*3, deck.cards.length, "All cards are here" );
+		equals('regular', deck.mode, 'mode defaults to `regular`');
+
+		deck = new Deck('regular');
+		equals(3*3*3*3, deck.size, 'the size of the deck is reported');
+		equals(3*3*3*3, deck.cards.length, 'all cards are here - regular mode');
+		equals('regular', deck.mode, 'mode sets when passed');
+
+		deck = new Deck('easy');
+		equals(3*3*3, deck.size, 'the size of the deck is reported');
+		equals(3*3*3, deck.cards.length, 'all cards are here - easy mode');
+		equals('easy', deck.mode, 'mode sets when passed');
+	});
+
+	test("A card can be picked from a deck", function() {
+		var deck = new Deck(),
+			c = deck.pickCard(0);
+
+		ok(c instanceof(Card), 'Picked the first card');
+		equals( (3*3*3*3) - 1, deck.cards.length, 'the picked card was removed from the deck');
+
+		c = deck.pickRandomCard();
+		ok(c instanceof(Card), 'Picked a random card');
+		equals( (3*3*3*3) - 2, deck.cards.length, 'the picked card was removed from the deck');
+	});
+
+
+	module('Sets Game');
+	test("isASet is detecting correctly", function() {
+		var diff_color = [
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Oval", "striped", "red"),
+			new Card( 1, "Oval", "striped", "blue")
+		],
+		diff_color_shape = [
+			new Card( 1, "Diamond",	"striped", "green"),
+			new Card( 1, "Oval", "striped", "red"),
+			new Card( 1, "Squiggle", "striped", "blue")
+		],
+		diff_color_shape_count = [
+			new Card( 1, "Diamond", "striped", "green"),
+			new Card( 2, "Oval", "striped", "red"),
+			new Card( 3, "Squiggle", "striped", "blue")
+		];
+
+		equal(true, Sets.isASet(diff_color), 'Detected a set where card COLORS differ');
+		equal(true, Sets.isASet(diff_color_shape), 'Detected a set where card COLORS differ, and SHAPE ');
+		equal(true, Sets.isASet(diff_color_shape_count), 'Detected a set where card COLORS differ, and SHAPE, and COUNT');
+	});
+
+	test("isASet is failing correctly", function() {
+		var diff_color = [
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Oval", "striped", "blue")
+		],
+		diff_color_shape = [
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Diamond", "striped", "blue")
+		],
+		four_cards = [new Card(), new Card(), new Card(), new Card()],
+		two_cards = [new Card(), new Card()],
+		one_card = [new Card()];
+
+		equal(false, Sets.isASet(diff_color), "Two colors are the same, one different");
+		equal(false, Sets.isASet(diff_color_shape), "Two colors are the same, one different + Two shapes same, one different");
+		equal(false, Sets.isASet(four_cards), "Four cards passed in");
+		equal(false, Sets.isASet(two_cards), "Only two cards passed in");
+		equal(false, Sets.isASet(one_card), "Only one card passed in");
+	});
+
+	function gameStartTest(mode) {
+		asyncTest('Game Starts in ' + mode + ' mode', function() {
+			expect(4); // the event gets fired twice cuz we call game.start() twice
+
+			var game = new Sets(),
+			startHandler = function() {
+				ok(this, '`start` event caught');
+				start();
+			};
+
+			game.bind('start', startHandler);
+
+			game.start(mode); //triggers an event with an assertion
+
+			mode = (mode ? mode : 'easy');
+
+			ok(game.board, 'game board is not empty');
+			ok(!game.selected.length, 'no cards are selected when we start');
+			equal(game.board.length, Sets.modes[mode].rows, mode + ' mode has 4 rows (3 for easy)');
+
+			game.unbind('start', startHandler);
+		});
+	}
+	gameStartTest('regular');
+	gameStartTest('easy');
+	gameStartTest();
+
+	asyncTest('selecting a card fires `select-card` & adds/removes it from the list', function() {
+		expect(6);
+
+		var game = new Sets().start(),
+		expectedCount,
+		selectHandler = function(e, selected) {
+			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
+			start();
+		};
+
+		game.bind('select-card', selectHandler);
+
+		expectedCount = 1; game.selectCard(0, 0); //triggers an event with an assertion
+		expectedCount++; game.selectCard(0, 1); //triggers an event with an assertion
+		expectedCount++; game.selectCard(0, 2); //triggers an event with an assertion
+
+		expectedCount = 1; game.selectCard(1, 0); //triggers an event with an assertion
+		expectedCount++; game.selectCard(1, 1); //triggers an event with an assertion
+		expectedCount--; game.selectCard(1, 0); //triggers an event with an assertion
+
+		game.unbind('select-card', selectHandler);
+	});
+
+	asyncTest('`found-set` is triggered after a set is selected', function() {
+		expect(2);
+
+		var game = new Sets(),
+		foundHandler = function(e, set) {
+			ok(true, 'found a set');
+			start();
+		};
+
+		game._init();
+		game.deck.pickRandomCard = function(idx) {
+			return this.pickCard(0);
+		};
+		game._loadBoard();
+
+		game.bind('found-set', foundHandler);
+
+		game.selectCard(0, 0);
+		game.selectCard(0, 1);
+		game.selectCard(0, 2);
+
+		strictEqual(game.selected.length, 0, 'After finding a set, not cards should be selected');
+
+		game.unbind('found-set', foundHandler);
+	});
+
+	test('replaceSet() finds and replaces the cards you pass in', function() {
+		var game = new Sets().start();
+
+		orig_cards = [ game.board[0][0] ];
+		game.replaceSet(orig_cards);
+		new_cards = [ game.board[0][0] ];
+
+		notDeepEqual(new_cards, orig_cards, 'the passed in cards have been matched and replaced');
+	});
+});
+</script>
+
+</head>
+<body>
+	<h1 id="qunit-header">Sets! Card Game Tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>

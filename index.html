@@ -1,0 +1,215 @@
+<html>
+<head>
+<title>Sets!</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+<meta name="viewport" content="width=device-width; user-scalable=no; initial-scale=1.0; maximum-scale=1.0;">
+
+<link rel="stylesheet" href="./style.css" type="text/css">
+
+</head>
+<body>
+
+<div id="menu">
+	<div class="left dropdown">
+		<a href="#options" class="button"><span>Sets!</span></a>
+		<div id="options">
+			<a href="#" class="button open"><span>Sets!</span></a>
+			<ul>
+				<li><a href="#settings">Settings</a></li>
+				<li><a href="#stats">Stats</a></li>
+				<li><a href="#share">Share</a></li>
+				<li><a href="#help">Help</a></li>
+				<li><a href="#about">About</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="right">
+		<a class="button game-reset"><span>Reset</span></a>
+	</div>
+	<p class="center">
+		Deck: <span id="score">0/0</span>
+	</p>
+</div>
+
+<div class="lightbox" id="settings">
+	<div>
+		<h2>Settings</h2>
+		<input type="checkbox" id="easy-mode" value="easy" checked="checked" /><label for="easy-mode">Quick Start</label>
+		<a href="#" class="right button lightbox-close"><span>Close</span></a>
+	</div>
+</div>
+
+<div class="lightbox" id="stats">
+	<div>
+		<h2>Stats</h2>
+		<p>123</p>
+		<a href="#" class="right button lightbox-close"><span>Close</span></a>
+	</div>
+</div>
+
+<div class="lightbox" id="help">
+	<div>
+		<h2>How to play Sets!</h2>
+		<p>blah blah blah</p>
+		<a href="#" class="right button lightbox-close"><span>Close</span></a>
+	</div>
+</div>
+
+<div class="lightbox" id="about">
+	<div>
+		<h2>About</h2>
+		<p>This webapp was designed and built by <a href="//ryanalbrecht.ca">Ryan Albrecht</a>.</p>
+		<p>It works really well on mobile devices and webkit based browsers like Chrome or Safari.
+		Specifically, your browser should support the following for the complete experience:
+			<ul>
+				<li><code>&lt;canvas&gt;</code></li>
+				<li>CSS3
+					<ul>
+						<li>background gradients</li>
+						<li><code>border-radius</code></li>
+						<li><code>box-sizing</code></li>
+						<li><code>-webkit-transform</code></li>
+						<li><code>@media</code> queries</li>
+						<li><code>@-webkit-keyframes</code> animations</li>
+					</ul>
+				</li>
+				<li>JavaScript 1.6
+					<ul>
+						<li><code>Array.prototype.forEach()</code></li>
+						<li><code>Array.prototype.reduce()</code></li>
+					</ul>
+				</li>
+			</ul>
+		</p>
+		<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
+		<a href="#" class="right button lightbox-close"><span>Close</span></a>
+	</div>
+</div>
+
+<div id="game-area"></div>
+
+<div class="popup" id="game-over">
+	<h3>Game Over!</h3>
+	<p>You won!</p>
+	<a href="#" class="button game-reset"><span>Play Again</span></a>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script src="./NoClickDelay.js"></script>
+<script src="./event.js"></script>
+<script src="./logic.js"></script>
+
+<script>
+function _(id) { return document.getElementById(id); }
+
+$(document).ready(function() {
+	document.ontouchmove = function(e){ e.preventDefault(); };
+
+	function selectedMode() {
+		return $('#easy-mode').is(':checked') ? 'easy' : 'regular';
+	}
+
+	var fastTouchEvent = new NoClickDelay(document.getElementsByTagName('body')[0]),
+		gameArea = document.getElementById('game-area'),
+		game = new Sets(), //game start is at the bottom, after we attach some events!
+		ui = new SetsUI(gameArea);
+
+	game
+		.bind('end', function() {
+			window.location = '#game-over';
+			//show the end-game popup!
+			//game.start( selectedMode() );
+		})
+		.bind('start', function() {
+			ui.renderGame(this);
+
+			var found = game.foundSets.length * 3;
+			$('#score').html(found + '/' + game.deck.size);
+		})
+		.bind('select-card', function() { ui.updateSelected(this); })
+		.bind('selection-cleared', function(e, cards) { ui.showWrongSelection(this, cards); })
+		.bind('found-set', function(e, cards) {
+			ui.showFoundSet(this, cards);
+
+			var found = game.foundSets.length * 3;
+			$('#score').html(found + '/' + game.deck.size);
+		})
+		.start( selectedMode() );
+
+	$('.game-reset').click(function() {
+		ui.renderGame(
+			game.start( selectedMode() )
+		);
+	});
+
+	$(gameArea).delegate('td', 'click', function() {
+		var self = $(this),
+		row = self.parent().index(),
+		col = self.index();
+		game.selectCard(row, col);
+	});
+});
+
+if (!Array.prototype.forEach) {
+	Array.prototype.forEach = function(fun /*, thisp */) {
+		"use strict";
+
+		if (this === void 0 || this === null) { throw new TypeError(); }
+
+		var t = Object(this),
+			len = t.length >>> 0;
+		if (typeof fun !== "function") { throw new TypeError(); }
+
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+			if (i in t) { fun.call(thisp, t[i], i, t); }
+		}
+	};
+}
+
+if (!Array.prototype.reduce) {
+	Array.prototype.reduce = function(fun /*, initialValue */) {
+		"use strict";
+
+		if (this === void 0 || this === null) { throw new TypeError(); }
+
+		var t = Object(this);
+		var len = t.length >>> 0;
+		if (typeof fun !== "function") { throw new TypeError(); }
+
+		// no value to return if no initial value and an empty array
+		if (len == 0 && arguments.length == 1) { throw new TypeError(); }
+
+		var k = 0;
+		var accumulator;
+		if (arguments.length >= 2) {
+			accumulator = arguments[1];
+		} else {
+			do {
+				if (k in t) {
+					accumulator = t[k++];
+					break;
+				}
+
+			// if array contains no values, no initial value to return
+			if (++k >= len) { throw new TypeError(); }
+			}
+			while (true);
+		}
+
+		while (k < len) {
+			if (k in t) {
+				accumulator = fun.call(undefined, accumulator, t[k], k, t);
+			}
+			k++;
+		}
+
+		return accumulator;
+	};
+}
+</script>
+</body>
+</html>
