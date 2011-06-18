@@ -182,13 +182,16 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	border-color: white #DADADA #DADADA white;
 	padding: .5em 1em;
 	clear:both;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+	max-height:100%;
+	overflow:auto;
 }
 .lightbox > div:after {
 	content:'';
 	display:block;
 	clear:both;
 }
-
 
 .button {
 	padding:4px 8px;
@@ -226,6 +229,18 @@ a.button:hover { text-decoration:none; }
 	background: -ms-linear-gradient(top, rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 50%,rgba(0,0,0,1) 51%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* IE10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 50%,rgba(0,0,0,1) 51%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* W3C */
+}
+.button.circle {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+.button.circle span {
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	border-radius: 50%;
+	height: 25px;
+	display: block;
 }
 
 #menu {
