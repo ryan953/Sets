@@ -30,9 +30,9 @@
 			<a href="#" class="button open"><span>Sets!</span></a>
 			<ul>
 				<li><a href="#settings">Settings</a></li>
-				<li><a href="#stats">Stats</a></li>
-				<li><a href="#share">Share</a></li>
-				<li><a href="#help">Help</a></li>
+				<li><a href="#stats" class="needs-localstorage">Stats</a></li>
+				<!--<li><a href="#share">Share</a></li>-->
+				<!--<li><a href="#help">Help</a></li>-->
 				<li><a href="#about">About</a></li>
 			</ul>
 		</div>
@@ -112,6 +112,7 @@
 <script src="./NoClickDelay.js"></script>
 <script src="./event.js"></script>
 <script src="./logic.js"></script>
+<script src="./stats.js"></script>
 
 <script>
 function _(id) { return document.getElementById(id); }
@@ -165,6 +166,18 @@ $(document).ready(function() {
 
 	//$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
 });
+
+
+/*
+ * http://www.modernizr.com/downloads/modernizr-2.0.4.js
+ */
+var hasLocalStorage = function() {
+	  try {
+			return !!localStorage.getItem;
+	  } catch(e) {
+			return false;
+	  }
+ };
 
 if (!Array.prototype.forEach) {
 	Array.prototype.forEach = function(fun /*, thisp */) {

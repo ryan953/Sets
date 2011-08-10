@@ -8,9 +8,11 @@ html, body, #game-area table {
 	-webkit-box-sizing:border-box;
 }
 
+.needs-localstorage { display:none; }
+
 #game-area table {
 	padding-top:2em;
-	background:url('backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
+	background:url('./backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
 
 	-webkit-user-select: none;
 	-khtml-user-select: none;
