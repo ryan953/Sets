@@ -118,8 +118,12 @@ Event.prototype.removeListener = function (obj, evt, action, binding) {
  * @param {Object} args The argument attached to the event.
  * @return {null} Returns null.
  */
-Event.prototype.fireEvent = function (e, obj, evt, args) {
+Event.prototype.fireEvent = function(e, obj, evt, args) {
 	if (!e) { e = window.event; }
+	if (evt != '*') {
+		e.name = evt;
+		this.fireEvent(e, obj, '*', args);
+	}
 	if (obj && this.events) {
 		var evtel = this.events[obj];
 		if (evtel) {
