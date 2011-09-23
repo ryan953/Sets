@@ -62,10 +62,24 @@ function Card(count, shape, fill, color) {
 		}
 	};
 
+	Card.classNameMap = {
+		'isSelected': 'selected'
+	};
+	
 	Card.prototype.select = function() { this.isSelected = true; };
 	Card.prototype.deselect = function() { this.isSelected = false; };
 	Card.prototype.toggleSelect = function() { this.isSelected = !this.isSelected; };
 
+	Card.prototype.getClassAttr = function() {
+		var classes = [];
+		for(var prop in Card.classNameMap) {
+			if (this[prop]) {
+				classes.push(Card.classNameMap[prop]);
+			}
+		}
+		return classes.join(' ');
+	};
+	
 	Card.prototype.isEmpty = function() { return !(this.count && this.shape && this.fill && this.color); };
 })();
 
@@ -319,19 +333,19 @@ function SetsUI(parentElement, game) {
 				index = SetsUI.coordsToIndex(row, col);
 				card = game.board[row][col];
 				cells[index].appendChild( SetsUI.renderCard(card) );
-				cells[index].className = (card && card.isSelected ? 'selected' : '');
+				cells[index].className = (card ? card.getClassAttr() : '');
 			}
 		}
 		this.container.appendChild(ui_board);
 	};
 
-	SetsUI.prototype.updateSelected = function(game) {
+	SetsUI.prototype.updateSelected = function(board) {
 		var row, col, card, index, cells = Array.prototype.slice.call( this.container.getElementsByTagName('td') );
-		for(row = 0; row < game.board.length; row++) {
-			for(col = 0; col < game.board[row].length; col++) {
+		for(row = 0; row < board.length; row++) {
+			for(col = 0; col < board[row].length; col++) {
 				index = SetsUI.coordsToIndex(row, col);
-				card = game.board[row][col];
-				cells[index].className = (card && card.isSelected ? 'selected' : '');
+				card = board[row][col];
+				cells[index].className = (card ? card.getClassAttr() : '');
 			}
 		}
 	};
@@ -342,7 +356,7 @@ function SetsUI(parentElement, game) {
 			cells = self.container.getElementsByTagName('td'),
 			index = SetsUI.coordsToIndex(card[0].row, card[0].col);
 			cells[index].className = 'error';
-		setTimeout(function() { self.updateSelected(game); }, 1000);
+		setTimeout(function() { self.updateSelected(game.board); }, 1000);
 	};
 
 	SetsUI.prototype.showFoundSet = function(game, cards) {

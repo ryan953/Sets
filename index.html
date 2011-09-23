@@ -140,7 +140,7 @@ $(document).ready(function() {
 			var found = game.foundSets.length * 3;
 			$('#score').html(found + '/' + game.deck.size);
 		})
-		.bind('select-card', function() { ui.updateSelected(this); })
+		.bind('select-card', function() { ui.updateSelected(this.board); })
 		.bind('selection-cleared', function(e, cards) { ui.showWrongSelection(this, cards); })
 		.bind('found-set', function(e, cards) {
 			ui.showFoundSet(this, cards);
@@ -149,7 +149,7 @@ $(document).ready(function() {
 			$('#score').html(found + '/' + game.deck.size);
 		})
 		.start( selectedMode() );
-
+	
 	$('.game-reset').click(function() {
 		ui.renderGame(
 			game.start( selectedMode() )
