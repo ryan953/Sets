@@ -111,6 +111,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <script src="./NoClickDelay.js"></script>
 <script src="./event.js"></script>
+<script src="./assistant.js"></script>
 <script src="./logic.js"></script>
 
 <script>
@@ -163,6 +164,25 @@ $(document).ready(function() {
 		game.selectCard(row, col);
 	});
 
+	
+	
+	
+	var assistant = new Assistant(5);
+	game
+		.bind('select-card', function() {
+			assistant.pickNotPossible( this.listCardsOnBoard(), this.selected );
+		})
+		.bind('selection-cleared', function() {
+			// clear faded cards
+		})
+		.bind('found-set', function() {
+			// clear faded cards
+		});
+		
+	assistant.bind('picked-not-possible', function() {
+		
+	});
+	
 	//$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
 });
 
@@ -171,12 +191,12 @@ $(document).ready(function() {
  * http://www.modernizr.com/downloads/modernizr-2.0.4.js
  */
 var hasLocalStorage = function() {
-	  try {
-			return !!localStorage.getItem;
-	  } catch(e) {
-			return false;
-	  }
- };
+	try {
+		return !!localStorage.getItem;
+	} catch(e) {
+		return false;
+	}
+};
 
 if (!Array.prototype.forEach) {
 	Array.prototype.forEach = function(fun /*, thisp */) {

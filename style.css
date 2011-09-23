@@ -100,7 +100,9 @@ html, body, #game-area table {
 	box-shadow:0 0em 1.5em red;
 	border-color:red;
 }
-
+#game-area .not-possible div {
+	opacity:.5;
+}
 #game-area .found div {
 	-webkit-box-shadow:0 0em 1.5em green;
 	box-shadow:0 0em 1.5em green;
