@@ -43,7 +43,7 @@ $(document).ready(function () {
 	});
 
 	module("Cards");
-	test("Creating a card", function () {
+	test("Creating a card", function() {
 		var c = new Card();
 		ok(c, "new card created successfully");
 	});
@@ -55,7 +55,7 @@ $(document).ready(function () {
 		ok(!(new Card( 1, "Oval", "striped", "green").isEmpty()), "A card with all 4 params is NOT empty");
 	});
 
-	test('select/deselect/toggle', function () {
+	test('select/deselect/toggle', function() {
 		var c = new Card();
 
 		c.select();
@@ -64,6 +64,20 @@ $(document).ready(function () {
 		ok(!c.isSelected, 'card gets UNselected');
 		c.toggleSelect();
 		ok(c.isSelected, 'card gets toggled');
+	});
+	
+	test('getClassAttr', function() {
+		Card.classNameMap['attr_one'] = 'class-one';
+		Card.classNameMap['attr_two'] = 'class-two';
+		
+		var c = new Card();
+		equals('', c.getClassAttr(), 'should have no clasname');
+		
+		c.attr_one = true;
+		equals('class-one', c.getClassAttr(), 'should now have a classname');
+		
+		c.attr_two = true;
+		equals('class-one class-two', c.getClassAttr(), 'should have two classnames');
 	});
 
 
