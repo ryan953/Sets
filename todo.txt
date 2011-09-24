@@ -12,14 +12,10 @@ stats lightbox
 share lightbox
 about lightbox
 
-made by ryan albrecht tag
-
 show discard pile?
 game history?
 
 remember quick start setting (all settings!)
-
-google analytics
 
 seeded javascript random number gen for shared games
 node.js server for head-to-head games
