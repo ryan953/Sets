@@ -63,7 +63,8 @@ function Card(count, shape, fill, color) {
 	};
 
 	Card.classNameMap = {
-		'isSelected': 'selected'
+		'isSelected': 'selected',
+		'notPossible': 'not-possible'
 	};
 	
 	Card.prototype.select = function() { this.isSelected = true; };

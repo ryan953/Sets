@@ -163,25 +163,43 @@ $(document).ready(function() {
 		col = self.index();
 		game.selectCard(row, col);
 	});
-
 	
 	
 	
-	var assistant = new Assistant(5);
+	
+	var assistant = new Assistant(1);
 	game
 		.bind('select-card', function() {
-			assistant.pickNotPossible( this.listCardsOnBoard(), this.selected );
+			if (this.selected.length > 0) {
+				//console.debug('selected card', this.selected);
+				assistant.findNotPossibleCard( this.listCardsOnBoard(), this.selected );
+			} else {
+				assistant.stopTimer();
+			}
 		})
 		.bind('selection-cleared', function() {
-			// clear faded cards
+			assistant.stopTimer();
+			
+			clearNotPossible();
 		})
 		.bind('found-set', function() {
-			// clear faded cards
+			assistant.stopTimer();
+			
+			clearNotPossible();
 		});
 		
-	assistant.bind('picked-not-possible', function() {
-		
+	assistant.bind('picked-not-possible', function(event, args) {
+		//console.debug('picked-not-possible caught', event, args);
+		game.listCardsOnBoard()[args.index].notPossible = true;
+		ui.updateSelected(game.board);
 	});
+	
+	var clearNotPossible = function() {
+		game.listCardsOnBoard().forEach(function(card) {
+			card.notPossible = false;
+		});
+		ui.updateSelected(game.board);
+	};
 	
 	//$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
 });

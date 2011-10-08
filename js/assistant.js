@@ -1,59 +1,64 @@
 function Assistant(delay) {
+	this.delay = delay * 1000;
 	this.event = new Event();
-	this.initWorker();
+	this.init();
+	this.timer = null;
 }
 (function() {
 	var hasWorkers = function() {
 		return !!window.Worker;
-	},
-	handleMessage = function(event) {
+	};
+	
+	var handleWorkerMessage = function(event) {
 		var data = event.data;
-		
-		try {
-			var rtrn = Assistant[data.cmd](data);
-		} catch (err) {
-			rtrn = 'Unknown Command ' + data.cmd;
-		}
-		
-		try {
-			return self.postMessage( rtrn );
-		} catch (err) {
-			return rtrn;
-		}
-	};
-	
-	if (self) {
-		self.addEventListener('message', handleMessage);
-	}
-	
-	Assistant.reflect = function(data) {
-		var msg = data.msg;
-		return msg;
-	};
-	
-	Assistant.makePick = function(data) {
-		var boardList = data.boardList,
-			selected = data.selected;
+		switch(data.cmd) {
+		case 'pickedNotPossible':
+			return self.trigger('picked-not-possible', data);
+		case 'all-are-possible':
+			return null;
 			
-		return 'idk' + boardList.length + ' ' + selected.length;
+		default:
+			console.debug('Worker said:', data);
+		}
+		if (data && data.cmd) {
+			self[data.cmd](data);
+		}
 	};
 	
-	
-	
-	Assistant.prototype.initWorker = function() {
+	Assistant.prototype.init = function() {
 		if (hasWorkers()) {
-			this.worker = new Worker('assistant.js');
-			this.worker.addEventListener('message', function(event) {
-				console.debug('Message Received', event, event.data);
-			});
+			var self = this;
+			this.worker = new Worker('./js/assistant_worker.js');
+			this.worker.addEventListener('message', handleWorkerMessage);
 			this.worker.addEventListener('error', function(event) {
 				console.error('Worker Error', event);
 			});
 		} else {
-			//throw new Error('Web Workers Not Supported');
-			//console.error('Workers Not Supported: falling back');
+			throw new Error('Web Workers Not Supported');
 		}
 	};
+	
+	/**
+	 * get the working crunching the numbers
+	 */
+	Assistant.prototype.findNotPossibleCard = function(list, selected) {
+		this.worker.postMessage({
+			cmd: 'startLooking',
+			boardList: self.boardList,
+			cardsSelected: self.cardsSelected
+		});
+	};
+	
+	/**
+	 * stop the worker from crunching the numbers, if it's still going
+	 */
+	Assistant.prototype.stopTimer = function() {
+		this.worker.postMessage({
+			cmd:'stopLooking'
+		});
+	};
+	
+	
 	
 	Assistant.prototype.bind = function(name, handler) {
 		this.event.addListener(this, name, handler);
@@ -67,28 +72,4 @@ function Assistant(delay) {
 		this.event.removeListener(this, name, handler);
 		return this;
 	};
-	
-	
-	
-	Assistant.prototype.sendMessage = function(msg) {
-		if (this.worker) {
-			console.debug('posting message to worker', msg);
-			this.worker.postMessage(msg);
-		} else {
-			console.debug('handling the message right now', msg);
-			var response = handleMessage({data:msg});
-			console.debug('response was', response);
-		}
-	};
-	Assistant.prototype.pickNotPossible = function(boardList, selected) {
-		this.sendMessage({
-			cmd:'makePick',
-			boardList:boardList,
-			selected:selected
-		});
-	};
-})();
-
-(function() {
-	
 })();
