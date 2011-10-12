@@ -13,12 +13,12 @@ function AssistantWorker() {}
 			}
 		});
 	}
-		return msg;
-	};
 	
 
 	AssistantWorker.reflect = function(data) {
 		var msg = data.msg;
+		return msg;
+	};
 	AssistantWorker.stopClock = function() {
 		if (timer) {
 			clearTimeout(timer);
@@ -66,9 +66,12 @@ function AssistantWorker() {}
 	
 	var availableCards = function(list) {
 		return list.filter(function(card) { return !card.isSelected && !card.notPossible; });
-	};
-	var selectedCards = function(list) {
-		return list.filter(function(card) { return card.isSelected });
+	},
+	selectedCards = function(list) {
+		return list.filter(function(card) { return card.isSelected; });
+	},
+	unmatchedCards = function(list) {
+		return list.filter(function(card) { return !card.hasSet; });
 	};
 	
 	AssistantWorker.pickNotSelectedCard = function(list) {
@@ -134,8 +137,37 @@ function AssistantWorker() {}
 		return null;
 	};
 	
+	AssistantWorker.listNotPossibleCards = function(board) {
+		var list = board,
+			selected = selectedCards(list),
+			card1 = null,
+			card2 = null,
+			card3 = null;
+		
+		if (list.length < 3) {
+			return list;
+		} else if (list.length == 3) {
+			return (isASet(list) ? [] : list);
+		}
+		
+		list.forEach(function(card1) {
+			if (card1.isSelected || card1.hasSet) { return; }
+			list.forEach(function(card2) {
+				if (card2 == card1 || card2.isSelected || card2.hasSet) { return; }
+				list.forEach(function(card3) {
+					if (card1 == card3 || card2 == card3 || card3.isSelected || card3.hasSet) { return; }
+					if ( isASet([card1, card2, card3]) ) {
+						card1.hasSet = card2.hasSet = card3.hasSet = true;
+					}
+				});
+			});
+		});
+		
+		return unmatchedCards(list);
+	};
+	
 	// Copied from Card.isASet()
-	var lastErrors = []
+	var lastErrors = [];
 	var isASet = function(cards) {
 		if (cards.length != 3 ) { return false; }
 		

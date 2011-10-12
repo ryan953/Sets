@@ -43,24 +43,25 @@ $(document).ready(function () {
 	});
 	
 	test('Pick from normal list', function() {
-		var board = getSimpleBoard();
+		var board = getSimpleBoard(),
+			card = null;
 		
 		board[0].deselect();
 		board[1].select();
 		board[2].select();
-		var card = AssistantWorker.pickNotSelectedCard(board);
+		card = AssistantWorker.pickNotSelectedCard(board);
 		deepEqual(card, board[0], 'only one card in this list is not already selected');
 		
 		board[0].select();
 		board[1].deselect();
 		board[2].select();
-		var card = AssistantWorker.pickNotSelectedCard(board);
+		card = AssistantWorker.pickNotSelectedCard(board);
 		deepEqual(card, board[1], 'only one card in this list is not already selected');
 		
 		board[0].select();
 		board[1].select();
 		board[2].deselect();
-		var card = AssistantWorker.pickNotSelectedCard(board);
+		card = AssistantWorker.pickNotSelectedCard(board);
 		deepEqual(card, board[2], 'only one card in this list is not already selected');
 	});
 	
@@ -74,53 +75,196 @@ $(document).ready(function () {
 		equals(card, null, 'should not be able to pick anything from a list with everything selected');
 	});
 	
-	
-	module('findNotPossibleCard');
-	
-	test('find a card that is not a set (board3), given two selected', function() {
+	module('listNotPossibleCards');
+	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
-		board[0].select();
-		board[1].select();
+		board.pop();
 		
-		board[2].shape = 'diamond'; // will not make a set with the other two
-		
-		var card_no_set = AssistantWorker.findNotPossibleCard(board);
-		equals(card_no_set, board[2]);
+		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		equals(unmatched.length, 2, 'not enough cards to make a match');
+		deepEqual(unmatched, [board[0], board[1]], 'not enough cards to make a match');
 	});
 	
-	test('find a card that is not a set (board4), given two selected', function() {
+	test('all have matches', function() {
 		var board = getSimpleBoard();
-		board[0].select();
-		board[1].select();
-		//board 2 will make a set
-		board.push(new Card(2, "Oval", "striped", "green")); //add 4th card, will not make a set with existing
 		
-		var expected = board[3];
-		
-		var card_no_set = AssistantWorker.findNotPossibleCard(board);
-		equals(card_no_set, expected);
+		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		equals(unmatched.length, 0, 'all cards should have a match');
+		deepEqual(unmatched, [], 'all cards should have a match');
 	});
 	
-	test('find a card that is not a set (board3), given one selected', function() {
+	test('only the last should be unmatched', function() {
 		var board = getSimpleBoard();
-		board[0].select();
-		//board 0,1,2 will make a set
-		board.push(new Card(2, "Oval", "striped", "green")); //add 4th card, will not make a set with existing
+		board.push(new Card(2, "Oval" ,"striped", "green"));
 		
-		var expected = new Card(
-			board[3].count,
-			board[3].shape,
-			board[3].fill,
-			board[3].color
-		);
-		expected.isSelected = false;
-		expected.notPossible = true;
-		
-		var card_no_set = AssistantWorker.findNotPossibleCard(board);
-		console.debug('board', board);
-		//console.debug('card_no_set', card_no_set, 'expected', expected);
-		deepEqual(card_no_set, expected);
+		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		equals(unmatched.length, 1, 'only one is not a match');
+		deepEqual(unmatched, [board[3]], 'the last card has no match');
 	});
+	
+	test('unmatched cards across a board are found', function() {
+		var tests = listNotPossibleCardsDataProvider(),
+			testcase = null;
+		for(var i = 0, len = tests.length; i < len; i++) {
+			testcase = tests[i];
+			var out = AssistantWorker.listNotPossibleCards(testcase.board);
+			equals(out.length, testcase.expected.length, 'failed on index '+i);
+			deepEqual(out, testcase.expected);
+		};
+	});
+	
+	function listNotPossibleCardsDataProvider() {
+		return [
+			{board: [
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"}
+			], expected: [
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"}
+			]}, {board:  [
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"}
+			], expected: [
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"}
+			]}, {board:  [
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"}
+			], expected: [
+				{"count":1,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"}
+			], expected: [
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"}
+			]}, {board:  [
+				{"count":1,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			], expected: [
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"}
+			], expected: [
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue"}
+			], expected: [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"}
+			]}, {board:  [
+				{"count":2,"shape":"Diamond","fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			], expected: [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"red"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			]}, {board:  [
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":2,"shape":"Diamond","fill":"solid","color":"blue"}
+			], expected: [
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"red"}
+			]}, {board:  [
+				{"count":3,"shape":"Oval","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Oval","fill":"solid","color":"blue"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"red"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"green"}
+			], expected: [
+				{"count":1,"shape":"Diamond","fill":"solid","color":"blue"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":2,"shape":"Oval","fill":"solid","color":"green"}
+			]}
+		];
+	}
 });
 </script>
 
