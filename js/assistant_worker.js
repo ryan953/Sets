@@ -91,50 +91,9 @@ function AssistantWorker() {}
 	 * When all cards are used return null;
 	 */
 	AssistantWorker.findNotPossibleCard = function(list) {
-		var board = clone(list),
-			selected = selectedCards(list),
-			card = null,
-			test = [];
-			
-		console.group('find one in');
-		for(var i in list) { console.debug(JSON.stringify(list[i])); }
-		console.debug('sel.length == ', selected.length);
-		console.groupEnd();
-		
-		if (selected.length == 2) {
-			var available = availableCards(list);
-			do {
-				// remove the last card so we don't check it again
-				if (card) { available.splice(available.indexOf(card), 1); }
-				
-				card = AssistantWorker.pickNotSelectedCard(available);
-				test = clone(selected);
-				test.push(card);
-			} while( isASet(test) );
-			
-			console.group('found a:');
-			console.debug(JSON.stringify(card));
-			console.groupEnd();
-			return card;
-			
-		} else if (selected.length == 1) {
-			do {
-				card = AssistantWorker.pickNotSelectedCard(board);
-				card.isSelected = true;
-				
-				var set_card = AssistantWorker.findNotPossibleCard(board);
-			} while(set_card);
-			
-			card.isSelected = false;
-			card.notPossible = true;
-			
-			console.group('found b:');
-			console.debug(JSON.stringify(card));
-			console.groupEnd();
-			return card;
-		}
-		console.debug('found n:', null);
-		return null;
+		var possibleCards = AssistantWorker.listNotPossibleCards(list),
+			index = Math.floor(Math.random()*possibleCards.length);
+			return possibleCards[index];
 	};
 	
 	AssistantWorker.listNotPossibleCards = function(board) {

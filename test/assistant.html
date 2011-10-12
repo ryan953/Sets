@@ -76,6 +76,7 @@ $(document).ready(function () {
 	});
 	
 	module('listNotPossibleCards');
+	
 	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
 		board.pop();
@@ -102,6 +103,8 @@ $(document).ready(function () {
 		deepEqual(unmatched, [board[3]], 'the last card has no match');
 	});
 	
+	
+	module('listNotPossibleCards::example boards');
 	test('unmatched cards across a board are found', function() {
 		var tests = listNotPossibleCardsDataProvider(),
 			testcase = null;
@@ -112,6 +115,45 @@ $(document).ready(function () {
 			deepEqual(out, testcase.expected);
 		};
 	});
+	
+	
+	
+	
+	module('findNotPossibleCard', {
+			setup:function() {
+				var self = this;
+				this.orig_listNotPossible = AssistantWorker.listNotPossibleCards;
+				this.expected_cards = [
+					new Card(2, "Oval", "solid", "green"),
+					new Card(1, "Oval", "solid", "blue")
+				]
+				AssistantWorker.listNotPossibleCards = function() {
+					return self.expected_cards;
+				};
+			},
+			teardown: function() {
+				AssistantWorker.listNotPossibleCards = this.orig_listNotPossible;
+			}
+	});
+	
+	test('finds a single card', function() {
+		var board = getSimpleBoard();
+			card = null;
+			
+		card = AssistantWorker.findNotPossibleCard(board);
+		ok(this.expected_cards.indexOf(card) >= 0, 'card should be in the expected list');
+		console.debug(this.expected_cards, card);
+		
+		card = AssistantWorker.findNotPossibleCard(board);
+		ok(this.expected_cards.indexOf(card) >= 0, 'card should be in the expected list');
+		console.debug(this.expected_cards, card);
+		
+		card = AssistantWorker.findNotPossibleCard(board);
+		ok(this.expected_cards.indexOf(card) >= 0, 'card should be in the expected list');
+		console.debug(this.expected_cards, card);
+	});
+	
+	
 	
 	function listNotPossibleCardsDataProvider() {
 		return [
