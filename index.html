@@ -12,6 +12,7 @@
 </head>
 <body>
 <script>
+	"use strict";
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-24049225-1']);
 	_gaq.push(['_trackPageview']);
@@ -31,8 +32,6 @@
 			<ul>
 				<li><a href="#settings">Settings</a></li>
 				<li><a href="#stats" class="needs-localstorage">Stats</a></li>
-				<!--<li><a href="#share">Share</a></li>-->
-				<!--<li><a href="#help">Help</a></li>-->
 				<li><a href="#about">About</a></li>
 			</ul>
 		</div>
@@ -93,6 +92,7 @@
 						<li><code>Array.prototype.reduce()</code></li>
 					</ul>
 				</li>
+				<li>Web Workers</li>
 			</ul>
 		</p>
 		<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
@@ -110,12 +110,16 @@
 
 <script src="./lib/jquery-1.6.4.js"></script>
 <script src="./js/NoClickDelay.js"></script>
+<script src="./js/utils.js"></script>
 <script src="./js/event.js"></script>
 <script src="./js/assistant.js"></script>
 <script src="./js/logic.js"></script>
 
 <script>
+"use strict";
 function _(id) { return document.getElementById(id); }
+
+var game, gameArea, ui, assistant;
 
 $(document).ready(function() {
 	document.ontouchmove = function(e){ e.preventDefault(); };
@@ -124,9 +128,10 @@ $(document).ready(function() {
 		return $('#easy-mode').is(':checked') ? 'easy' : 'regular';
 	}
 
-	var fastTouchEvent = new NoClickDelay(document.getElementsByTagName('body')[0]),
-		gameArea = document.getElementById('game-area'),
-		game = new Sets(), //game start is at the bottom, after we attach some events!
+	var fastTouchEvent = new NoClickDelay(document.getElementsByTagName('body')[0]);
+	
+		gameArea = document.getElementById('game-area');
+		game = new Sets(); //game start is at the bottom, after we attach some events!
 		ui = new SetsUI(gameArea);
 
 	game
@@ -142,6 +147,7 @@ $(document).ready(function() {
 			$('#score').html(found + '/' + game.deck.size);
 		})
 		.bind('select-card', function() { ui.updateSelected(this.board); })
+		.bind('deselect-card', function() { ui.updateSelected(this.board); })
 		.bind('selection-cleared', function(e, cards) { ui.showWrongSelection(this, cards); })
 		.bind('found-set', function(e, cards) {
 			ui.showFoundSet(this, cards);
@@ -161,36 +167,39 @@ $(document).ready(function() {
 		var self = $(this),
 		row = self.parent().index(),
 		col = self.index();
-		game.selectCard(row, col);
+		game.selectCard(game.getCard(row, col));
 	});
 	
 	
-	
-	
-	var assistant = new Assistant(1);
+	assistant = new Assistant(1);
+	assistant.initWorker();
 	game
+		.bind('*', function(event) {
+			console.debug('game triggered', event.name, event);
+		})
 		.bind('select-card', function() {
 			if (this.selected.length > 0) {
-				//console.debug('selected card', this.selected);
-				assistant.findNotPossibleCard( this.listCardsOnBoard(), this.selected );
+				assistant.findNotPossibleCard(this.listCardsOnBoard());
 			} else {
-				assistant.stopTimer();
+				assistant.stopClock();
 			}
 		})
 		.bind('selection-cleared', function() {
-			assistant.stopTimer();
+			assistant.stopClock();
 			
 			clearNotPossible();
 		})
 		.bind('found-set', function() {
-			assistant.stopTimer();
+			assistant.stopClock();
 			
 			clearNotPossible();
 		});
 		
-	assistant.bind('picked-not-possible', function(event, args) {
-		//console.debug('picked-not-possible caught', event, args);
-		game.listCardsOnBoard()[args.index].notPossible = true;
+	assistant.bind('picked-not-possible', function(event, cards) {
+		console.debug('picked-not-possible caught', event, cards);
+		cards.forEach(function(card) {
+			game.getCard(card.row, card.col).notPossible = true;
+		});
 		ui.updateSelected(game.board);
 	});
 	
@@ -201,78 +210,10 @@ $(document).ready(function() {
 		ui.updateSelected(game.board);
 	};
 	
-	//$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
+	/*
+	$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
+	*/
 });
-
-
-/*
- * http://www.modernizr.com/downloads/modernizr-2.0.4.js
- */
-var hasLocalStorage = function() {
-	try {
-		return !!localStorage.getItem;
-	} catch(e) {
-		return false;
-	}
-};
-
-if (!Array.prototype.forEach) {
-	Array.prototype.forEach = function(fun /*, thisp */) {
-		"use strict";
-
-		if (this === void 0 || this === null) { throw new TypeError(); }
-
-		var t = Object(this),
-			len = t.length >>> 0;
-		if (typeof fun !== "function") { throw new TypeError(); }
-
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
-			if (i in t) { fun.call(thisp, t[i], i, t); }
-		}
-	};
-}
-
-if (!Array.prototype.reduce) {
-	Array.prototype.reduce = function(fun /*, initialValue */) {
-		"use strict";
-
-		if (this === void 0 || this === null) { throw new TypeError(); }
-
-		var t = Object(this);
-		var len = t.length >>> 0;
-		if (typeof fun !== "function") { throw new TypeError(); }
-
-		// no value to return if no initial value and an empty array
-		if (len == 0 && arguments.length == 1) { throw new TypeError(); }
-
-		var k = 0;
-		var accumulator;
-		if (arguments.length >= 2) {
-			accumulator = arguments[1];
-		} else {
-			do {
-				if (k in t) {
-					accumulator = t[k++];
-					break;
-				}
-
-			// if array contains no values, no initial value to return
-			if (++k >= len) { throw new TypeError(); }
-			}
-			while (true);
-		}
-
-		while (k < len) {
-			if (k in t) {
-				accumulator = fun.call(undefined, accumulator, t[k], k, t);
-			}
-			k++;
-		}
-
-		return accumulator;
-	};
-}
 </script>
 </body>
 </html>
