@@ -1,3 +1,4 @@
+"use strict";
 function Card(count, shape, fill, color) {
 	this.isSelected = false;
 
@@ -224,22 +225,27 @@ function Sets() { //this is the game logic
 			._loadBoard()
 			.trigger('start');
 	};
-	Sets.prototype.selectCard = function(row, col) {
+	Sets.prototype.getCard = function(row, col) {
+		return this.board[row][col];
+	};
+	Sets.prototype.selectCard = function(card) {
 		var cards,
-			card = this.board[row][col],
 			idx = this.selected.indexOf(card);
-
+			
 		if (!card) { return; }
 
 		if (idx < 0) {
 			card.select();
 			this.selected.push(card);
+			this.trigger('select-card', this.selected.slice());
 		} else {
 			card.deselect();
 			this.selected.splice(idx, 1);
+			this.trigger('deselect-card', this.selected.slice());
+			if (this.selected.length === 0) {
+				this.trigger('selection-cleared');
+			}
 		}
-
-		this.trigger('select-card', this.selected.slice());
 
 		if (Sets.isASet(this.selected) === true) {
 			cards = this.selected.slice();
@@ -352,12 +358,14 @@ function SetsUI(parentElement, game) {
 	};
 
 	SetsUI.prototype.showWrongSelection = function(game, cards) {
-		var self = this,
-			card = cards.splice(-1, 1),
-			cells = self.container.getElementsByTagName('td'),
-			index = SetsUI.coordsToIndex(card[0].row, card[0].col);
-			cells[index].className = 'error';
-		setTimeout(function() { self.updateSelected(game.board); }, 1000);
+		if (cards) {
+			var self = this,
+				card = cards.splice(-1, 1),
+				cells = self.container.getElementsByTagName('td'),
+				index = SetsUI.coordsToIndex(card[0].row, card[0].col);
+				cells[index].className = 'error';
+			setTimeout(function() { self.updateSelected(game.board); }, 1000);
+		}
 	};
 
 	SetsUI.prototype.showFoundSet = function(game, cards) {
@@ -376,31 +384,31 @@ function SetsUI(parentElement, game) {
 })();
 
 (function() {
+	var visuals = function(card) {
+		var fills = {
+			solid: {
+				lineWidth:0,
+				fillStyle:card.color
+			},
+			empty: {
+				lineWidth:4,
+				fillStyle:'transparent'
+			},
+			striped: {
+				lineWidth:1,
+				fillStyle:Card.stripedFills[card.color]
+			}
+		};
+		return fills[card.fill];
+	};
+		
 	Card.prototype.draw = function(ctx) {
-		function visuals(card) {
-			var fills = {
-				solid: {
-					lineWidth:0,
-					fillStyle:card.color
-				},
-				empty: {
-					lineWidth:4,
-					fillStyle:'transparent'
-				},
-				striped: {
-					lineWidth:1,
-					fillStyle:Card.stripedFills[card.color]
-				}
-			};
-			return fills[card.fill];
-		}
-
 		ctx.clearRect(0, 0, 150, 150);
 		for(var i = 0; i < this.count; i++) {
 			ctx.save();
 			ctx.translate(25, ([50, 25, 0])[this.count-1] + (i*50));
 			Card.paths[this.shape](ctx);
-			visualSettings = visuals(this);
+			var visualSettings = visuals(this);
 			ctx.lineWidth = visualSettings.lineWidth;
 			ctx.fillStyle = visualSettings.fillStyle;
 			ctx.strokeStyle = this.color;
