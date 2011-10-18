@@ -1,7 +1,7 @@
+"use strict";
 function Assistant(delay) {
-	this.delay = delay * 1000;
+	this.delay = delay;
 	this.event = new Event();
-	this.init();
 	this.timer = null;
 }
 (function() {
@@ -9,27 +9,22 @@ function Assistant(delay) {
 		return !!window.Worker;
 	};
 	
-	var handleWorkerMessage = function(event) {
+	Assistant.prototype.handleWorkerMessage = function(event) {
 		var data = event.data;
-		switch(data.cmd) {
-		case 'pickedNotPossible':
-			return self.trigger('picked-not-possible', data);
-		case 'all-are-possible':
-			return null;
-			
-		default:
+		if (data.event) {
+			return this.trigger(data.event, data.data);
+		} else {
 			console.debug('Worker said:', data);
-		}
-		if (data && data.cmd) {
-			self[data.cmd](data);
 		}
 	};
 	
-	Assistant.prototype.init = function() {
+	Assistant.prototype.initWorker = function() {
 		if (hasWorkers()) {
 			var self = this;
-			this.worker = new Worker('./js/assistant_worker.js');
-			this.worker.addEventListener('message', handleWorkerMessage);
+			this.worker = new Worker('./js/assistant_worker.js?'+Math.floor(Math.random()*100));
+			this.worker.addEventListener('message', function(event) {
+				self.handleWorkerMessage(event);
+			});
 			this.worker.addEventListener('error', function(event) {
 				console.error('Worker Error', event);
 			});
@@ -41,22 +36,41 @@ function Assistant(delay) {
 	/**
 	 * get the working crunching the numbers
 	 */
-	Assistant.prototype.findNotPossibleCard = function(list, selected) {
+	Assistant.prototype.findNotPossibleCard = function(board) {
 		this.worker.postMessage({
-			cmd: 'startLooking',
-			boardList: self.boardList,
-			cardsSelected: self.cardsSelected
+			cmd: 'listNotPossibleCards',
+			event: 'picked-not-possible',
+			board: board
 		});
+	};
+
+	
+	/**
+	 * takes a delay between clock ticks, and an action to do each tick
+	 * when the action returns false the clock will turn itself off
+	 */
+	Assistant.prototype.startClock = function(tickAction) {
+		this.stopClock();
+		var self = this,
+			clockTick = function() {
+			if (tickAction()) {
+				self.timer = setTimeout(clockTick, self.delay);
+			}
+		};
+		clockTick();
 	};
 	
 	/**
-	 * stop the worker from crunching the numbers, if it's still going
+	 * Stop the timer so we don't return any cards
 	 */
-	Assistant.prototype.stopTimer = function() {
-		this.worker.postMessage({
-			cmd:'stopLooking'
-		});
+	Assistant.prototype.stopClock = function() {
+		if (this.timer) {
+			clearTimeout(this.timer);
+			this.timer = null;
+		}
 	};
+	
+	
 	
 	
 	

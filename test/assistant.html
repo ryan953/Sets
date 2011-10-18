@@ -7,9 +7,11 @@
 
 <script src="../js/event.js"></script>
 <script src="../js/logic.js"></script>
+<script src="../js/assistant.js"></script>
 <script src="../js/assistant_worker.js"></script>
 
 <script>
+"use strict";
 $(document).ready(function () {
 	function getSimpleBoard() {
 		return [
@@ -19,69 +21,40 @@ $(document).ready(function () {
 		];
 	}
 	
-	
-	module('Assistant Worker::Clock');
-	test('clock ticks', function() {
-		var count = 2, delay = 500;
+	module('Assistant::Clock');
+	test('clock ticks 3 times', function() {
+		var count = 3,
+			delay = 500,
+			assistant = new Assistant(delay);
 		stop(count);
-		AssistantWorker.startClock(delay, function() {
+		
+		assistant.startClock(function() {
 			ok(true, 'Clock tick ' + count);
 			start();
-			count--;
-			return (count > 0);
+			return count--;
 		});
 	});
 	
-	
-	module('pickNotSelectedCard()');
-	
-	test('Pick from empty list', function() {
-		var board = [];
+	test('clock can be stopped early', function() {
+		var count = 3,
+			delay = 500,
+			assistant = new Assistant(delay);
+		stop(1); // not the count of 3 like before
 		
-		var card = AssistantWorker.pickNotSelectedCard(board);
-		equals(card, null, 'should not pick from an empty list of cards');
-	});
-	
-	test('Pick from normal list', function() {
-		var board = getSimpleBoard(),
-			card = null;
-		
-		board[0].deselect();
-		board[1].select();
-		board[2].select();
-		card = AssistantWorker.pickNotSelectedCard(board);
-		deepEqual(card, board[0], 'only one card in this list is not already selected');
-		
-		board[0].select();
-		board[1].deselect();
-		board[2].select();
-		card = AssistantWorker.pickNotSelectedCard(board);
-		deepEqual(card, board[1], 'only one card in this list is not already selected');
-		
-		board[0].select();
-		board[1].select();
-		board[2].deselect();
-		card = AssistantWorker.pickNotSelectedCard(board);
-		deepEqual(card, board[2], 'only one card in this list is not already selected');
-	});
-	
-	test('Pick from selected list', function() {
-		var board = getSimpleBoard();
-		board[0].select();
-		board[1].select();
-		board[2].select();
-		
-		var card = AssistantWorker.pickNotSelectedCard(board);
-		equals(card, null, 'should not be able to pick anything from a list with everything selected');
+		assistant.startClock(function() {
+			ok(true, 'Clock tick ' + count);
+			start();
+			return count--;
+		});
+		assistant.stopClock();
 	});
 	
 	module('listNotPossibleCards');
-	
 	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
 		board.pop();
 		
-		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		var unmatched = AssistantWorker.listNotPossibleCards({'board': board});
 		equals(unmatched.length, 2, 'not enough cards to make a match');
 		deepEqual(unmatched, [board[0], board[1]], 'not enough cards to make a match');
 	});
@@ -89,7 +62,7 @@ $(document).ready(function () {
 	test('all have matches', function() {
 		var board = getSimpleBoard();
 		
-		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		var unmatched = AssistantWorker.listNotPossibleCards({'board': board});
 		equals(unmatched.length, 0, 'all cards should have a match');
 		deepEqual(unmatched, [], 'all cards should have a match');
 	});
@@ -98,7 +71,7 @@ $(document).ready(function () {
 		var board = getSimpleBoard();
 		board.push(new Card(2, "Oval" ,"striped", "green"));
 		
-		unmatched = AssistantWorker.listNotPossibleCards(clone(board));
+		var unmatched = AssistantWorker.listNotPossibleCards({'board': board});
 		equals(unmatched.length, 1, 'only one is not a match');
 		deepEqual(unmatched, [board[3]], 'the last card has no match');
 	});
@@ -110,14 +83,11 @@ $(document).ready(function () {
 			testcase = null;
 		for(var i = 0, len = tests.length; i < len; i++) {
 			testcase = tests[i];
-			var out = AssistantWorker.listNotPossibleCards(testcase.board);
+			var out = AssistantWorker.listNotPossibleCards(testcase);
 			equals(out.length, testcase.expected.length, 'failed on index '+i);
 			deepEqual(out, testcase.expected);
-		};
+		}
 	});
-	
-	
-	
 	
 	module('findNotPossibleCard', {
 			setup:function() {
@@ -126,7 +96,7 @@ $(document).ready(function () {
 				this.expected_cards = [
 					new Card(2, "Oval", "solid", "green"),
 					new Card(1, "Oval", "solid", "blue")
-				]
+				];
 				AssistantWorker.listNotPossibleCards = function() {
 					return self.expected_cards;
 				};
@@ -135,9 +105,8 @@ $(document).ready(function () {
 				AssistantWorker.listNotPossibleCards = this.orig_listNotPossible;
 			}
 	});
-	
 	test('finds a single card', function() {
-		var board = getSimpleBoard();
+		var board = getSimpleBoard(),
 			card = null;
 			
 		card = AssistantWorker.findNotPossibleCard(board);
@@ -153,6 +122,10 @@ $(document).ready(function () {
 		console.debug(this.expected_cards, card);
 	});
 	
+	
+	module('Start Looking');
+	
+	//test('remembers the 
 	
 	
 	function listNotPossibleCardsDataProvider() {
