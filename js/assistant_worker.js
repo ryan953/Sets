@@ -41,18 +41,19 @@ function AssistantWorker() {}
 	 * If that random card does make a set a) mark it as used b) get another card
 	 * When all cards are used return null;
 	 */
+	/*
 	AssistantWorker.findNotPossibleCard = function(list) {
 		var possibleCards = AssistantWorker.listNotPossibleCards(list),
 			index = Math.floor(Math.random()*possibleCards.length);
 			return possibleCards[index];
 	};
+	*/
 	
 	AssistantWorker.listNotPossibleCards = function(data) {
 		var board = data.board,
 			selected = selectedCards(board),
-			card1 = null,
-			card2 = null,
-			card3 = null;
+			set1 = board, set2 = board, set3 = board,
+			card1 = null, card2 = null, card3 = null;
 		
 		if (board.length < 3) {
 			return board;
@@ -60,12 +61,18 @@ function AssistantWorker() {}
 			return (isASet(board) ? [] : board);
 		}
 		
-		board.forEach(function(card1) {
-			if (card1.hasSet) { return; }
-			board.forEach(function(card2) {
-				if (card2 == card1 || card2.hasSet) { return; }
-				board.forEach(function(card3) {
-					if (card1 == card3 || card2 == card3 || card3.hasSet) { return; }
+		if (selected.length == 1) {
+			set1 = [selected[0]];
+		} else if(selected.length == 2) {
+			set1 = [selected[0]];
+			set2 = [selected[1]];
+		}
+		
+		set1.forEach(function(card1) {
+			set2.forEach(function(card2) {
+				if (card2 == card1) { return; }
+				set3.forEach(function(card3) {
+					if (card1 == card3 || card2 == card3) { return; }
 					if ( isASet([card1, card2, card3]) ) {
 						card1.hasSet = card2.hasSet = card3.hasSet = true;
 					}
