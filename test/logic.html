@@ -17,7 +17,6 @@ $(document).ready(function () {
 		var evt = new Event(),
 			obj = {
 				test:function(e, data) {
-					//console.debug('tested', arguments, this.name);
 					equal(eventData, data, 'event fired and arguments are ok');
 					start();
 				},

@@ -102,6 +102,7 @@ html, body, #game-area table {
 }
 #game-area .not-possible div {
 	opacity:.5;
+	-webkit-transition: opacity 1s linear;
 }
 #game-area .found div {
 	-webkit-box-shadow:0 0em 1.5em green;
@@ -202,8 +203,16 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	line-height:24px;
 	text-decoration:none;
 }
-.button, .button:hover, .button:visited { color:white; cursor:pointer; text-shadow:none; }
-a.button:hover { text-decoration:none; }
+.button,
+.button:hover,
+.button:visited {
+	color:white;
+	cursor:pointer;
+	text-shadow:none;
+}
+a.button:hover {
+	text-decoration:none;
+}
 .button span {
 	background: rgb(149,149,149); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(149,149,149,1) 0%, rgba(13,13,13,1) 46%, rgba(1,1,1,1) 50%, rgba(10,10,10,1) 53%, rgba(78,78,78,1) 76%, rgba(56,56,56,1) 87%, rgba(27,27,27,1) 100%); /* FF3.6+ */
@@ -272,7 +281,8 @@ a.button:hover { text-decoration:none; }
 	-o-box-sizing:border-box;
 	box-sizing:border-box;
 }
-#menu .button, #menu p {
+#menu .button,
+#menu p {
 	display:block;
 	font-size:14px;
 	font-weight:bold;

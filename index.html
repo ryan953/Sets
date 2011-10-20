@@ -171,37 +171,43 @@ $(document).ready(function() {
 	});
 	
 	
-	assistant = new Assistant(1);
+	assistant = new Assistant(4000);
 	assistant.initWorker();
 	game
-		.bind('*', function(event) {
-			console.debug('game triggered', event.name, event);
+		.bind('start', function(event) { // start a timer
+			console.debug('caught game.start');
+			assistant.findNotPossibleCard(game.listCardsOnBoard());
+		})
+		.bind('end', function(event) {
+			console.debug('caught game.end');
+			assistant.stopClock();
 		})
 		.bind('select-card', function() {
+			console.debug('caught game.select-card');
 			if (this.selected.length > 0) {
-				assistant.findNotPossibleCard(this.listCardsOnBoard());
+				assistant.findNotPossibleCard(game.listCardsOnBoard());
 			} else {
 				assistant.stopClock();
 			}
 		})
 		.bind('selection-cleared', function() {
+			console.debug('caught game.selection-cleared');
 			assistant.stopClock();
-			
 			clearNotPossible();
 		})
 		.bind('found-set', function() {
+			console.debug('caught game.found-set');
 			assistant.stopClock();
-			
 			clearNotPossible();
 		});
 		
-	assistant.bind('picked-not-possible', function(event, cards) {
-		console.debug('picked-not-possible caught', event, cards);
-		cards.forEach(function(card) {
-			game.getCard(card.row, card.col).notPossible = true;
-		});
+	assistant.bind('picked-not-possible', function(event, card) {
+		console.debug('picked-not-possible caught', event, card);
+		game.getCard(card.row, card.col).notPossible = true;
 		ui.updateSelected(game.board);
 	});
+
+	assistant.findNotPossibleCard(game.listCardsOnBoard());
 	
 	var clearNotPossible = function() {
 		game.listCardsOnBoard().forEach(function(card) {

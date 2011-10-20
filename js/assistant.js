@@ -3,6 +3,8 @@ function Assistant(delay) {
 	this.delay = delay;
 	this.event = new Event();
 	this.timer = null;
+	
+	this.cards_to_disable = null;
 }
 (function() {
 	var hasWorkers = function() {
@@ -13,6 +15,8 @@ function Assistant(delay) {
 		var data = event.data;
 		if (data.event) {
 			return this.trigger(data.event, data.data);
+		} else if (data.cmd) {
+			return this[data.cmd](data.data);
 		} else {
 			console.debug('Worker said:', data);
 		}
@@ -37,11 +41,40 @@ function Assistant(delay) {
 	 * get the working crunching the numbers
 	 */
 	Assistant.prototype.findNotPossibleCard = function(board) {
-		this.worker.postMessage({
+		var self = this;
+		
+		//self.cacheCardsToDisable(null);
+		self.worker.postMessage({
 			cmd: 'listNotPossibleCards',
-			event: 'picked-not-possible',
+			rtrncmd: 'cacheCardsToDisable',
 			board: board
 		});
+		
+		this.startClock(function() {
+			return self.revealNotPossibleCard();
+		});
+	};
+	
+	/**
+	 * listen for the list of not possible cards and hang on to them
+	 */
+	Assistant.prototype.cacheCardsToDisable = function(cards) {
+		console.debug('caching cards to disable', cards);
+		this.cards_to_disable = cards;
+	};
+	
+	/**
+	 * show a not possible card on the clock-tick
+	 */
+	Assistant.prototype.revealNotPossibleCard = function() {
+		console.debug('clock tick', JSON.stringify(this.cards_to_disable));
+		if (!(this.cards_to_disable instanceof Array)) {
+			return true;
+		}
+		if (this.cards_to_disable.length) {
+			this.trigger('picked-not-possible', this.cards_to_disable.shift());
+		}
+		return this.cards_to_disable.length;
 	};
 
 	

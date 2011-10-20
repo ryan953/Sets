@@ -6,11 +6,14 @@ function AssistantWorker() {}
 			var data = event.data;
 			
 			try {
-				var func = AssistantWorker[data.cmd];
-				var rtrn = func(data);
+				var func = AssistantWorker[data.cmd],
+					rtrn = {};
 				if (data.event) {
-					rtrn = {'event': data.event, 'data': rtrn};
+					rtrn.event = data.event;
+				} else if (data.rtrncmd) {
+					rtrn.cmd = data.rtrncmd;
 				}
+				rtrn.data = func(data);
 				self.postMessage( rtrn );
 			} catch (err) {
 				self.postMessage(['With the worker command', err]);
@@ -23,31 +26,12 @@ function AssistantWorker() {}
 		return msg;
 	};
 	
-	
-	
-	var availableCards = function(list) {
-		return list.filter(function(card) { return !card.isSelected && !card.notPossible; });
-	},
-	selectedCards = function(list) {
+	var selectedCards = function(list) {
 		return list.filter(function(card) { return card.isSelected; });
 	},
 	unmatchedCards = function(list) {
 		return list.filter(function(card) { return !card.hasSet; });
 	};
-	
-	/**
-	 * If we have some cards selected, pick a random card and if it doesn't make a set return it.
-	 *
-	 * If that random card does make a set a) mark it as used b) get another card
-	 * When all cards are used return null;
-	 */
-	/*
-	AssistantWorker.findNotPossibleCard = function(list) {
-		var possibleCards = AssistantWorker.listNotPossibleCards(list),
-			index = Math.floor(Math.random()*possibleCards.length);
-			return possibleCards[index];
-	};
-	*/
 	
 	AssistantWorker.listNotPossibleCards = function(data) {
 		var board = data.board,
