@@ -1,37 +1,16 @@
 "use strict";
 function AssistantWorker() {}
 (function() {
-	if (self) {
-		self.addEventListener('message', function(event) {
-			var data = event.data;
-			
-			try {
-				var func = AssistantWorker[data.cmd],
-					rtrn = {};
-				if (data.event) {
-					rtrn.event = data.event;
-				} else if (data.rtrncmd) {
-					rtrn.cmd = data.rtrncmd;
-				}
-				rtrn.data = func(data);
-				self.postMessage( rtrn );
-			} catch (err) {
-				self.postMessage(['With the worker command', err]);
-			}
-		});
-	}
-	
-	AssistantWorker.reflect = function(data) {
-		var msg = data.msg;
-		return msg;
-	};
-	
 	var selectedCards = function(list) {
 		return list.filter(function(card) { return card.isSelected; });
+	},
+	notSelectedCards = function(list) {
+		return list.filter(function(card) { return !card.isSelected; });
 	},
 	unmatchedCards = function(list) {
 		return list.filter(function(card) { return !card.hasSet; });
 	};
+	
 	
 	AssistantWorker.listNotPossibleCards = function(data) {
 		var board = data.board,
@@ -64,7 +43,7 @@ function AssistantWorker() {}
 			});
 		});
 		
-		return unmatchedCards(board);
+		return notSelectedCards(unmatchedCards(board));
 	};
 	
 	// Copied from Card.isASet()
@@ -104,5 +83,36 @@ function AssistantWorker() {}
 			}
 		}
 		return lastErrors.length === 0;
+	};
+})();
+
+
+function WorkerProcess() {
+	this.klass = AssistantWorker;
+}
+(function() {
+	if (self) {
+		self.addEventListener('message', function(event) {
+			var data = event.data;
+			
+			try {
+				var func = this.klass[data.cmd],
+					rtrn = {};
+				if (data.event) {
+					rtrn.event = data.event;
+				} else if (data.rtrncmd) {
+					rtrn.cmd = data.rtrncmd;
+				}
+				rtrn.data = func(data);
+				self.postMessage( rtrn );
+			} catch (err) {
+				self.postMessage(['With the worker command', err]);
+			}
+		});
+	}
+	
+	this.klass.reflect = function(data) {
+		var msg = data.msg;
+		return msg;
 	};
 })();

@@ -1,17 +1,32 @@
 "use strict";
-function Assistant(delay) {
-	this.delay = delay;
+
+function WorkerProxy() {
+	this.worker = null;
 	this.event = new Event();
-	this.timer = null;
-	
-	this.cards_to_disable = null;
 }
 (function() {
 	var hasWorkers = function() {
 		return !!window.Worker;
 	};
+
+	WorkerProxy.prototype.initWorker = function(scriptPath) {
+		if (hasWorkers()) {
+			var self = this;
+			scriptPath = [scriptPath, Math.floor(Math.random()*100)].join('?');
+			this.worker = new Worker(scriptPath);
+			this.worker.addEventListener('message', function(event) {
+				WorkerProxy.handleWorkerMessage(self, event);
+				//self.handleWorkerMessage(event);
+			});
+			this.worker.addEventListener('error', function(event) {
+				console.error('Worker Error', event);
+			});
+		} else {
+			throw new Error('Web Workers Not Supported');
+		}
+	};
 	
-	Assistant.prototype.handleWorkerMessage = function(event) {
+	WorkerProxy.prototype.handleWorkerMessage = function(event) {
 		var data = event.data;
 		if (data.event) {
 			return this.trigger(data.event, data.data);
@@ -22,23 +37,34 @@ function Assistant(delay) {
 		}
 	};
 	
-	Assistant.prototype.initWorker = function() {
-		if (hasWorkers()) {
-			var self = this;
-			this.worker = new Worker('./js/assistant_worker.js?'+Math.floor(Math.random()*100));
-			this.worker.addEventListener('message', function(event) {
-				self.handleWorkerMessage(event);
-			});
-			this.worker.addEventListener('error', function(event) {
-				console.error('Worker Error', event);
-			});
-		} else {
-			throw new Error('Web Workers Not Supported');
-		}
+	WorkerProxy.prototype.bind = function(name, handler) {
+		this.event.addListener(this, name, handler);
+		return this;
+	};
+	WorkerProxy.prototype.trigger = function(name, data) {
+		this.event.fireEvent({}, this, name, data);
+		return this;
+	};
+	WorkerProxy.prototype.unbind = function(name, handler) {
+		this.event.removeListener(this, name, handler);
+		return this;
+	};
+})();
+
+function Assistant(delay) {
+	this.delay = delay;
+	this.timer = null;
+	this.cards_to_disable = null;
+}
+(function() {
+	Assistant.prototype = new WorkerProxy();
+	
+	Assistant.prototype.init = function() {
+		WorkerProxy.initWorker.call(this, './js/assistant_worker.js');
 	};
 	
 	/**
-	 * get the working crunching the numbers
+	 * get the worker crunching the numbers
 	 */
 	Assistant.prototype.findNotPossibleCard = function(board) {
 		var self = this;
@@ -76,7 +102,6 @@ function Assistant(delay) {
 		}
 		return this.cards_to_disable.length;
 	};
-
 	
 	/**
 	 * takes a delay between clock ticks, and an action to do each tick
@@ -101,22 +126,5 @@ function Assistant(delay) {
 			clearTimeout(this.timer);
 			this.timer = null;
 		}
-	};
-	
-	
-	
-	
-	
-	Assistant.prototype.bind = function(name, handler) {
-		this.event.addListener(this, name, handler);
-		return this;
-	};
-	Assistant.prototype.trigger = function(name, data) {
-		this.event.fireEvent({}, this, name, data);
-		return this;
-	};
-	Assistant.prototype.unbind = function(name, handler) {
-		this.event.removeListener(this, name, handler);
-		return this;
 	};
 })();
