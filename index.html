@@ -47,7 +47,9 @@
 <div class="lightbox" id="settings">
 	<div>
 		<h2>Settings</h2>
-		<input type="checkbox" id="easy-mode" value="easy" checked="checked" /><label for="easy-mode">Quick Start</label>
+		<input type="checkbox" id="easy-mode" value="easy" checked="checked" />
+		<label for="easy-mode">Quick Start</label>
+		
 		<a href="#" class="right button lightbox-close"><span>Close</span></a>
 	</div>
 </div>
@@ -171,49 +173,41 @@ $(document).ready(function() {
 	});
 	
 	
-	assistant = new Assistant(4000);
-	assistant.initWorker();
+	assistant = new Assistant(/* delay = */ 4000);
 	game
 		.bind('start', function(event) { // start a timer
 			console.debug('caught game.start');
-			assistant.findNotPossibleCard(game.listCardsOnBoard());
+			assistant.startSearchForUnmatched(game.listCardsOnBoard());
 		})
 		.bind('end', function(event) {
 			console.debug('caught game.end');
-			assistant.stopClock();
+			assistant.stopSearch();
 		})
-		.bind('select-card', function() {
+		.bind('select-card', function(e) {
 			console.debug('caught game.select-card');
-			if (this.selected.length > 0) {
-				assistant.findNotPossibleCard(game.listCardsOnBoard());
-			} else {
-				assistant.stopClock();
-			}
+			assistant.startSearchForUnmatched(game.listCardsOnBoard());
 		})
-		.bind('selection-cleared', function() {
-			console.debug('caught game.selection-cleared');
-			assistant.stopClock();
-			clearNotPossible();
-		})
-		.bind('found-set', function() {
-			console.debug('caught game.found-set');
-			assistant.stopClock();
-			clearNotPossible();
-		});
+		.bind('deselect-card', clearAndRestartSearch)
+		.bind('selection-cleared', clearAndRestartSearch)
+		.bind('found-set', clearAndRestartSearch);
 		
 	assistant.bind('picked-not-possible', function(event, card) {
 		console.debug('picked-not-possible caught', event, card);
 		game.getCard(card.row, card.col).notPossible = true;
 		ui.updateSelected(game.board);
 	});
-
-	assistant.findNotPossibleCard(game.listCardsOnBoard());
 	
 	var clearNotPossible = function() {
 		game.listCardsOnBoard().forEach(function(card) {
 			card.notPossible = false;
 		});
 		ui.updateSelected(game.board);
+	},
+	clearAndRestartSearch = function(e) {
+		console.debug('caught', e.name);
+		assistant.stopSearch();
+		clearNotPossible();
+		assistant.startSearchForUnmatched(game.listCardsOnBoard());
 	};
 	
 	/*

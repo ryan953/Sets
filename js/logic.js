@@ -112,6 +112,7 @@ function Deck(mode) {
 		return this.pickCard(Math.floor(Math.random()*this.cards.length));
 	};
 	Deck.prototype.pickCard = function(idx) {
+		console.debug('Picked', idx);
 		return this.cards.splice(idx, 1)[0] || null;
 	};
 })();
@@ -128,6 +129,13 @@ function Sets() { //this is the game logic
 	});
 }
 (function() {
+	var propCounter = function(field) {
+		return function(prev, curr) {
+			(curr[field] in prev ? prev[curr[field]] += 1 : prev[curr[field]] = 1);
+			return prev;
+		};
+	};
+	
 	Sets.lastErrors = [];
 	Sets.modes = {
 		'easy': {rows:3, cols:3},
@@ -136,13 +144,7 @@ function Sets() { //this is the game logic
 	Sets.isASet = function(cards) {
 		if (cards.length != 3 ) { return false; }
 
-		var propCounter = function(field) {
-			return function(prev, curr) {
-				(curr[field] in prev ? prev[curr[field]] += 1 : prev[curr[field]] = 1);
-				return prev;
-			};
-		},
-		totals = {
+		var totals = {
 			counts: [].reduce.call(cards, propCounter('count'), {}),
 			shapes: [].reduce.call(cards, propCounter('shape'), {}),
 			fills: [].reduce.call(cards, propCounter('fill'), {}),
