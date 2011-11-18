@@ -48,7 +48,8 @@
 <div class="lightbox" id="settings">
 	<div>
 		<h2>Settings</h2>
-		<input type="checkbox" id="easy-mode" value="easy" checked="checked" /><label for="easy-mode">Quick Start</label>
+		<input type="checkbox" id="easy-mode" value="easy" checked="checked" data-role="settings" />
+		<label for="easy-mode">Quick Start</label>
 		<a href="#" class="right button lightbox-close"><span>Close</span></a>
 	</div>
 </div>
@@ -110,6 +111,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <script src="./NoClickDelay.js"></script>
+<script src="./store.js"></script>
 <script src="./event.js"></script>
 <script src="./logic.js"></script>
 
@@ -127,7 +129,31 @@ $(document).ready(function() {
 		gameArea = document.getElementById('game-area'),
 		game = new Sets(), //game start is at the bottom, after we attach some events!
 		ui = new SetsUI(gameArea);
-
+	
+	var store = getStore();
+	$('#settings input').bind('change', function() {
+		var self = $(this),
+			key = 'settings-' + self.prop('id'),
+			value = self.val();
+		if (self.filter('[type=checkbox]')) {
+			value = self.prop('checked');
+		}
+		console.debug('writing', key, value);
+		store.put(key, value);
+	}).each(function() {
+		var self = $(this),
+			key = 'settings-' + self.prop('id'),
+			value = store.get(key);
+		console.debug('read', key, value);
+		if (self.filter('[type=checkbox]')) {
+			
+			self.prop('checked', value);
+		} else {
+			self.val(value);
+		}
+	});
+	
+		
 	game
 		.bind('end', function() {
 			window.location = '#game-over';
@@ -162,7 +188,7 @@ $(document).ready(function() {
 		col = self.index();
 		game.selectCard(row, col);
 	});
-
+	
 	//$('.lightbox').append('<a href="#" class="right button lightbox-close circle"><span>X</span></a>');
 });
 
