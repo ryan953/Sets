@@ -1,21 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
-<script src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
+<script src="../lib/qunit.js"></script>
+<script src="../lib/jquery-1.6.4.js"></script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
-<script src="./event.js"></script>
-<script src="./logic.js"></script>
+<script src="../js/event.js"></script>
+<script src="../js/logic.js"></script>
+<script src="../js/assistant_worker.js"></script>
 
 <script>
+"use strict";
 $(document).ready(function () {
 	module('Event');
 	asyncTest('Create and fire an event', function() {
 		var evt = new Event(),
 			obj = {
 				test:function(e, data) {
-					//console.debug('tested', arguments, this.name);
 					equal(eventData, data, 'event fired and arguments are ok');
 					start();
 				},
@@ -43,7 +44,7 @@ $(document).ready(function () {
 	});
 
 	module("Cards");
-	test("Creating a card", function () {
+	test("Creating a card", function() {
 		var c = new Card();
 		ok(c, "new card created successfully");
 	});
@@ -55,7 +56,7 @@ $(document).ready(function () {
 		ok(!(new Card( 1, "Oval", "striped", "green").isEmpty()), "A card with all 4 params is NOT empty");
 	});
 
-	test('select/deselect/toggle', function () {
+	test('select/deselect/toggle', function() {
 		var c = new Card();
 
 		c.select();
@@ -64,6 +65,20 @@ $(document).ready(function () {
 		ok(!c.isSelected, 'card gets UNselected');
 		c.toggleSelect();
 		ok(c.isSelected, 'card gets toggled');
+	});
+	
+	test('getClassAttr', function() {
+		Card.classNameMap.attr_one = 'class-one';
+		Card.classNameMap.attr_two = 'class-two';
+		
+		var c = new Card();
+		equals('', c.getClassAttr(), 'should have no clasname');
+		
+		c.attr_one = true;
+		equals('class-one', c.getClassAttr(), 'should now have a classname');
+		
+		c.attr_two = true;
+		equals('class-one class-two', c.getClassAttr(), 'should have two classnames');
 	});
 
 
@@ -171,27 +186,53 @@ $(document).ready(function () {
 	gameStartTest('easy');
 	gameStartTest();
 
-	asyncTest('selecting a card fires `select-card` & adds/removes it from the list', function() {
-		expect(6);
+	test('selecting a card fires `select-card` & adds/removes it from the list', function() {
+		stop(6);
+		expect(12);
 
 		var game = new Sets().start(),
-		expectedCount,
+		expectedSelectedCount,
 		selectHandler = function(e, selected) {
-			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
+			equal(e.name, 'select-card', 'The correct event was fired');
+			equal(selected.length, expectedSelectedCount, expectedSelectedCount + ' card(s) are selected');
+			start();
+		},
+		deselectHandler = function(e, selected) {
+			equal(e.name, 'deselect-card', 'The correct event was fired');
+			equal(selected.length, expectedSelectedCount, expectedSelectedCount + ' card(s) are selected');
 			start();
 		};
 
-		game.bind('select-card', selectHandler);
+		game
+			.bind('select-card', selectHandler)
+			.bind('deselect-card', deselectHandler);
 
-		expectedCount = 1; game.selectCard(0, 0); //triggers an event with an assertion
-		expectedCount++; game.selectCard(0, 1); //triggers an event with an assertion
-		expectedCount++; game.selectCard(0, 2); //triggers an event with an assertion
+		expectedSelectedCount = 1; game.selectCard(game.getCard(0, 0)); //triggers an event with an assertion
+		expectedSelectedCount++;   game.selectCard(game.getCard(0, 1)); //triggers an event with an assertion
+		expectedSelectedCount++;   game.selectCard(game.getCard(0, 2)); //triggers an event with an assertion
 
-		expectedCount = 1; game.selectCard(1, 0); //triggers an event with an assertion
-		expectedCount++; game.selectCard(1, 1); //triggers an event with an assertion
-		expectedCount--; game.selectCard(1, 0); //triggers an event with an assertion
+		expectedSelectedCount = 1; game.selectCard(game.getCard(1, 0)); //triggers an event with an assertion
+		expectedSelectedCount++;   game.selectCard(game.getCard(1, 1)); //triggers an event with an assertion
+		expectedSelectedCount = 1; game.selectCard(game.getCard(1, 0)); //triggers an event with an assertion
 
-		game.unbind('select-card', selectHandler);
+		game
+			.unbind('select-card', selectHandler)
+			.unbind('deselect-card', deselectHandler);
+	});
+	
+	asyncTest('selecting a card and deselecting it fires `selection-cleared` event', function() {
+		expect(1);
+		
+		var game = new Sets().start(),
+		card = game.getCard(0, 0),
+		clearedHandler = function(e, selected) {
+			equals(e.name, 'selection-cleared', 'The `selection-cleared` event was caught');
+			start();
+		};
+		
+		game.bind('selection-cleared', clearedHandler);
+		game.selectCard(card);
+		game.selectCard(card);
 	});
 
 	asyncTest('`found-set` is triggered after a set is selected', function() {
@@ -211,21 +252,21 @@ $(document).ready(function () {
 
 		game.bind('found-set', foundHandler);
 
-		game.selectCard(0, 0);
-		game.selectCard(0, 1);
-		game.selectCard(0, 2);
+		game.selectCard(game.getCard(0, 0));
+		game.selectCard(game.getCard(0, 1));
+		game.selectCard(game.getCard(0, 2));
 
 		strictEqual(game.selected.length, 0, 'After finding a set, not cards should be selected');
 
 		game.unbind('found-set', foundHandler);
 	});
 
-	test('replaceSet() finds and replaces the cards you pass in', function() {
+	test('replaceSet() removed from the board and replaces the cards you pass in', function() {
 		var game = new Sets().start();
 
-		orig_cards = [ game.board[0][0] ];
+		var orig_cards = [ game.board[0][0] ];
 		game.replaceSet(orig_cards);
-		new_cards = [ game.board[0][0] ];
+		var new_cards = [ game.board[0][0] ];
 
 		notDeepEqual(new_cards, orig_cards, 'the passed in cards have been matched and replaced');
 	});

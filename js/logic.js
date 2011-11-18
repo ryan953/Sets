@@ -1,3 +1,4 @@
+"use strict";
 function Card(count, shape, fill, color) {
 	this.isSelected = false;
 
@@ -62,10 +63,25 @@ function Card(count, shape, fill, color) {
 		}
 	};
 
+	Card.classNameMap = {
+		'isSelected': 'selected',
+		'notPossible': 'not-possible'
+	};
+	
 	Card.prototype.select = function() { this.isSelected = true; };
 	Card.prototype.deselect = function() { this.isSelected = false; };
 	Card.prototype.toggleSelect = function() { this.isSelected = !this.isSelected; };
 
+	Card.prototype.getClassAttr = function() {
+		var classes = [];
+		for(var prop in Card.classNameMap) {
+			if (this[prop]) {
+				classes.push(Card.classNameMap[prop]);
+			}
+		}
+		return classes.join(' ');
+	};
+	
 	Card.prototype.isEmpty = function() { return !(this.count && this.shape && this.fill && this.color); };
 })();
 
@@ -96,6 +112,7 @@ function Deck(mode) {
 		return this.pickCard(Math.floor(Math.random()*this.cards.length));
 	};
 	Deck.prototype.pickCard = function(idx) {
+		console.debug('Picked', idx);
 		return this.cards.splice(idx, 1)[0] || null;
 	};
 })();
@@ -112,6 +129,13 @@ function Sets() { //this is the game logic
 	});
 }
 (function() {
+	var propCounter = function(field) {
+		return function(prev, curr) {
+			(curr[field] in prev ? prev[curr[field]] += 1 : prev[curr[field]] = 1);
+			return prev;
+		};
+	};
+	
 	Sets.lastErrors = [];
 	Sets.modes = {
 		'easy': {rows:3, cols:3},
@@ -120,13 +144,7 @@ function Sets() { //this is the game logic
 	Sets.isASet = function(cards) {
 		if (cards.length != 3 ) { return false; }
 
-		var propCounter = function(field) {
-			return function(prev, curr) {
-				(curr[field] in prev ? prev[curr[field]] += 1 : prev[curr[field]] = 1);
-				return prev;
-			};
-		},
-		totals = {
+		var totals = {
 			counts: [].reduce.call(cards, propCounter('count'), {}),
 			shapes: [].reduce.call(cards, propCounter('shape'), {}),
 			fills: [].reduce.call(cards, propCounter('fill'), {}),
@@ -209,22 +227,27 @@ function Sets() { //this is the game logic
 			._loadBoard()
 			.trigger('start');
 	};
-	Sets.prototype.selectCard = function(row, col) {
+	Sets.prototype.getCard = function(row, col) {
+		return this.board[row][col];
+	};
+	Sets.prototype.selectCard = function(card) {
 		var cards,
-			card = this.board[row][col],
 			idx = this.selected.indexOf(card);
-
+			
 		if (!card) { return; }
 
 		if (idx < 0) {
 			card.select();
 			this.selected.push(card);
+			this.trigger('select-card', this.selected.slice());
 		} else {
 			card.deselect();
 			this.selected.splice(idx, 1);
+			this.trigger('deselect-card', this.selected.slice());
+			if (this.selected.length === 0) {
+				this.trigger('selection-cleared');
+			}
 		}
-
-		this.trigger('select-card', this.selected.slice());
 
 		if (Sets.isASet(this.selected) === true) {
 			cards = this.selected.slice();
@@ -319,30 +342,32 @@ function SetsUI(parentElement, game) {
 				index = SetsUI.coordsToIndex(row, col);
 				card = game.board[row][col];
 				cells[index].appendChild( SetsUI.renderCard(card) );
-				cells[index].className = (card && card.isSelected ? 'selected' : '');
+				cells[index].className = (card ? card.getClassAttr() : '');
 			}
 		}
 		this.container.appendChild(ui_board);
 	};
 
-	SetsUI.prototype.updateSelected = function(game) {
+	SetsUI.prototype.updateSelected = function(board) {
 		var row, col, card, index, cells = Array.prototype.slice.call( this.container.getElementsByTagName('td') );
-		for(row = 0; row < game.board.length; row++) {
-			for(col = 0; col < game.board[row].length; col++) {
+		for(row = 0; row < board.length; row++) {
+			for(col = 0; col < board[row].length; col++) {
 				index = SetsUI.coordsToIndex(row, col);
-				card = game.board[row][col];
-				cells[index].className = (card && card.isSelected ? 'selected' : '');
+				card = board[row][col];
+				cells[index].className = (card ? card.getClassAttr() : '');
 			}
 		}
 	};
 
 	SetsUI.prototype.showWrongSelection = function(game, cards) {
-		var self = this,
-			card = cards.splice(-1, 1),
-			cells = self.container.getElementsByTagName('td'),
-			index = SetsUI.coordsToIndex(card[0].row, card[0].col);
-			cells[index].className = 'error';
-		setTimeout(function() { self.updateSelected(game); }, 1000);
+		if (cards) {
+			var self = this,
+				card = cards.splice(-1, 1),
+				cells = self.container.getElementsByTagName('td'),
+				index = SetsUI.coordsToIndex(card[0].row, card[0].col);
+				cells[index].className = 'error';
+			setTimeout(function() { self.updateSelected(game.board); }, 1000);
+		}
 	};
 
 	SetsUI.prototype.showFoundSet = function(game, cards) {
@@ -361,31 +386,31 @@ function SetsUI(parentElement, game) {
 })();
 
 (function() {
+	var visuals = function(card) {
+		var fills = {
+			solid: {
+				lineWidth:0,
+				fillStyle:card.color
+			},
+			empty: {
+				lineWidth:4,
+				fillStyle:'transparent'
+			},
+			striped: {
+				lineWidth:1,
+				fillStyle:Card.stripedFills[card.color]
+			}
+		};
+		return fills[card.fill];
+	};
+		
 	Card.prototype.draw = function(ctx) {
-		function visuals(card) {
-			var fills = {
-				solid: {
-					lineWidth:0,
-					fillStyle:card.color
-				},
-				empty: {
-					lineWidth:4,
-					fillStyle:'transparent'
-				},
-				striped: {
-					lineWidth:1,
-					fillStyle:Card.stripedFills[card.color]
-				}
-			};
-			return fills[card.fill];
-		}
-
 		ctx.clearRect(0, 0, 150, 150);
 		for(var i = 0; i < this.count; i++) {
 			ctx.save();
 			ctx.translate(25, ([50, 25, 0])[this.count-1] + (i*50));
 			Card.paths[this.shape](ctx);
-			visualSettings = visuals(this);
+			var visualSettings = visuals(this);
 			ctx.lineWidth = visualSettings.lineWidth;
 			ctx.fillStyle = visualSettings.fillStyle;
 			ctx.strokeStyle = this.color;
