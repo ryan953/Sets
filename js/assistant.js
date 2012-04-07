@@ -61,7 +61,7 @@ function Assistant(delay) {
 		};
 		clockTick();
 	};
-	
+
 	/**
 	 * Pick a card that can't be made into a match based on the board we have.
 	 */
@@ -87,26 +87,25 @@ function Assistant(delay) {
 	unmatchedCards = function(list) {
 		return list.filter(function(card) { return !card.hasSet; });
 	};
-	
+
 	Assistant.listNotPossibleCards = function(board) {
 		var selected = selectedCards(board),
 			set1 = board, set2 = board, set3 = board;
-		
+
 		if (board.length < 3) {
 			return board;
 		} else if (board.length == 3) {
 			return (Sets.isASet(board) ? [] : board);
 		}
-		
+
 		if (selected.length == 1) {
 			set1 = [selected[0]];
-			console.debug('searching with selected', set1);
 		} else if(selected.length == 2) {
 			set1 = [selected[0]];
 			set2 = [selected[1]];
-			console.debug('searching with selected', set1, set2);
 		}
-		
+		console.log('searching with selected', selected);
+
 		set1.forEach(function(card1) {
 			set2.forEach(function(card2) {
 				if (card2 == card1) { return; }

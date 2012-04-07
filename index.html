@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>Sets!</title>
@@ -72,28 +73,28 @@
 	<h2>About</h2>
 	<p>This webapp was designed and built by <a href="//ryanalbrecht.ca">Ryan Albrecht</a>.</p>
 	<p>It works really well on mobile devices and webkit based browsers like Chrome or Safari.
-	Specifically, your browser should support the following for the complete experience:
-		<ul>
-			<li><code>&lt;canvas&gt;</code></li>
-			<li>CSS3
-				<ul>
-					<li>background gradients</li>
-					<li><code>border-radius</code></li>
-					<li><code>box-sizing</code></li>
-					<li><code>-webkit-transform</code></li>
-					<li><code>@media</code> queries</li>
-					<li><code>@-webkit-keyframes</code> animations</li>
-				</ul>
-			</li>
-			<li>JavaScript 1.6
-				<ul>
-					<li><code>Array.prototype.forEach()</code></li>
-					<li><code>Array.prototype.reduce()</code></li>
-				</ul>
-			</li>
-			<li>Web Workers</li>
-		</ul>
-	</p>
+	Specifically, your browser should support the following for the complete experience:</p>
+	<ul>
+		<li><code>&lt;canvas&gt;</code></li>
+		<li>CSS3
+			<ul>
+				<li>background gradients</li>
+				<li><code>border-radius</code></li>
+				<li><code>box-sizing</code></li>
+				<li><code>-webkit-transform</code></li>
+				<li><code>@media</code> queries</li>
+				<li><code>@-webkit-keyframes</code> animations</li>
+			</ul>
+		</li>
+		<li>JavaScript 1.6
+			<ul>
+				<li><code>Array.prototype.forEach()</code></li>
+				<li><code>Array.prototype.reduce()</code></li>
+			</ul>
+		</li>
+		<li>Web Workers</li>
+	</ul>
+
 	<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
 </div>
 
@@ -105,7 +106,6 @@
 	<a href="#" class="button game-reset"><span>Play Again</span></a>
 </div>
 
-
 <script src="./lib/jquery-1.6.4.js"></script>
 <script src="./js/NoClickDelay.js"></script>
 <script src="./js/utils.js"></script>
@@ -114,12 +114,9 @@
 <script src="./js/assistant.js"></script>
 <script src="./js/logic.js"></script>
 
-
 <script>
 "use strict";
 function _(id) { return document.getElementById(id); }
-
-var game, gameArea, ui, assistant;
 
 $(document).ready(function() {
 	document.ontouchmove = function(e){ e.preventDefault(); };
@@ -127,12 +124,13 @@ $(document).ready(function() {
 	function selectedMode() {
 		return $('#settings-easy-mode').is(':checked') ? 'easy' : 'regular';
 	}
+
 	function helpMode() {
 		return $('#settings-help-mode').is(':checked');
 	}
 
 	var fastTouchEvent = new NoClickDelay(document.getElementsByTagName('body')[0]);
-	
+
 	$('<a>')
 		.addClass('right button lightbox-close')
 		.text('Close')
@@ -153,13 +151,13 @@ $(document).ready(function() {
 		if (self.filter('[type=checkbox]')) {
 			value = self.prop('checked');
 		}
-		//console.debug('writing', key, value);
+		// console.debug('writing', key, value);
 		store.put(key, value);
 	}).each(function() {
 		var self = $(this),
 			key = self.prop('id'),
 			value = store.get(key);
-		//console.debug('read', key, value);
+		// console.debug('read', key, value);
 		if (value !== null) {
 			if (self.filter('[type=checkbox]')) {
 				self.prop('checked', value);
@@ -168,8 +166,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
-		
+
 	game
 		.bind('end', function() {
 			window.location = '#game-over';
@@ -192,7 +189,7 @@ $(document).ready(function() {
 			$('#score').html(found + '/' + game.deck.size);
 		})
 		.start( selectedMode() );
-	
+
 	$('.game-reset').click(function() {
 		ui.renderGame(
 			game.start( selectedMode() )
@@ -201,8 +198,8 @@ $(document).ready(function() {
 
 	$(gameArea).delegate('td', 'click', function() {
 		var self = $(this),
-		row = self.parent().index(),
-		col = self.index();
+			row = self.parent().index(),
+			col = self.index();
 		game.selectCard(game.getCard(row, col));
 	});
 	

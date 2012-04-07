@@ -1,4 +1,5 @@
 "use strict";
+
 function Card(count, shape, fill, color) {
 	this.isSelected = false;
 
@@ -83,6 +84,42 @@ function Card(count, shape, fill, color) {
 	};
 	
 	Card.prototype.isEmpty = function() { return !(this.count && this.shape && this.fill && this.color); };
+})();
+
+(function() {
+	var visuals = function(card) {
+		var fills = {
+			solid: {
+				lineWidth:0,
+				fillStyle:card.color
+			},
+			empty: {
+				lineWidth:4,
+				fillStyle:'transparent'
+			},
+			striped: {
+				lineWidth:1,
+				fillStyle:Card.stripedFills[card.color]
+			}
+		};
+		return fills[card.fill];
+	};
+		
+	Card.prototype.draw = function(ctx) {
+		ctx.clearRect(0, 0, 150, 150);
+		for(var i = 0; i < this.count; i++) {
+			ctx.save();
+			ctx.translate(25, ([50, 25, 0])[this.count-1] + (i*50));
+			Card.paths[this.shape](ctx);
+			var visualSettings = visuals(this);
+			ctx.lineWidth = visualSettings.lineWidth;
+			ctx.fillStyle = visualSettings.fillStyle;
+			ctx.strokeStyle = this.color;
+			ctx.stroke();
+			ctx.fill();
+			ctx.restore();
+		}
+	};
 })();
 
 function Deck(mode) {
@@ -382,41 +419,5 @@ function SetsUI(parentElement, game) {
 		});
 
 		setTimeout(function() { self.renderGame(game); }, 1000);
-	};
-})();
-
-(function() {
-	var visuals = function(card) {
-		var fills = {
-			solid: {
-				lineWidth:0,
-				fillStyle:card.color
-			},
-			empty: {
-				lineWidth:4,
-				fillStyle:'transparent'
-			},
-			striped: {
-				lineWidth:1,
-				fillStyle:Card.stripedFills[card.color]
-			}
-		};
-		return fills[card.fill];
-	};
-		
-	Card.prototype.draw = function(ctx) {
-		ctx.clearRect(0, 0, 150, 150);
-		for(var i = 0; i < this.count; i++) {
-			ctx.save();
-			ctx.translate(25, ([50, 25, 0])[this.count-1] + (i*50));
-			Card.paths[this.shape](ctx);
-			var visualSettings = visuals(this);
-			ctx.lineWidth = visualSettings.lineWidth;
-			ctx.fillStyle = visualSettings.fillStyle;
-			ctx.strokeStyle = this.color;
-			ctx.stroke();
-			ctx.fill();
-			ctx.restore();
-		}
 	};
 })();
