@@ -203,7 +203,7 @@ $(document).ready(function() {
 		game.selectCard(game.getCard(row, col));
 	});
 
-	var assistant = new Assistant(/* delay = */ 4000),
+	var assistant = new Assistant(/* delay = */ 5500),
 		clearAndRestartSearch = function(e) {
 			if (helpMode()) {
 				// console.debug('caught', e.name);
@@ -215,10 +215,6 @@ $(document).ready(function() {
 						card.notPossible = false;
 					}
 				});
-				// assistant.unmatchedCards().forEach(function(card) {
-				// 	var card = game.getCard(card.row, card.col);
-				// 	card.notPossible = false;
-				// });
 				ui.updateSelected(game.board);
 			}
 		};

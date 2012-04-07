@@ -89,10 +89,25 @@ function Assistant(delay) {
 	},
 	unmatchedCards = function(list) {
 		return list.filter(function(card) { return !card.hasSet; });
+	},
+	shuffle = function(array) {
+	    var tmp, current, top = array.length;
+
+	    if(top) while(--top) {
+	        current = Math.floor(Math.random() * (top + 1));
+	        tmp = array[current];
+	        array[current] = array[top];
+	        array[top] = tmp;
+	    }
+
+	    return array;
 	};
 
 	Assistant.listNotPossibleCards = function(board) {
-		var selected = selectedCards(board),
+		// console.log('before check', board);
+		
+		var known_unmatched = unmatchedCards(board),
+			selected = selectedCards(board),
 			board = board.map(function(card) {
 				card.hasSet = false;
 				return card;
@@ -111,7 +126,7 @@ function Assistant(delay) {
 			set1 = [selected[0]];
 			set2 = [selected[1]];
 		}
-		console.log('searching with selected', selected);
+		// console.log('searching with selected', selected);
 
 		set1.forEach(function(card1) {
 			set2.forEach(function(card2) {
@@ -124,6 +139,6 @@ function Assistant(delay) {
 				});
 			});
 		});
-		return notSelectedCards(unmatchedCards(board));
+		return shuffle(notSelectedCards(unmatchedCards(board)));
 	};
 })();
