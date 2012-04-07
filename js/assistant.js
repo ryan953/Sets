@@ -19,24 +19,7 @@ function Assistant(delay) {
 		this.event.removeListener(this, name, handler);
 		return this;
 	};
-	
-	/**
-	 * Get the worker crunching the numbers
-	 */
-	Assistant.prototype.startSearchForUnmatched = function(board) {
-		var self = this;
-		
-		console.debug('updating board', board);
-		
-		this.stopSearch();
-		
-		this.not_possible_cards = Assistant.listNotPossibleCards(board);
-		
-		this._startClock(function() {
-			return self._revealNotPossibleCard();
-		});
-	};
-	
+
 	/**
 	 * Stop the timer so we don't return any cards
 	 */
@@ -47,6 +30,28 @@ function Assistant(delay) {
 		}
 	};
 	
+	/**
+	 * Get the worker crunching the numbers
+	 */
+	Assistant.prototype.startSearchForUnmatched = function(board) {
+		var self = this;
+		
+		console.log('updating board', board);
+
+		this.not_possible_cards = Assistant.listNotPossibleCards(board);
+
+		console.log('found list to disable', this.not_possible_cards.length);
+		this._startClock(function() {
+			console.log('will reveal, have:', self.not_possible_cards);
+			self._revealNotPossibleCard();
+			return self.not_possible_cards.length > 0;
+		});
+	};
+
+	Assistant.prototype.unmatchedCards = function() {
+		return this.not_possible_cards;
+	};
+
 	/**
 	 * Takes a delay between clock ticks, and an action to do each tick
 	 * when the action returns false the clock will turn itself off
@@ -59,7 +64,7 @@ function Assistant(delay) {
 				self.timer = setTimeout(clockTick, self.delay);
 			}
 		};
-		clockTick();
+		self.timer = setTimeout(clockTick, self.delay);
 	};
 
 	/**
@@ -72,8 +77,6 @@ function Assistant(delay) {
 		if (this.not_possible_cards.length) {
 			this.trigger('picked-not-possible', this.not_possible_cards.shift());
 		}
-		console.debug('remaining not possible', this.not_possible_cards);
-		return this.not_possible_cards.length > 0;
 	};
 })();
 
@@ -90,6 +93,10 @@ function Assistant(delay) {
 
 	Assistant.listNotPossibleCards = function(board) {
 		var selected = selectedCards(board),
+			board = board.map(function(card) {
+				card.hasSet = false;
+				return card;
+			}),
 			set1 = board, set2 = board, set3 = board;
 
 		if (board.length < 3) {

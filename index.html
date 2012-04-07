@@ -202,44 +202,43 @@ $(document).ready(function() {
 			col = self.index();
 		game.selectCard(game.getCard(row, col));
 	});
-	
-	if (helpMode()) {
-		var assistant = new Assistant(/* delay = */ 4000),
-			clearNotPossible = function() {
+
+	var assistant = new Assistant(/* delay = */ 4000),
+		clearAndRestartSearch = function(e) {
+			if (helpMode()) {
+				// console.debug('caught', e.name);
+				assistant.stopSearch();
+				assistant.startSearchForUnmatched(game.listCardsOnBoard());
+
 				game.listCardsOnBoard().forEach(function(card) {
-					card.notPossible = false;
+					if (assistant.unmatchedCards().indexOf(card) === -1) {
+						card.notPossible = false;
+					}
 				});
+				// assistant.unmatchedCards().forEach(function(card) {
+				// 	var card = game.getCard(card.row, card.col);
+				// 	card.notPossible = false;
+				// });
 				ui.updateSelected(game.board);
-			},
-			clearAndRestartSearch = function(e) {
-				//console.debug('caught', e.name);
-				assistant.stopSearch();
-				clearNotPossible();
-				assistant.startSearchForUnmatched(game.listCardsOnBoard());
-			};
-		game
-			.bind('start', function(event) { // start a timer
-				//console.debug('caught game.start');
-				assistant.startSearchForUnmatched(game.listCardsOnBoard());
-			})
-			.bind('end', function(event) {
-				//console.debug('caught game.end');
-				assistant.stopSearch();
-			})
-			.bind('select-card', function(e) {
-				//console.debug('caught game.select-card');
-				assistant.startSearchForUnmatched(game.listCardsOnBoard());
-			})
-			.bind('deselect-card', clearAndRestartSearch)
-			.bind('selection-cleared', clearAndRestartSearch)
-			.bind('found-set', clearAndRestartSearch);
-			
-		assistant.bind('picked-not-possible', function(event, card) {
-			//console.debug('picked-not-possible caught', event, card);
-			game.getCard(card.row, card.col).notPossible = true;
-			ui.updateSelected(game.board);
-		});
-	}
+			}
+		};
+
+	assistant.bind('picked-not-possible', function(event, card) {
+		console.debug('picked-not-possible caught', card);
+		game.getCard(card.row, card.col).notPossible = true;
+		ui.updateSelected(game.board);
+	});
+
+	['start',
+		'end',
+		'select-card',
+		'deselect-card',
+		'selection-cleared',
+		'found-set'].forEach(function(event) {
+		game.bind(event, clearAndRestartSearch);
+	});
+
+	game.start();
 });
 </script>
 </body>
