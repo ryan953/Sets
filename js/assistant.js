@@ -31,23 +31,38 @@ function Assistant(delay) {
 		}
 	};
 	
-	/**
-	 * Get the worker crunching the numbers
-	 */
-	Assistant.prototype.startSearchForUnmatched = function(board) {
-		var self = this;
-		
-		// console.log('updating board', board);
+	(function() {
+		var shuffle = function(array) {
+		    var tmp, current, top = array.length;
 
-		this.not_possible_cards = Assistant.listNotPossibleCards(board);
+		    if(top) while(--top) {
+		        current = Math.floor(Math.random() * (top + 1));
+		        tmp = array[current];
+		        array[current] = array[top];
+		        array[top] = tmp;
+		    }
 
-		// console.log('found list to disable', this.not_possible_cards.length);
-		this._startClock(function() {
-			// console.log('will reveal, have:', self.not_possible_cards);
-			self._revealNotPossibleCard();
-			return self.not_possible_cards.length > 0;
-		});
-	};
+		    return array;
+		};
+
+		/**
+		 * Get the worker crunching the numbers
+		 */
+		Assistant.prototype.startSearchForUnmatched = function(board) {
+			var self = this;
+			
+			// console.log('updating board', board);
+
+			this.not_possible_cards = shuffle(Assistant.listNotPossibleCards(board));
+
+			// console.log('found list to disable', this.not_possible_cards.length);
+			this._startClock(function() {
+				// console.log('will reveal, have:', self.not_possible_cards);
+				self._revealNotPossibleCard();
+				return self.not_possible_cards.length > 0;
+			});
+		};
+	})();
 
 	Assistant.prototype.unmatchedCards = function() {
 		return this.not_possible_cards;
@@ -93,18 +108,6 @@ function Assistant(delay) {
 	},
 	unmatchedCards = function(list) {
 		return list.filter(function(card) { return !card.hasSet; });
-	},
-	shuffle = function(array) {
-	    var tmp, current, top = array.length;
-
-	    if(top) while(--top) {
-	        current = Math.floor(Math.random() * (top + 1));
-	        tmp = array[current];
-	        array[current] = array[top];
-	        array[top] = tmp;
-	    }
-
-	    return array;
 	};
 
 	Assistant.listNotPossibleCards = function(board) {
@@ -141,6 +144,6 @@ function Assistant(delay) {
 				});
 			});
 		});
-		return shuffle(notSelectedCards(unmatchedCards(board)));
+		return notSelectedCards(unmatchedCards(board));
 	};
 })();
