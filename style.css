@@ -6,6 +6,9 @@ html, body, #game-area table {
 	margin:0;
 	padding:0;
 	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
 }
 
 .needs-localstorage { display:none; }
@@ -94,8 +97,6 @@ html, body, #game-area table {
 
 	position:relative;
 	margin:auto;
-	min-width: 125px;
-	min-height: 125px;
 	width:100%;
 	height:100%;
 }
@@ -153,14 +154,24 @@ html, body, #game-area table {
 	box-shadow:0 0em 1.5em green;
 	border-color:green;
 
-	-webkit-animation-name:zoom;
-	-webkit-animation-duration:1s;
-	-webkit-animation-iteration-count:1;
+	-webkit-animation: zoom 1s 1;
+	-moz-animation:    zoom 1s 1;
+	-ms-animation:     zoom 1s 1;
 }
 @-webkit-keyframes zoom {
 	from { -webkit-transform:scale(1); opacity:1; }
 	50% { -webkit-transform:scale(1.1); opacity:.25; }
 	to { -webkit-transform:scale(1); opacity:0;}
+}
+@-moz-keyframes zoom {
+	from { -moz-transform:scale(1); opacity:1; }
+	50% { -moz-transform:scale(1.1); opacity:.25; }
+	to { -moz-transform:scale(1); opacity:0;}
+}
+@-ms-keyframes zoom {
+	from { -ms-transform:scale(1); opacity:1; }
+	50% { -ms-transform:scale(1.1); opacity:.25; }
+	to { -ms-transform:scale(1); opacity:0;}
 }
 
 #game-area canvas {
@@ -206,7 +217,8 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	z-index:100;
 	width:100%;
 	height:100%;
-
+	overflow: auto;
+	
 	padding:1em;
 
 	-webkit-box-sizing:border-box;
@@ -232,6 +244,8 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	padding: .5em 1em;
 	clear:both;
 	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
 	box-sizing:border-box;
 	max-height:100%;
 	overflow:auto;
@@ -376,7 +390,6 @@ a.button:hover {
 	-moz-border-radius-bottomright: .5em;
 	border-bottom-right-radius: .5em;
 
-
 	border:1px solid black;
 	border-top:none;
 	border-left:none;
@@ -391,7 +404,6 @@ a.button:hover {
 	margin-top:-1px;
 
 	min-width:102px;
-
 
 	top:0;
 	z-index:10;
