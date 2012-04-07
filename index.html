@@ -99,6 +99,7 @@
 </div>
 
 <div id="game-area"></div>
+<div class="helping-message">thinking...</div>
 
 <div class="popup" id="game-over">
 	<h3>Game Over!</h3>
@@ -219,8 +220,14 @@ $(document).ready(function() {
 			}
 		};
 
-	assistant.bind('picked-not-possible', function(event, card) {
-		console.debug('picked-not-possible caught', card);
+	assistant
+	.bind('timer.start', function() {
+		gameArea.className = 'helping';
+	})
+	.bind('timer.stop', function() {
+		gameArea.className = '';
+	})
+	.bind('picked-not-possible', function(event, card) {
 		game.getCard(card.row, card.col).notPossible = true;
 		ui.updateSelected(game.board);
 	});

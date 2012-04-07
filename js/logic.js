@@ -149,7 +149,6 @@ function Deck(mode) {
 		return this.pickCard(Math.floor(Math.random()*this.cards.length));
 	};
 	Deck.prototype.pickCard = function(idx) {
-		//console.debug('Picked', idx);
 		return this.cards.splice(idx, 1)[0] || null;
 	};
 })();
@@ -319,8 +318,6 @@ function Sets() { //this is the game logic
 		return this;
 	};
 })();
-
-
 
 function SetsUI(parentElement, game) {
 	this.container = parentElement;

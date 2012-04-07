@@ -27,6 +27,7 @@ function Assistant(delay) {
 		if (this.timer) {
 			clearTimeout(this.timer);
 			this.timer = null;
+			this.trigger('timer.stop');
 		}
 	};
 	
@@ -36,13 +37,13 @@ function Assistant(delay) {
 	Assistant.prototype.startSearchForUnmatched = function(board) {
 		var self = this;
 		
-		console.log('updating board', board);
+		// console.log('updating board', board);
 
 		this.not_possible_cards = Assistant.listNotPossibleCards(board);
 
-		console.log('found list to disable', this.not_possible_cards.length);
+		// console.log('found list to disable', this.not_possible_cards.length);
 		this._startClock(function() {
-			console.log('will reveal, have:', self.not_possible_cards);
+			// console.log('will reveal, have:', self.not_possible_cards);
 			self._revealNotPossibleCard();
 			return self.not_possible_cards.length > 0;
 		});
@@ -62,9 +63,12 @@ function Assistant(delay) {
 			clockTick = function() {
 			if (tickAction()) {
 				self.timer = setTimeout(clockTick, self.delay);
+			} else {
+				self.trigger('timer.stop');
 			}
 		};
-		self.timer = setTimeout(clockTick, self.delay);
+		this.timer = setTimeout(clockTick, this.delay);
+		this.trigger('timer.start');
 	};
 
 	/**
@@ -104,8 +108,6 @@ function Assistant(delay) {
 	};
 
 	Assistant.listNotPossibleCards = function(board) {
-		// console.log('before check', board);
-		
 		var known_unmatched = unmatchedCards(board),
 			selected = selectedCards(board),
 			board = board.map(function(card) {
