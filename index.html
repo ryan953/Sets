@@ -40,8 +40,10 @@
 	<div class="right">
 		<a class="button game-reset"><span>Reset</span></a>
 	</div>
-	<p class="center">
-		Deck: <span id="score">0/0</span>
+	<p class="center scoreboard-display">
+		<span data-scoreboard-display="score">Deck: <span id="score">0/0</span></span>
+		<span data-scoreboard-display="percent" class="hide">Sets Found: <span id="percent">00%</span></span>
+		<span data-x-scoreboard-display="time" class="hide">Time: <span id="time">0:00</span></span>
 	</p>
 </div>
 
@@ -176,26 +178,37 @@ $(document).ready(function() {
 		})
 		.bind('start', function() {
 			ui.renderGame(this);
-
-			var found = game.foundSets.length * 3;
-			$('#score').html(found + '/' + game.deck.size);
 		})
 		.bind('select-card', function() { ui.updateSelected(this.board); })
 		.bind('deselect-card', function() { ui.updateSelected(this.board); })
 		.bind('selection-cleared', function(e, cards) { ui.showWrongSelection(this, cards); })
 		.bind('found-set', function(e, cards) {
 			ui.showFoundSet(this, cards);
-
-			var found = game.foundSets.length * 3;
-			$('#score').html(found + '/' + game.deck.size);
 		})
 		.start( selectedMode() );
+		.bind('score.change', function(e, data) {
+			console.log('score.change', data);
+			$('#score').html(data.found + '/' + data.deck);
+
+			var percent = (data.deck != 0 ?  Math.round(data.found / data.deck * 1000)/10 : 0);
+			$('#percent').html(percent + '%');
+		});
 
 	$('.game-reset').click(function() {
 		ui.renderGame(
 			game.start( selectedMode() )
 		);
 	});
+
+	$('.scoreboard-display [data-scoreboard-display]').bind('click', function() {
+		var elem = $(this);
+		var visible = elem.hide().next('[data-scoreboard-display]').show();
+		if (!visible.length) {
+			visible = elem.siblings('[data-scoreboard-display]').first().show();
+		}
+		store.put('scoreboardDisplay', visible.data('scoreboardDisplay'));
+	});
+	// jquery plugin for '.scoreboard-display .time' is needed
 
 	$(gameArea).delegate('td', 'click', function() {
 		var self = $(this),

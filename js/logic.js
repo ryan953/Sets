@@ -156,13 +156,23 @@ function Deck(mode) {
 
 function Sets() { //this is the game logic
 	this.event = new Event();
-	this._init('easy');
 
-	this.bind('found-set', function() {
-		if (this.deck.size == this.foundSets.length * 3) {
-			this.trigger('end');
-		}
-	});
+	var _getScore = function(game) {
+		return {
+			found: (game.foundSets.length * 3), 
+			deck:game.deck.size
+		};
+	}
+	this._init('easy')
+		.bind('start', function() {
+			this.trigger('score.change', _getScore(this));
+		})
+		.bind('found-set', function() {
+			this.trigger('score.change', _getScore(this));
+			if (this.deck.size == this.foundSets.length * 3) {
+				this.trigger('end');
+			}
+		});
 }
 (function() {
 	var propCounter = function(field) {
