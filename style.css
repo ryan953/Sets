@@ -71,6 +71,7 @@ html, body, #game-area table {
 	padding:.45em .625em;
 	position:relative;
 }
+
 #game-area div {
 	border:2px solid;
 	border-color: white #DADADA #DADADA white;
@@ -99,6 +100,49 @@ html, body, #game-area table {
 	margin:auto;
 	width:100%;
 	height:100%;
+}
+#game-area .selected div {
+	-webkit-box-shadow:0 0 1.5em blue;
+	box-shadow:0 0 1.5em blue;
+	border-color:blue;
+}
+#game-area .error div {
+	-webkit-box-shadow:0 0 1.5em red;
+	box-shadow:0 0 1.5em red;
+	border-color:red;
+}
+#game-area .not-possible div {
+	opacity:.5;
+	-webkit-transition: opacity 1s linear;
+}
+#game-area .found div {
+	-webkit-box-shadow:0 0 1.5em green;
+	box-shadow:0 0 1.5em green;
+	border-color:green;
+
+	-webkit-animation: zoom 1s 1;
+	-moz-animation:    zoom 1s 1;
+	-ms-animation:     zoom 1s 1;
+}
+@-webkit-keyframes zoom {
+	from { -webkit-transform:scale(1); opacity:1; }
+	50% { -webkit-transform:scale(1.1); opacity:.25; }
+	to { -webkit-transform:scale(1); opacity:0;}
+}
+@-moz-keyframes zoom {
+	from { -moz-transform:scale(1); opacity:1; }
+	50% { -moz-transform:scale(1.1); opacity:.25; }
+	to { -moz-transform:scale(1); opacity:0;}
+}
+@-ms-keyframes zoom {
+	from { -ms-transform:scale(1); opacity:1; }
+	50% { -ms-transform:scale(1.1); opacity:.25; }
+	to { -ms-transform:scale(1); opacity:0;}
+}
+
+#game-area canvas {
+	position:absolute; top:0; bottom:0; left:0; right:0;
+	margin:auto;
 }
 
 /* iPad [portrait + landscape] */
@@ -135,54 +179,11 @@ html, body, #game-area table {
 	}
 }
 
-#game-area .selected div {
-	-webkit-box-shadow:0 0em 1.5em blue;
-	box-shadow:0 0em 1.5em blue;
-	border-color:blue;
-}
-#game-area .error div {
-	-webkit-box-shadow:0 0em 1.5em red;
-	box-shadow:0 0em 1.5em red;
-	border-color:red;
-}
-#game-area .not-possible div {
-	opacity:.5;
-	-webkit-transition: opacity 1s linear;
-}
-#game-area .found div {
-	-webkit-box-shadow:0 0em 1.5em green;
-	box-shadow:0 0em 1.5em green;
-	border-color:green;
-
-	-webkit-animation: zoom 1s 1;
-	-moz-animation:    zoom 1s 1;
-	-ms-animation:     zoom 1s 1;
-}
-@-webkit-keyframes zoom {
-	from { -webkit-transform:scale(1); opacity:1; }
-	50% { -webkit-transform:scale(1.1); opacity:.25; }
-	to { -webkit-transform:scale(1); opacity:0;}
-}
-@-moz-keyframes zoom {
-	from { -moz-transform:scale(1); opacity:1; }
-	50% { -moz-transform:scale(1.1); opacity:.25; }
-	to { -moz-transform:scale(1); opacity:0;}
-}
-@-ms-keyframes zoom {
-	from { -ms-transform:scale(1); opacity:1; }
-	50% { -ms-transform:scale(1.1); opacity:.25; }
-	to { -ms-transform:scale(1); opacity:0;}
-}
-
-#game-area canvas {
-	position:absolute; top:0; bottom:0; left:0; right:0;
-	margin:auto;
-}
 @media all and (orientation:portrait) {
 	#game-area canvas {
 		width:100%;
 		height:auto;
-		-webkit-transform: rotate(-180deg);
+		-webkit-transform: rotate(0deg);
 	}
 }
 @media all and (orientation:landscape) {
@@ -228,7 +229,7 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	width:100%;
 	height:100%;
 	overflow: auto;
-	
+
 	padding:1em;
 
 	-webkit-box-sizing:border-box;

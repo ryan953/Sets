@@ -122,7 +122,8 @@
 function _(id) { return document.getElementById(id); }
 
 $(document).ready(function() {
-	document.ontouchmove = function(e){ e.preventDefault(); };
+	_('game-area').ontouchmove = function(e){ e.preventDefault(); };
+	new NoClickDelay(document.getElementsByTagName('body')[0]);
 
 	function selectedMode() {
 		return $('#settings-easy-mode').is(':checked') ? 'easy' : 'regular';
@@ -132,8 +133,7 @@ $(document).ready(function() {
 		return $('#settings-help-mode').is(':checked');
 	}
 
-	var fastTouchEvent = new NoClickDelay(document.getElementsByTagName('body')[0]);
-
+	// Lightbox stuff -> jquery plugin?
 	$('<a>')
 		.addClass('right button lightbox-close')
 		.text('Close')
@@ -142,11 +142,13 @@ $(document).ready(function() {
 		.appendTo( $('.lightbox') );
 	$('.lightbox').wrapInner('<div>');
 		
-	var gameArea = document.getElementById('game-area'),
+
+	var gameArea = _('game-area'),
 		game = new Sets(), //game start is at the bottom, after we attach some events!
 		ui = new SetsUI(gameArea),
 		store = getStore();
 
+	// settings -> needs ref to the store
 	$('[id^=settings]').bind('change', function() {
 		var self = $(this),
 			key = self.prop('id'),
@@ -170,11 +172,12 @@ $(document).ready(function() {
 		}
 	});
 
+
+
+	// Game setup
 	game
 		.bind('end', function() {
 			window.location = '#game-over';
-			//show the end-game popup!
-			//game.start( selectedMode() );
 		})
 		.bind('start', function() {
 			ui.renderGame(this);
@@ -185,7 +188,6 @@ $(document).ready(function() {
 		.bind('found-set', function(e, cards) {
 			ui.showFoundSet(this, cards);
 		})
-		.start( selectedMode() );
 		.bind('score.change', function(e, data) {
 			console.log('score.change', data);
 			$('#score').html(data.found + '/' + data.deck);
@@ -194,6 +196,7 @@ $(document).ready(function() {
 			$('#percent').html(percent + '%');
 		});
 
+	// Game DOM setup
 	$('.game-reset').click(function() {
 		ui.renderGame(
 			game.start( selectedMode() )
@@ -217,6 +220,8 @@ $(document).ready(function() {
 		game.selectCard(game.getCard(row, col));
 	});
 
+	// Assistant setup -> happens before game.start()
+	// refs: game, assistant, settingsReader, ui
 	var assistant = new Assistant(/* delay = */ 5500),
 		clearAndRestartSearch = function(e) {
 			if (helpMode()) {
@@ -234,17 +239,16 @@ $(document).ready(function() {
 		};
 
 	assistant
-	.bind('timer.start', function() {
-		gameArea.className = 'helping';
-	})
-	.bind('timer.stop', function() {
-		gameArea.className = '';
-	})
-	.bind('picked-not-possible', function(event, card) {
-		game.getCard(card.row, card.col).notPossible = true;
-		ui.updateSelected(game.board);
-	});
-
+		.bind('timer.start', function() {
+			gameArea.className = 'helping';
+		})
+		.bind('timer.stop', function() {
+			gameArea.className = '';
+		})
+		.bind('picked-not-possible', function(event, card) {
+			game.getCard(card.row, card.col).notPossible = true;
+			ui.updateSelected(game.board);
+		});
 	['start',
 		'end',
 		'select-card',
@@ -254,7 +258,10 @@ $(document).ready(function() {
 		game.bind(event, clearAndRestartSearch);
 	});
 
-	game.start();
+
+
+	//after init
+	game.start( selectedMode() );
 });
 </script>
 </body>
