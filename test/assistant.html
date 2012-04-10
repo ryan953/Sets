@@ -21,13 +21,30 @@ $(document).ready(function () {
 		];
 	}
 	
-	module('Assistant::Clock');
+	module('Assistant::init');
+	test('requires `delay` param', function() {
+		raises(function() { new Assistant(); }, Error, 'delay param is required');
+	});
+
+	module('Assistant::Clock', {
+		setup: function() {
+			this.delay = 50;
+		}
+	});
 	test('clock ticks 3 times', function() {
-		var count = 3,
-			delay = 500,
-			assistant = new Assistant(delay);
-		stop(count);
+		var count = 2,
+			assistant = new Assistant(this.delay);
+		expect(count+1 + 2);
+		stop(count+1 + 2);
 		
+		assistant.bind('timer.start', function() {
+			ok(true, 'timer.start event caught');
+			start();
+		});
+		assistant.bind('timer.stop', function() {
+			ok(true, 'timer.stop event caught');
+			start();
+		});
 		assistant._startClock(function() {
 			ok(true, 'Clock tick ' + count);
 			start();
@@ -37,19 +54,41 @@ $(document).ready(function () {
 	
 	test('clock can be stopped early', function() {
 		var count = 3,
-			delay = 500,
-			assistant = new Assistant(delay);
-		stop(1); // not the count of 3 like before
+			assistant = new Assistant(this.delay);
+		expect(2);
+		stop(1);
 		
-		assistant._startClock(function() {
-			ok(true, 'Clock tick ' + count);
+		assistant.bind('timer.start', function() {
+			ok(true, 'timer.start event caught');
+		});
+		assistant.bind('timer.stop', function() {
+			ok(true, 'timer.stop event caught');
 			start();
+		});
+		assistant._startClock(function() {
+			ok(false, 'Should not have a chance to tick');
 			return count--;
 		});
-		assistant.stopSearch();
+		assistant.stopClock();
 	});
 	
 	
+	module('Assistant::shuffle');
+	test('shuffles non-lists', function() {
+		var undef;
+		var cases = [
+			null,
+			undef,
+			123,
+			'hello world',
+			{foo: 'hello', bar:'world'},
+			{length:3}
+		];
+		for(var i = 0; i < cases.length; i++) {
+			equals(cases[i], Assistant.shuffle(cases[i]), 'non-list returned a list');
+		}
+	});
+
 	module('Assistant::listNotPossibleCards');
 	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
@@ -98,6 +137,75 @@ $(document).ready(function () {
 			deepEqual(noMatchFound, testcase.notPossible);
 		}
 	});
+
+	module('Assistant::startSearchForUnmatched', {
+		setup: function() {
+			this.delay = 50;
+		}
+	});
+	test('search ends when no cards found', function() {
+		// borrowed from below
+		var testcase = {board: [
+			{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" },
+			{"count":3,"shape":"Squiggle","fill":"solid","color":"red"  },
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"green"},
+			{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  },
+			{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+			{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  },
+			{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+		], notPossible: [
+			// nothing
+		]};
+		var assistant = new Assistant(this.delay);
+		
+		expect(1);
+		stop(1);
+		
+		assistant.bind('timer.stop', function() {
+			ok(true, 'timer.stop event caught');
+			start();
+		});
+		assistant.bind('picked-not-possible', function() {
+			ok(false, 'Should not find card in this board');
+		});
+
+		assistant.startSearchForUnmatched(testcase.board);
+	});
+
+	test('search triggers cards', function() {
+		// borrowed from below
+		var testcase = {board: [
+			{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
+			{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
+			Card.factory({"count":3,"shape":"Diamond", "fill":"solid","color":"green"}),
+			{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+			Card.factory({"count":2,"shape":"Diamond", "fill":"solid","color":"blue" }),
+			{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+			{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
+			{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  }
+		], notPossible: [
+			Card.factory({"count":3,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false}),
+			Card.factory({"count":2,"shape":"Diamond", "fill":"solid","color":"blue" , "hasSet": false})
+		]};
+		var assistant = new Assistant(this.delay);
+		
+		expect(testcase.notPossible.length);
+		stop(testcase.notPossible.length);
+
+		assistant.bind('picked-not-possible', function(event, card) {
+			ok(true, 'picked-not-possible called '+ card);
+			start();
+		});
+
+		assistant.startSearchForUnmatched(testcase.board);
+	});
+
+
+
+
 	
 	function listNotPossibleCardsDataProvider() {
 		return [
@@ -255,7 +363,7 @@ $(document).ready(function () {
 				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
 				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
 				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" },
-				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "isSelected":true},
 				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
 				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
 				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  }
@@ -284,7 +392,7 @@ $(document).ready(function () {
 				{"count":1,"shape":"Squiggle","fill":"solid","color":"blue" },
 				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" },
 				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
-				{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  ,"isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "isSelected":true},
 				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
 				{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
 				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
@@ -329,7 +437,7 @@ $(document).ready(function () {
 				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
 				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false}
 			]}, {board:  [
-				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue", "isSelected":true},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue",  "isSelected":true},
 				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
 				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
 				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
@@ -352,7 +460,7 @@ $(document).ready(function () {
 				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
 				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" },
 				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"  },
-				{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "isSelected":true},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green",  "isSelected":true},
 				{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  },
 				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
 				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  },

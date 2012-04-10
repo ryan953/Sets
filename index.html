@@ -225,7 +225,6 @@ $(document).ready(function() {
 	var assistant = new Assistant(/* delay = */ 5500),
 		clearAndRestartSearch = function(e) {
 			if (helpMode()) {
-				// console.debug('caught', e.name);
 				assistant.stopSearch();
 				assistant.startSearchForUnmatched(game.listCardsOnBoard());
 

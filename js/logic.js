@@ -35,7 +35,11 @@ function Card(count, shape, fill, color) {
 
 		ctx.restore();
 		return ctx.createPattern(stripes, 'repeat');
-	}
+	};
+
+	Card.factory = function(c) {
+		return new Card(c.count, c.shape, c.fill, c.color);
+	};
 
 	Card.counts = [1, 2, 3];
 	Card.shapes = ['Diamond', 'Squiggle', 'Oval'];
@@ -69,6 +73,13 @@ function Card(count, shape, fill, color) {
 		'notPossible': 'not-possible'
 	};
 	
+	Card.prototype.toString = function() {
+		return [this.count, this.fill, this.color, this.shape].join(' ');
+	};
+	Card.prototype.valueOf = function() {
+		return JSON.stringify(this);
+	};
+
 	Card.prototype.select = function() { this.isSelected = true; };
 	Card.prototype.deselect = function() { this.isSelected = false; };
 	Card.prototype.toggleSelect = function() { this.isSelected = !this.isSelected; };

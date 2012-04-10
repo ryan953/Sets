@@ -1,10 +1,11 @@
 "use strict";
 
 function Assistant(delay) {
+	if (!delay) { throw Error('Missing required param: delay'); }
 	this.event = new Event();
 	this.delay = delay;
 	this.timer = null;
-	this.not_possible_cards = null;
+	this.not_possible_cards = [];
 }
 (function() {
 	Assistant.prototype.bind = function(name, handler) {
@@ -21,59 +22,11 @@ function Assistant(delay) {
 	};
 
 	/**
-	 * Stop the timer so we don't return any cards
-	 */
-	Assistant.prototype.stopSearch = function() {
-		if (this.timer) {
-			clearTimeout(this.timer);
-			this.timer = null;
-			this.trigger('timer.stop');
-		}
-	};
-	
-	(function() {
-		var shuffle = function(array) {
-		    var tmp, current, top = array.length;
-
-		    if(top) while(--top) {
-		        current = Math.floor(Math.random() * (top + 1));
-		        tmp = array[current];
-		        array[current] = array[top];
-		        array[top] = tmp;
-		    }
-
-		    return array;
-		};
-
-		/**
-		 * Get the worker crunching the numbers
-		 */
-		Assistant.prototype.startSearchForUnmatched = function(board) {
-			var self = this;
-			
-			// console.log('updating board', board);
-
-			this.not_possible_cards = shuffle(Assistant.listNotPossibleCards(board));
-
-			// console.log('found list to disable', this.not_possible_cards.length);
-			this._startClock(function() {
-				// console.log('will reveal, have:', self.not_possible_cards);
-				self._revealNotPossibleCard();
-				return self.not_possible_cards.length > 0;
-			});
-		};
-	})();
-
-	Assistant.prototype.unmatchedCards = function() {
-		return this.not_possible_cards;
-	};
-
-	/**
 	 * Takes a delay between clock ticks, and an action to do each tick
 	 * when the action returns false the clock will turn itself off
 	 */
 	Assistant.prototype._startClock = function(tickAction) {
-		this.stopSearch();
+		this.stopClock();
 		var self = this,
 			clockTick = function() {
 			if (tickAction()) {
@@ -87,15 +40,55 @@ function Assistant(delay) {
 	};
 
 	/**
+	 * Stop the timer so we don't return any cards
+	 */
+	Assistant.prototype.stopClock = function() {
+		if (this.timer) {
+			clearTimeout(this.timer);
+			this.timer = null;
+			this.trigger('timer.stop');
+		}
+	};
+
+	/**
+	 * Get the worker crunching the numbers
+	 */
+	Assistant.prototype.startSearchForUnmatched = function(board) {
+		var self = this;
+		this.stopClock();
+		this.not_possible_cards = Assistant.shuffle(Assistant.listNotPossibleCards(board));
+
+		this._startClock(function() {
+			self._revealNotPossibleCard();
+			return self.not_possible_cards.length > 0;
+		});
+	};
+
+	Assistant.prototype.unmatchedCards = function() {
+		return this.not_possible_cards || [];
+	};
+
+	/**
 	 * Pick a card that can't be made into a match based on the board we have.
 	 */
 	Assistant.prototype._revealNotPossibleCard = function() {
-		if (!(this.not_possible_cards instanceof Array)) {
-			return true;
-		}
 		if (this.not_possible_cards.length) {
 			this.trigger('picked-not-possible', this.not_possible_cards.shift());
 		}
+	};
+
+	Assistant.shuffle = function(array) {
+		if (!array) { return array; }
+	    var tmp, current, top = array.length;
+
+	    if(top) while(--top) {
+	        current = Math.floor(Math.random() * (top + 1));
+	        tmp = array[current];
+	        array[current] = array[top];
+	        array[top] = tmp;
+	    }
+
+	    return array;
 	};
 })();
 
