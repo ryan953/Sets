@@ -70,7 +70,8 @@ function Card(count, shape, fill, color) {
 
 	Card.classNameMap = {
 		'isSelected': 'selected',
-		'notPossible': 'not-possible'
+		'notPossible': 'not-possible',
+		'invalidPick': 'error'
 	};
 	
 	Card.prototype.toString = function() {
@@ -340,7 +341,7 @@ function Sets() { //this is the game logic
 	};
 })();
 
-function SetsUI(parentElement, game) {
+function SetsUI(parentElement) {
 	this.container = parentElement;
 }
 (function() {
@@ -405,6 +406,7 @@ function SetsUI(parentElement, game) {
 
 	SetsUI.prototype.updateSelected = function(board) {
 		var row, col, card, index, cells = Array.prototype.slice.call( this.container.getElementsByTagName('td') );
+		if (cells.length === 0) { return; }
 		for(row = 0; row < board.length; row++) {
 			for(col = 0; col < board[row].length; col++) {
 				index = SetsUI.coordsToIndex(row, col);
@@ -420,8 +422,12 @@ function SetsUI(parentElement, game) {
 				card = cards.splice(-1, 1),
 				cells = self.container.getElementsByTagName('td'),
 				index = SetsUI.coordsToIndex(card[0].row, card[0].col);
-				cells[index].className = 'error';
-			setTimeout(function() { self.updateSelected(game.board); }, 1000);
+				//cells[index].className = 'error';
+				cells[index].invalidPick = true;
+			setTimeout(function() {
+				cells[index].invalidPick = false;
+			 	self.updateSelected(game.board);
+			 }, 1000);
 		}
 	};
 
