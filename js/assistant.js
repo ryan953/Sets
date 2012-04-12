@@ -1,13 +1,17 @@
-"use strict";
-
+/*jshint smarttabs:true */
+/*global Event:false Error:false Sets:false smarttabs:true */
 function Assistant(delay) {
-	if (!delay) { throw Error('Missing required param: delay'); }
+	"use strict";
+	if (!delay) {
+		throw new Error('Missing required param: delay');
+	}
 	this.event = new Event();
 	this.delay = delay;
 	this.timer = null;
 	this.not_possible_cards = [];
 }
 (function() {
+	"use strict";
 	Assistant.prototype.bind = function(name, handler) {
 		this.event.addListener(this, name, handler);
 		return this;
@@ -79,20 +83,21 @@ function Assistant(delay) {
 
 	Assistant.shuffle = function(array) {
 		if (!array) { return array; }
-	    var tmp, current, top = array.length;
+		var tmp, current, top = array.length;
 
-	    if(top) while(--top) {
-	        current = Math.floor(Math.random() * (top + 1));
-	        tmp = array[current];
-	        array[current] = array[top];
-	        array[top] = tmp;
-	    }
+		if(top) while(--top) {
+			current = Math.floor(Math.random() * (top + 1));
+			tmp = array[current];
+			array[current] = array[top];
+			array[top] = tmp;
+		}
 
-	    return array;
+		return array;
 	};
 })();
 
 (function() {
+	"use strict";
 	var selectedCards = function(list) {
 		return list.filter(function(card) { return card.isSelected; });
 	},

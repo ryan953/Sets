@@ -196,7 +196,7 @@ $(document).ready(function () {
 		stop(testcase.notPossible.length);
 
 		assistant.bind('picked-not-possible', function(event, card) {
-			ok(true, 'picked-not-possible called '+ card);
+			ok(true, 'picked-not-possible event caught '+ card);
 			start();
 		});
 

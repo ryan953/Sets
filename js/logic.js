@@ -1,6 +1,6 @@
-"use strict";
-
+/*global Event:false */
 function Card(count, shape, fill, color) {
+	"use strict";
 	this.isSelected = false;
 
 	this.count = count;
@@ -9,6 +9,7 @@ function Card(count, shape, fill, color) {
 	this.color = color;
 }
 (function() {
+	"use strict";
 	function getPattern(color, lineWidth) {
 		var stripes = document.createElement('canvas'),
 			ctx;
@@ -35,7 +36,7 @@ function Card(count, shape, fill, color) {
 
 		ctx.restore();
 		return ctx.createPattern(stripes, 'repeat');
-	};
+	}
 
 	Card.factory = function(c) {
 		return new Card(c.count, c.shape, c.fill, c.color);
@@ -99,6 +100,7 @@ function Card(count, shape, fill, color) {
 })();
 
 (function() {
+	"use strict";
 	var visuals = function(card) {
 		var fills = {
 			solid: {
@@ -135,10 +137,12 @@ function Card(count, shape, fill, color) {
 })();
 
 function Deck(mode) {
+	"use strict";
 	this.mode = mode || 'regular';
 	this.generateDeck(this.mode);
 }
 (function() {
+	"use strict";
 	Deck.prototype.generateDeck = function(mode) {
 		var self = this;
 		self.cards = [];
@@ -165,16 +169,16 @@ function Deck(mode) {
 	};
 })();
 
-
 function Sets() { //this is the game logic
+	"use strict";
 	this.event = new Event();
 
 	var _getScore = function(game) {
 		return {
-			found: (game.foundSets.length * 3), 
+			found: (game.foundSets.length * 3),
 			deck:game.deck.size
 		};
-	}
+	};
 	this._init('easy')
 		.bind('start', function() {
 			this.trigger('score.change', _getScore(this));
@@ -187,15 +191,17 @@ function Sets() { //this is the game logic
 		});
 }
 (function() {
+	"use strict";
 	var propCounter = function(field) {
 		return function(prev, curr) {
-			(curr[field] in prev ? prev[curr[field]] += 1 : prev[curr[field]] = 1);
+			prev[curr[field]] = (curr[field] in prev ? prev[curr[field]] + 1 : 1);
 			return prev;
 		};
 	};
+
 	
 	Sets.lastErrors = [];
-	Sets.modes = {
+	Sets.modes = { // TODO: hello world
 		'easy': {rows:3, cols:3},
 		'regular': {rows:4, cols:3}
 	};
@@ -261,7 +267,7 @@ function Sets() { //this is the game logic
 	Sets.prototype._loadBoard = function() {
 		var row, col, card;
 		for(row = 0; row < Sets.modes[this.mode].rows; row++) {
-			for(col = 0; col < 3; col++) {
+			for(col = 0; col < Sets.modes[this.mode].cols; col++) {
 				this._addCardToBoard(this.deck.pickRandomCard(), row, col);
 			}
 		}
@@ -342,9 +348,11 @@ function Sets() { //this is the game logic
 })();
 
 function SetsUI(parentElement) {
+	"use strict";
 	this.container = parentElement;
 }
 (function() {
+	"use strict";
 	SetsUI.makeBoard = function(rows, cols) {
 		var row, table = document.createElement('table');
 		for(row = 0; row < rows; row++) {
@@ -426,8 +434,8 @@ function SetsUI(parentElement) {
 				cells[index].invalidPick = true;
 			setTimeout(function() {
 				cells[index].invalidPick = false;
-			 	self.updateSelected(game.board);
-			 }, 1000);
+				self.updateSelected(game.board);
+			}, 1000);
 		}
 	};
 

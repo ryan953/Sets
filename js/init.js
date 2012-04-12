@@ -1,5 +1,7 @@
-"use strict";
-$(document).ready(function() {	
+/*global Assistant:false Sets:false SetsUI:false Settings:false */
+
+$(document).ready(function() {
+	"use strict";
 	var bindGameToUI = function(game, ui) {
 		game
 			.bind('end', function() {
@@ -15,19 +17,16 @@ $(document).ready(function() {
 				ui.showFoundSet(this, cards);
 			})
 			.bind('score.change', function(e, data) {
-				// console.log('score.change', data);
 				$('#score').html(data.found + '/' + data.deck);
 
-				var percent = (data.deck != 0 ?  Math.round(data.found / data.deck * 1000)/10 : 0);
+				var percent = (data.deck !== 0 ? Math.round(data.found / data.deck * 1000)/10 : 0);
 				$('#percent').html(percent + '%');
 			});
 	};
 
 	var bindGameToDOM = function(game, ui) {
 		$('.game-reset').click(function() {
-			//ui.renderGame(
-				game.start( Settings.selectedMode() )
-			//);
+			game.start( Settings.selectedMode() );
 		});
 
 		$(ui.container).delegate('td', 'click', function() {
