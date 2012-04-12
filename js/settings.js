@@ -45,5 +45,6 @@ $(document).ready(function() {
 			visible = elem.siblings('[data-scoreboard-display]').first().show();
 		}
 		store.put('scoreboardDisplay', visible.data('scoreboardDisplay'));
+		return false;
 	});
 });

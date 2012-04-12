@@ -332,8 +332,8 @@ function Sets() { //this is the game logic
 	};
 	Sets.prototype.replaceSet = function(cards) {
 		var card_i, row, col;
-		for(row = 0; row < Sets.modes[this.mode].rows; row++) {
-			for(col = 0; col < Sets.modes[this.mode].cols; col++) {
+		for(row = 0; row < this.board.length; row++) {
+			for(col = 0; col < this.board[row].length; col++) {
 				for(card_i = 0; card_i < cards.length; card_i++) {
 					if (this.board[row][col] == cards[card_i]) {
 						this._addCardToBoard(this.deck.pickRandomCard(), row, col);
@@ -396,7 +396,7 @@ function SetsUI(parentElement) {
 	SetsUI.prototype.renderGame = function(game) {
 		this.clearContainerElement();
 		var rows = game.board.length,
-			cols = Sets.modes[game.mode].cols,
+			cols = game.board[0].length, // Sets.modes[game.mode].cols,
 			ui_board = SetsUI.makeBoard(rows, cols),
 			cells = ui_board.getElementsByTagName('td'),
 			row, col, index, card;
@@ -408,6 +408,10 @@ function SetsUI(parentElement) {
 				cells[index].appendChild( SetsUI.renderCard(card) );
 				cells[index].className = (card ? card.getClassAttr() : '');
 			}
+		}
+		var old_board = this.container.firstChild;
+		if (old_board) {
+			this.container.removeChild(old_board);
 		}
 		this.container.appendChild(ui_board);
 	};

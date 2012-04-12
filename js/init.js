@@ -85,5 +85,7 @@ $(document).ready(function() {
 	bindGameToDOM(game, ui);
 
 	//after init
-	game.start( Settings.selectedMode() );
+	setTimeout(function() {
+		game.start( Settings.selectedMode() );
+	}, 0);
 });

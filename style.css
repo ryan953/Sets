@@ -201,14 +201,8 @@ html, body, #game-area table {
 .hide { display:none; }
 a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 
-.scoreboard-display > span {
-	cursor: pointer;
-	
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+.scoreboard-display a {
+	color: black;
 }
 
 .popup {
@@ -344,6 +338,12 @@ a.button:hover {
 	position:absolute;
 	top:0;
 	z-index:10;
+
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
