@@ -202,6 +202,28 @@ $(document).ready(function () {
 
 		assistant.startSearchForUnmatched(testcase.board);
 	});
+
+	test('search with no cards possible triggers event', function() {
+		var cards = [
+			{"count":1,"shape":"Squiggle","fill":"solid","color":"blue" },
+			{"count":1,"shape":"Oval",    "fill":"solid","color":"blue" },
+			{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+			{"count":2,"shape":"Diamond", "fill":"solid","color":"red"  },
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" },
+			{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" }
+		];
+		var assistant = new Assistant(this.delay);
+		
+		expect(1);
+		stop(1);
+
+		assistant.bind('no-cards-possible', function(event) {
+			ok(true, 'no-cards-possible event caught');
+			start();
+		});
+
+		assistant.startSearchForUnmatched(cards);
+	});
 	
 	function listNotPossibleCardsDataProvider() {
 		return [

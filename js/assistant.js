@@ -62,10 +62,14 @@ function Assistant(delay) {
 		this.stopClock();
 		this.not_possible_cards = Assistant.shuffle(Assistant.listNotPossibleCards(board));
 
-		this._startClock(function() {
-			self._revealNotPossibleCard();
-			return self.not_possible_cards.length > 0;
-		});
+		if (this.not_possible_cards.length === board.length) {
+			this.trigger('no-cards-possible');
+		} else {
+			this._startClock(function() {
+				self._revealNotPossibleCard();
+				return self.not_possible_cards.length > 0;
+			});
+		}
 	};
 
 	Assistant.prototype.unmatchedCards = function() {
