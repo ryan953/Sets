@@ -138,12 +138,14 @@ $(document).ready(function () {
 		}
 	});
 
+	// TODO: need 'Find unmatched: two cards selected'
+
 	module('Assistant::startSearchForUnmatched', {
 		setup: function() {
 			this.delay = 50;
 		}
 	});
-	test('search ends when no cards found', function() {
+	test('search should look at all cards and stop eventually', function() {
 		// borrowed from below
 		var testcase = {board: [
 			{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
@@ -174,7 +176,7 @@ $(document).ready(function () {
 		assistant.startSearchForUnmatched(testcase.board);
 	});
 
-	test('search triggers cards', function() {
+	test('search should find cards that are unamatchable', function() {
 		// borrowed from below
 		var testcase = {board: [
 			{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
@@ -203,7 +205,7 @@ $(document).ready(function () {
 		assistant.startSearchForUnmatched(testcase.board);
 	});
 
-	test('search with no cards possible triggers event', function() {
+	test('search should detect if none of the cards will match with each other', function() {
 		var cards = [
 			{"count":1,"shape":"Squiggle","fill":"solid","color":"blue" },
 			{"count":1,"shape":"Oval",    "fill":"solid","color":"blue" },
@@ -223,6 +225,34 @@ $(document).ready(function () {
 		});
 
 		assistant.startSearchForUnmatched(cards);
+	});
+
+	test('search should ignore previous unmatched state', function() {
+		// borrowed from below
+		var testcase = {board: [
+			{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet":true},
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet":true},
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"blue",  "hasSet":true},
+			{"count":3,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet":true},
+			{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "hasSet":true},
+			{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet":true},
+			{"count":1,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet":true},
+			{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet":true},
+			{"count":1,"shape":"Squiggle","fill":"solid","color":"green", "hasSet":true}
+		], notPossible: [
+			// nothing	
+		]};
+		var assistant = new Assistant(this.delay);
+		
+		expect(1);
+		stop(1);
+		
+		assistant.bind('timer.stop', function() {
+			ok(true, 'timer.stop event caught');
+			start();
+		});
+		
+		assistant.startSearchForUnmatched(testcase.board);
 	});
 	
 	function listNotPossibleCardsDataProvider() {

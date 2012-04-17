@@ -113,12 +113,11 @@ function Assistant(delay) {
 	};
 
 	Assistant.listNotPossibleCards = function(board) {
+		board.forEach(function(card) {
+			card.hasSet = false;
+		});
 		var known_unmatched = unmatchedCards(board),
 			selected = selectedCards(board),
-			board = board.map(function(card) {
-				card.hasSet = false;
-				return card;
-			}),
 			set1 = board, set2 = board, set3 = board;
 
 		if (board.length < 3) {
