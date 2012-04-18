@@ -46,7 +46,7 @@ $(document).ready(function() {
 					assistant.startSearchForUnmatched(game.listCardsOnBoard());
 
 					game.listCardsOnBoard().forEach(function(card) {
-						if (assistant.unmatchedCards().indexOf(card) === -1) {
+						if (assistant.not_possible_cards.indexOf(card) === -1) {
 							card.notPossible = false;
 						}
 					});

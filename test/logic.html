@@ -305,6 +305,22 @@ $(document).ready(function () {
 
 		notDeepEqual(new_cards, orig_cards, 'the passed in cards have been matched and replaced');
 	});
+
+	test('listCardsOnBoard() gives back all cards in order', function() {
+		var game = new Sets();
+		var cards = [
+			new Card(),
+			new Card(),
+			new Card(),
+			new Card()
+		];
+		game._addCardToBoard(cards[0], 0, 0);
+		game._addCardToBoard(cards[1], 0, 1);
+		game._addCardToBoard(cards[2], 1, 0);
+		game._addCardToBoard(cards[3], 1, 1);
+
+		deepEqual(game.listCardsOnBoard(), cards, 'have a list of all cards returned');
+	});
 });
 </script>
 

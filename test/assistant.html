@@ -141,7 +141,16 @@ $(document).ready(function () {
 		}
 	});
 
-	// TODO: need 'Find unmatched: two cards selected'
+	test('Finds unmatched: two cards selected', function() {
+		var tests = listNotPossibleCardsTwoSelectedDataProvider(),
+			testcase = null;
+		for(var i = 0, len = tests.length; i < len; i++) {
+			testcase = tests[i];
+			var noMatchFound = Assistant.listNotPossibleCards(testcase.board);
+			equals(noMatchFound.length, testcase.notPossible.length, 'failed on index '+i);
+			deepEqual(noMatchFound, testcase.notPossible);
+		}
+	});
 
 	module('Assistant::startSearchForUnmatched', {
 		setup: function() {
@@ -558,6 +567,184 @@ $(document).ready(function () {
 			]}
 		];
 	}
+
+	function listNotPossibleCardsTwoSelectedDataProvider() {
+		return [
+			{board: [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "isSelected":true},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red",   "isSelected":true},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"green"},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  }
+			], notPossible: [
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet": false}
+			]}, {board:  [
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"red"  },
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue",  "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "isSelected":true},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  }
+			], notPossible: [
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet": false},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"red",   "isSelected":true},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" }
+			], notPossible: [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue" },
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"blue" },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "isSelected":true},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"}
+			], notPossible: [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue",  "hasSet": false},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false}
+			]}, {board:  [
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"red"  },
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  },
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue" },
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "isSelected":true},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			], notPossible: [
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue" },
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"red",   "isSelected":true},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"red"  },
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green"}
+			], notPossible: [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue" , "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" , "hasSet": false},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"red"  , "hasSet": false},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"blue",  "isSelected":true},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue" },
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" }
+			], notPossible: [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet": false},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue",  "hasSet": false}
+			]}, {board:  [
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green"},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"red",   "isSelected":true},
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"blue" },
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red"  },
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  },
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"}
+			], notPossible: [
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false},
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"red",   "hasSet": false},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet": false},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"blue",  "isSelected":true},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green", "isSelected":true},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red"  },
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"red"  },
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" }
+			], notPossible: [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":1,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false},
+				{"count":1,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false},
+				{"count":2,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false}
+			]}, {board:  [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green"},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"blue",  "isSelected":true},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"red"  },
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red"  },
+				{"count":2,"shape":"Squiggle","fill":"solid","color":"green", "isSelected":true},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue" },
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green"},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"green"}
+			], notPossible: [
+				{"count":3,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false},
+				{"count":3,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"red",   "hasSet": false},
+				{"count":1,"shape":"Diamond", "fill":"solid","color":"blue",  "hasSet": false},
+				{"count":3,"shape":"Squiggle","fill":"solid","color":"green", "hasSet": false},
+				{"count":2,"shape":"Oval",    "fill":"solid","color":"green", "hasSet": false}
+			]}
+		];
+	}
+
 });
 </script>
 

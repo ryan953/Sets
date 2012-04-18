@@ -206,7 +206,7 @@ function Sets() { //this is the game logic
 		'regular': {rows:4, cols:3}
 	};
 	Sets.isASet = function(cards) {
-		if (cards.length != 3 ) { return false; }
+		if (cards.length !== 3 ) { return false; }
 
 		var totals = {
 			counts: [].reduce.call(cards, propCounter('count'), {}),

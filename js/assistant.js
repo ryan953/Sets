@@ -59,10 +59,6 @@ function Assistant(delay) {
 		}
 	};
 
-	Assistant.prototype.unmatchedCards = function() {
-		return this.not_possible_cards || [];
-	};
-
 	/**
 	 * Pick a card that can't be made into a match based on the board we have.
 	 */
