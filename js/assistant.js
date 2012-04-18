@@ -1,17 +1,19 @@
 /*jshint smarttabs:true */
 /*global Event:false Error:false Sets:false smarttabs:true */
-function Assistant(delay) {
-	"use strict";
-	if (!delay) {
-		throw new Error('Missing required param: delay');
-	}
-	Event.patch.call(this);
-	this.delay = delay;
-	this.timer = null;
-	this.not_possible_cards = [];
-}
 (function() {
 	"use strict";
+
+	window.Assistant = Assistant;
+	function Assistant(delay) {
+		if (!delay) {
+			throw new Error('Missing required param: delay');
+		}
+		Event.patch.call(this);
+		this.delay = delay;
+		this.timer = null;
+		this.not_possible_cards = [];
+	}
+
 	/**
 	 * Takes a delay between clock ticks, and an action to do each tick
 	 * when the action returns false the clock will turn itself off
@@ -81,10 +83,7 @@ function Assistant(delay) {
 
 		return array;
 	};
-})();
 
-(function() {
-	"use strict";
 	var selectedCards = function(list) {
 		return list.filter(function(card) { return card.isSelected; });
 	},
