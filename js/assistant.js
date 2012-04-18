@@ -5,26 +5,13 @@ function Assistant(delay) {
 	if (!delay) {
 		throw new Error('Missing required param: delay');
 	}
-	this.event = new Event();
+	Event.patch.call(this);
 	this.delay = delay;
 	this.timer = null;
 	this.not_possible_cards = [];
 }
 (function() {
 	"use strict";
-	Assistant.prototype.bind = function(name, handler) {
-		this.event.addListener(this, name, handler);
-		return this;
-	};
-	Assistant.prototype.trigger = function(name, data) {
-		this.event.fireEvent({}, this, name, data);
-		return this;
-	};
-	Assistant.prototype.unbind = function(name, handler) {
-		this.event.removeListener(this, name, handler);
-		return this;
-	};
-
 	/**
 	 * Takes a delay between clock ticks, and an action to do each tick
 	 * when the action returns false the clock will turn itself off

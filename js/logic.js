@@ -171,7 +171,7 @@ function Deck(mode) {
 
 function Sets() { //this is the game logic
 	"use strict";
-	this.event = new Event();
+	Event.patch.call(this);
 
 	var _getScore = function(game) {
 		return {
@@ -234,18 +234,6 @@ function Sets() { //this is the game logic
 			}
 		}
 		return Sets.lastErrors.length === 0;
-	};
-	Sets.prototype.bind = function(name, handler) {
-		this.event.addListener(this, name, handler);
-		return this;
-	};
-	Sets.prototype.trigger = function(name, data) {
-		this.event.fireEvent({}, this, name, data);
-		return this;
-	};
-	Sets.prototype.unbind = function(name, handler) {
-		this.event.removeListener(this, name, handler);
-		return this;
 	};
 	Sets.prototype._init = function(mode) {
 		this.mode = mode || 'easy';
