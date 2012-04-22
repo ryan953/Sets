@@ -15,10 +15,15 @@ about lightbox
 show discard pile?
 game history?
 
-remember quick start setting (all settings!)
+
 
 seeded javascript random number gen for shared games
 node.js server for head-to-head games
+
+
+DONE:
+
+remember quick start setting (all settings!)
 
 click to toggle display of cards remaining: x/y complete OR xx% complete OR Y remaining
  - save preference for above

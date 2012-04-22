@@ -1,6 +1,17 @@
-"use strict";
+/*global $:false */
 
 (function(){
+	"use strict";
+
+	window.Storage = {
+		factory: function() {
+			if (!this._singleton) {
+				this._singleton = supports_html5_storage() ? new LocalStore() : new JSStore();
+			}
+			return this._singleton;
+		}
+	};
+
 	function supports_html5_storage() {
 		try {
 			return 'localStorage' in window && window.localStorage !== null;
@@ -15,10 +26,10 @@
 			this.put(key, arr);
 		};
 		this.fire = function(key, action, oldVal, newVal) {
-			console.debug("Trigger:", key + '.' + action, {
-				oldVal:oldVal,
-				newVal:newVal
-			});
+			// console.debug("Trigger:", key + '.' + action, {
+			//	oldVal:oldVal,
+			//	newVal:newVal
+			// });
 			$(this).trigger(key + '.' + action, {
 				oldVal:oldVal,
 				newVal:newVal
@@ -28,10 +39,6 @@
 			return 1;
 		}
 	}
-
-	window.getStore = function() {
-		return supports_html5_storage() ? new LocalStore() : new JSStore();
-	};
 
 	var LocalStore = function() {};
 	LocalStore.prototype = new Store();
@@ -45,7 +52,7 @@
 	LocalStore.prototype.put = function(key, val) {
 		var oldVal = this.get(key);
 		localStorage.setItem(key, JSON.stringify(val));
-		(oldVal ? this.fire(key, 'change', oldVal, val) : this.fire(key, 'add', null, val));
+		this.fire(key, (oldVal ? 'change' : 'add'), oldVal, val);
 	};
 	LocalStore.prototype.remove = function(key) {
 		var oldVal = this.get(key);
@@ -66,11 +73,11 @@
 	JSStore.prototype.put = function(key, val) {
 		var oldVal = this.get(key);
 		this.data[key] = val;
-		(oldVal ? this.fire(key, 'change', oldVal, val) : this.fire(key, 'add', null, val));
+		this.fire(key, (oldVal ? 'change' : 'add'), oldVal, val);
 	};
 	JSStore.prototype.remove = function(key) {
 		var oldVal = this.get(key);
-		unset(this.data[key]);
+		delete(this.data[key]);
 		this.fire(key, 'remove', oldVal, null);
 	};
 	JSStore.prototype.clear = function() {

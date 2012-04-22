@@ -1,4 +1,4 @@
-/*global Assistant:false Sets:false SetsUI:false Settings:false */
+/*global $:false Assistant:false Sets:false SetsUI:false Settings:false */
 
 $(document).ready(function() {
 	"use strict";
@@ -18,6 +18,7 @@ $(document).ready(function() {
 			})
 			.bind('score.change', function(e, data) {
 				$('#score').html(data.found + '/' + data.deck);
+				$('#remaining').html(data.deck - data.found);
 
 				var percent = (data.deck !== 0 ? Math.round(data.found / data.deck * 1000)/10 : 0);
 				$('#percent').html(percent + '%');

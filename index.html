@@ -42,6 +42,7 @@
 	</div>
 	<p class="center scoreboard-display">
 		<a href="#" data-scoreboard-display="score">Deck: <span id="score">0/0</span></a>
+		<a href="#" data-scoreboard-display="remaining" class="hide"><span id="remaining">0</span> cards remaining</a>
 		<a href="#" data-scoreboard-display="percent" class="hide">Sets Found: <span id="percent">00%</span></a>
 		<a href="#" data-x-scoreboard-display="time" class="hide">Time: <span id="time">0:00</span></a>
 	</p>
@@ -50,11 +51,11 @@
 <div class="lightbox" id="settings">
 	<h2>Settings</h2>
 	<div>
-		<input type="checkbox" id="settings-easy-mode" value="easy" checked="checked" />
+		<input type="checkbox" id="settings-easy-mode" name="easy-mode" value="easy" />
 		<label for="settings-easy-mode">Quick Start</label>
 	</div>
 	<div>
-		<input type="checkbox" id="settings-help-mode" value="on" checked="checked" />
+		<input type="checkbox" id="settings-help-mode" name="help-mode" value="on" />
 		<label for="settings-help-mode">Show Helpful Hints</label>
 	</div>
 	
@@ -93,7 +94,7 @@
 				<li><code>Array.prototype.reduce()</code></li>
 			</ul>
 		</li>
-		<li>Web Workers</li>
+		<li>Localstorage</li>
 	</ul>
 
 	<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
