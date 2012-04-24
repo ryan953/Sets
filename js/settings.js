@@ -1,8 +1,7 @@
-/*global Storage:false */
+/*global Storage:false Event:false */
 
 window.Settings = (function($) {
 	"use strict";
-	var store = Storage.factory();
 
 	var Settings = {
 		_storagekey: 'settings',
@@ -15,20 +14,21 @@ window.Settings = (function($) {
 
 		init: function() {
 			this.inputs = $('[id^=settings-]');
+			this.store = Storage.factory();
 			this.loadData();
 			this.initUI();
 			this.bindEvents();
 		},
 
 		loadData: function() {
-			this.data = store.get(this._storagekey);
+			this.data = this.store.get(this._storagekey);
 			if (!this.data) {
 				this.data = this._defaults;
 			}
 		},
 
 		save: function() {
-			store.put(this._storagekey, this.data);
+			this.store.put(this._storagekey, this.data);
 		},
 
 		initUI: function() {
@@ -60,6 +60,7 @@ window.Settings = (function($) {
 				}
 				_settings.data[key] = value;
 				_settings.save();
+				_settings.trigger('change:'+key, value);
 			});
 		},
 
@@ -88,5 +89,6 @@ window.Settings = (function($) {
 		});
 	});
 
+	Event.patch.call(Settings);
 	return Settings;
 })(jQuery);

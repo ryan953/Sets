@@ -74,6 +74,13 @@ $(document).ready(function() {
 			'found-set'].forEach(function(event) {
 			game.bind(event, clearAndRestartSearch);
 		});
+		Settings.bind('change:help-mode', function(e, enabled) {
+			if (enabled) {
+				clearAndRestartSearch();
+			} else {
+				assistant.stopClock();
+			}
+		});
 
 		return assistant;
 	};
