@@ -9,8 +9,6 @@
 
 <script src="../js/logic.js"></script>
 
-<script src="../js-cov/logic.js"></script>
-
 <script>
 "use strict";
 $(document).ready(function () {
@@ -86,13 +84,13 @@ $(document).ready(function () {
 		Card.classNameMap.attr_two = 'class-two';
 		
 		var c = new Card();
-		equals('', c.getClassAttr(), 'should have no clasname');
+		equal('', c.getClassAttr(), 'should have no clasname');
 		
 		c.attr_one = true;
-		equals('class-one', c.getClassAttr(), 'should now have a classname');
+		equal('class-one', c.getClassAttr(), 'should now have a classname');
 		
 		c.attr_two = true;
-		equals('class-one class-two', c.getClassAttr(), 'should have two classnames');
+		equal('class-one class-two', c.getClassAttr(), 'should have two classnames');
 	});
 
 	test('Cards can be drawn', function() {
@@ -111,7 +109,7 @@ $(document).ready(function () {
 
 		for(var i = 0; i < cards.length; i++) {
 			var divs = SetsUI.renderCard(cards[i].card);
-			equals(cards[i].data, divs.firstChild.toDataURL());
+			equal(cards[i].data, divs.firstChild.toDataURL());
 			//console.log(divs.firstChild.toDataURL());
 		}
 	});
@@ -121,31 +119,32 @@ $(document).ready(function () {
 	test('A Deck is created', function() {
 
 		var deck = new Deck();
-		equals(3*3*3*3, deck.size, 'the size of the deck is reported');
-		equals(3*3*3*3, deck.cards.length, "All cards are here" );
-		equals('regular', deck.mode, 'mode defaults to `regular`');
+		equal(3*3*3*3, deck.size, 'the size of the deck is reported');
+		equal(3*3*3*3, deck.cards.length, "All cards are here" );
+		equal('regular', deck.mode, 'mode defaults to `regular`');
 
 		deck = new Deck('regular');
-		equals(3*3*3*3, deck.size, 'the size of the deck is reported');
-		equals(3*3*3*3, deck.cards.length, 'all cards are here - regular mode');
-		equals('regular', deck.mode, 'mode sets when passed');
+		equal(3*3*3*3, deck.size, 'the size of the deck is reported');
+		equal(3*3*3*3, deck.cards.length, 'all cards are here - regular mode');
+		equal('regular', deck.mode, 'mode sets when passed');
 
 		deck = new Deck('easy');
-		equals(3*3*3, deck.size, 'the size of the deck is reported');
-		equals(3*3*3, deck.cards.length, 'all cards are here - easy mode');
-		equals('easy', deck.mode, 'mode sets when passed');
+		equal(3*3*3, deck.size, 'the size of the deck is reported');
+		equal(3*3*3, deck.cards.length, 'all cards are here - easy mode');
+		equal('easy', deck.mode, 'mode sets when passed');
 	});
 
 	test('A card can be picked from a deck', function() {
 		var deck = new Deck(),
+			deckSize = (3*3*3*3),
 			c = deck.pickCard(0);
 
 		ok(c instanceof(Card), 'Picked the first card');
-		equals( (3*3*3*3) - 1, deck.cards.length, 'the picked card was removed from the deck');
+		equal( deckSize - 1, deck.cards.length, 'the picked card was removed from the deck');
 
 		c = deck.pickRandomCard();
 		ok(c instanceof(Card), 'Picked a random card');
-		equals( (3*3*3*3) - 2, deck.cards.length, 'the picked card was removed from the deck');
+		equal( deckSize - 2, deck.cards.length, 'the picked card was removed from the deck');
 	});
 
 
@@ -226,33 +225,31 @@ $(document).ready(function () {
 		expect(12);
 
 		var game = new Sets().start(),
-		expectedSelectedCount,
+		expectedSelectedCounts = [1, 2, 3, 1, 2, 1],
 		selectHandler = function(e, selected) {
+			var expectedCount = expectedSelectedCounts.shift();
 			equal(e.name, 'select-card', 'The correct event was fired');
-			equal(selected.length, expectedSelectedCount, expectedSelectedCount + ' card(s) are selected');
+			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
 			start();
 		},
 		deselectHandler = function(e, selected) {
+			var expectedCount = expectedSelectedCounts.shift();
 			equal(e.name, 'deselect-card', 'The correct event was fired');
-			equal(selected.length, expectedSelectedCount, expectedSelectedCount + ' card(s) are selected');
+			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
 			start();
 		};
 
 		game
 			.bind('select-card', selectHandler)
-			.bind('deselect-card', deselectHandler);
+			.bind('deselect-card', deselectHandler)
 
-		expectedSelectedCount = 1; game.selectCard(game.getCard(0, 0)); //triggers an event with an assertion
-		expectedSelectedCount++;   game.selectCard(game.getCard(0, 1)); //triggers an event with an assertion
-		expectedSelectedCount++;   game.selectCard(game.getCard(0, 2)); //triggers an event with an assertion
+			.selectCard(game.getCard(0, 0))
+			.selectCard(game.getCard(0, 1))
+			.selectCard(game.getCard(0, 2))
 
-		expectedSelectedCount = 1; game.selectCard(game.getCard(1, 0)); //triggers an event with an assertion
-		expectedSelectedCount++;   game.selectCard(game.getCard(1, 1)); //triggers an event with an assertion
-		expectedSelectedCount = 1; game.selectCard(game.getCard(1, 0)); //triggers an event with an assertion
-
-		game
-			.unbind('select-card', selectHandler)
-			.unbind('deselect-card', deselectHandler);
+			.selectCard(game.getCard(1, 0))
+			.selectCard(game.getCard(1, 1))
+			.selectCard(game.getCard(1, 0));
 	});
 	
 	asyncTest('selecting a card and deselecting it fires `selection-cleared` event', function() {
@@ -261,13 +258,13 @@ $(document).ready(function () {
 		var game = new Sets().start(),
 		card = game.getCard(0, 0),
 		clearedHandler = function(e, selected) {
-			equals(e.name, 'selection-cleared', 'The `selection-cleared` event was caught');
+			equal(e.name, 'selection-cleared', 'The `selection-cleared` event was caught');
 			start();
 		};
 		
-		game.bind('selection-cleared', clearedHandler);
-		game.selectCard(card);
-		game.selectCard(card);
+		game.bind('selection-cleared', clearedHandler)
+			.selectCard(card)
+			.selectCard(card);
 	});
 
 	asyncTest('`found-set` is triggered after a set is selected', function() {
@@ -285,15 +282,12 @@ $(document).ready(function () {
 		};
 		game._loadBoard();
 
-		game.bind('found-set', foundHandler);
-
-		game.selectCard(game.getCard(0, 0));
-		game.selectCard(game.getCard(0, 1));
-		game.selectCard(game.getCard(0, 2));
+		game.bind('found-set', foundHandler)
+			.selectCard(game.getCard(0, 0))
+			.selectCard(game.getCard(0, 1))
+			.selectCard(game.getCard(0, 2));
 
 		strictEqual(game.selected.length, 0, 'After finding a set, not cards should be selected');
-
-		game.unbind('found-set', foundHandler);
 	});
 
 	test('replaceSet() removed from the board and replaces the cards you pass in', function() {
@@ -326,11 +320,7 @@ $(document).ready(function () {
 
 </head>
 <body>
-	<h1 id="qunit-header">Sets! Card Game Tests</h1>
-	<h2 id="qunit-banner"></h2>
-	<h2 id="qunit-userAgent"></h2>
-	<div id="qunit-testrunner-toolbar"></div>
-	<ol id="qunit-tests"></ol>
+	<div id="qunit"></div>
 	<div id="qunit-fixture">test markup, will be hidden</div>
 </body>
 </html>
