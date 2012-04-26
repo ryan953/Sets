@@ -1,10 +1,12 @@
 /*jshint smarttabs:true */
 /*global Event:false Error:false Sets:false smarttabs:true */
-(function() {
+
+window.Sets = window.Sets || {};
+
+Sets.Assistant = (function(Sets) {
 	"use strict";
 
-	window.Assistant = Assistant;
-	function Assistant(delay) {
+	var Assistant = function (delay) {
 		if (!delay) {
 			throw new Error('Missing required param: delay');
 		}
@@ -12,8 +14,8 @@
 		this.delay = delay;
 		this.timer = null;
 		this.not_possible_cards = [];
-	}
-
+	};
+	
 	/**
 	 * Takes a delay between clock ticks, and an action to do each tick
 	 * when the action returns false the clock will turn itself off
@@ -105,7 +107,7 @@
 		if (board.length < 3) {
 			return board;
 		} else if (board.length == 3) {
-			return (Sets.isASet(board) ? [] : board);
+			return (Sets.Game.isASet(board) ? [] : board);
 		}
 
 		if (selected.length == 1) {
@@ -121,7 +123,7 @@
 				if (card2 == card1) { return; }
 				set3.forEach(function(card3) {
 					if (card1 == card3 || card2 == card3) { return; }
-					if ( Sets.isASet([card1, card2, card3]) ) {
+					if ( Sets.Game.isASet([card1, card2, card3]) ) {
 						card1.hasSet = card2.hasSet = card3.hasSet = true;
 					}
 				});
@@ -129,4 +131,6 @@
 		});
 		return notSelectedCards(unmatchedCards(board));
 	};
-})();
+
+	return Assistant;
+})(window.Sets);

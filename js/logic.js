@@ -1,16 +1,18 @@
 /*global Event:false */
-(function() {
+
+window.Sets = window.Sets || {};
+
+Sets.Card = (function() {
 	"use strict";
 
-	window.Card = Card;
-	function Card(count, shape, fill, color) {
+	var Card = function(count, shape, fill, color) {
 		this.isSelected = false;
 
 		this.count = count;
 		this.shape = shape;
 		this.fill = fill;
 		this.color = color;
-	}
+	};
 
 	function getPattern(color, lineWidth) {
 		var stripes = document.createElement('canvas'),
@@ -133,16 +135,17 @@
 			ctx.restore();
 		}
 	};
+
+	return Card;
 })();
 
-(function(Card) {
+Sets.Deck = (function(Card) {
 	"use strict";
 
-	window.Deck = Deck;
-	function Deck(mode) {
+	var Deck = function(mode) {
 		this.mode = mode || 'regular';
 		this.generateDeck(this.mode);
-	}
+	};
 
 	Deck.prototype.generateDeck = function(mode) {
 		var self = this;
@@ -168,13 +171,14 @@
 	Deck.prototype.pickCard = function(idx) {
 		return this.cards.splice(idx, 1)[0] || null;
 	};
-})(window.Card);
 
-(function(Deck) {
+	return Deck;
+})(window.Sets.Card);
+
+Sets.Game = (function(Deck) {
 	"use strict";
 
-	window.Sets = Sets;
-	function Sets() {
+	var Game = function() {
 		Event.patch.call(this);
 
 		var _getScore = function(game) {
@@ -189,11 +193,9 @@
 			})
 			.bind('found-set', function() {
 				this.trigger('score.change', _getScore(this));
-				if (this.deck.size == this.foundSets.length * 3) {
-					this.trigger('end');
-				}
+				this.tryEnd();
 			});
-	}
+	};
 
 	var propCounter = function(field) {
 		return function(prev, curr) {
@@ -203,12 +205,12 @@
 	};
 
 	
-	Sets.lastErrors = [];
-	Sets.modes = { // TODO: hello world
+	Game.lastErrors = [];
+	Game.modes = { // TODO: hello world
 		'easy': {rows:3, cols:3},
 		'regular': {rows:4, cols:3}
 	};
-	Sets.isASet = function(cards) {
+	Game.isASet = function(cards) {
 		if (cards.length !== 3 ) { return false; }
 
 		var totals = {
@@ -219,14 +221,14 @@
 		},
 		field, val;
 
-		Sets.lastErrors = [];
+		Game.lastErrors = [];
 
 		for(field in totals) {
 			if (totals.hasOwnProperty(field)) {
 				for(val in totals[field]) {
 					if (totals[field].hasOwnProperty(val)) {
 						if (totals[field][val] != 1 && totals[field][val] != 3) {
-							Sets.lastErrors.push({
+							Game.lastErrors.push({
 								field:field,
 								val:val,
 								count:totals[field][val]
@@ -236,9 +238,9 @@
 				}
 			}
 		}
-		return Sets.lastErrors.length === 0;
+		return Game.lastErrors.length === 0;
 	};
-	Sets.prototype._init = function(mode) {
+	Game.prototype._init = function(mode) {
 		this.mode = mode || 'easy';
 		this.deck = new Deck(this.mode);
 		this.board = [];
@@ -246,7 +248,7 @@
 		this.foundSets = [];
 		return this;
 	};
-	Sets.prototype._addCardToBoard = function(card, row, col) {
+	Game.prototype._addCardToBoard = function(card, row, col) {
 		this.board[row] = this.board[row] || [];
 		this.board[row][col] = card;
 		try {
@@ -255,16 +257,23 @@
 		} catch (err) { }
 		return this;
 	};
-	Sets.prototype._loadBoard = function() {
+	Game.prototype._loadBoard = function() {
 		var row, col, card;
-		for(row = 0; row < Sets.modes[this.mode].rows; row++) {
-			for(col = 0; col < Sets.modes[this.mode].cols; col++) {
+		for(row = 0; row < Game.modes[this.mode].rows; row++) {
+			for(col = 0; col < Game.modes[this.mode].cols; col++) {
 				this._addCardToBoard(this.deck.pickRandomCard(), row, col);
 			}
 		}
 		return this;
 	};
-	Sets.prototype.listCardsOnBoard = function() {
+	Game.prototype.addCards = function() {
+		// debugger;
+		// var row = this.board.length, col;
+		// for(col = 0; col < this.board[0].length; col++) {
+		//    this._addCardToBoard(this.deck.pickRandomCard(), row, col);
+		// }
+	};
+	Game.prototype.listCardsOnBoard = function() {
 		var row, col, card, lst = [];
 		for(row = 0; row < this.board.length; row++) {
 			for(col = 0; col < this.board[row].length; col++) {
@@ -276,16 +285,21 @@
 		}
 		return lst;
 	};
-	Sets.prototype.start = function(mode) {
+	Game.prototype.start = function(mode) {
 		return this
 			._init(mode)
 			._loadBoard()
 			.trigger('start');
 	};
-	Sets.prototype.getCard = function(row, col) {
+	Game.prototype.tryEnd = function() {
+		if (this.deck.size == this.foundSets.length * 3) {
+			this.trigger('end');
+		}
+	};
+	Game.prototype.getCard = function(row, col) {
 		return this.board[row][col];
 	};
-	Sets.prototype.selectCard = function(card) {
+	Game.prototype.selectCard = function(card) {
 		var cards,
 			idx = this.selected.indexOf(card);
 			
@@ -304,7 +318,7 @@
 			}
 		}
 
-		if (Sets.isASet(this.selected) === true) {
+		if (Game.isASet(this.selected) === true) {
 			cards = this.selected.slice();
 			this.foundSets.push(cards);
 			this.replaceSet(this.selected)
@@ -317,12 +331,12 @@
 		}
 		return this;
 	};
-	Sets.prototype._clearSelection = function() {
+	Game.prototype._clearSelection = function() {
 		this.selected.forEach(function(card) { card.deselect(); });
 		this.selected = [];
 		return this;
 	};
-	Sets.prototype.replaceSet = function(cards) {
+	Game.prototype.replaceSet = function(cards) {
 		var card_i, row, col;
 		for(row = 0; row < this.board.length; row++) {
 			for(col = 0; col < this.board[row].length; col++) {
@@ -337,24 +351,25 @@
 		}
 		return this;
 	};
-})(window.Deck);
 
-(function() {
+	return Game;
+})(window.Sets.Deck);
+
+Sets.SetsUI = (function() {
 	"use strict";
 
-	window.SetsUI = SetsUI;
-	function SetsUI(parentElement) {
+	var SetsUI = function(parentElement) {
 		this.container = parentElement;
-	}
+	};
 
 	SetsUI.makeBoard = function(rows, cols) {
 		var row, table = document.createElement('table');
 		for(row = 0; row < rows; row++) {
-			table.appendChild(SetsUI.makeRow(cols));
+			table.appendChild(SetsUI._makeRow(cols));
 		}
 		return table;
 	};
-	SetsUI.makeRow = function(cols) {
+	SetsUI._makeRow = function(cols) {
 		var col, tr = document.createElement('tr');
 		for(col = 0; col < cols; col++) {
 			tr.appendChild(document.createElement('td'));
@@ -363,7 +378,7 @@
 	};
 	SetsUI.renderCard = function(card) {
 		if (card) {
-			var elem = SetsUI.createCardElement();
+			var elem = SetsUI._createCardElement();
 			card.draw(elem.firstChild.getContext('2d'));
 			return elem;
 		} else {
@@ -373,7 +388,7 @@
 	SetsUI.coordsToIndex = function(row, col) {
 		return (row * 3) + col;
 	};
-	SetsUI.createCardElement = function() {
+	SetsUI._createCardElement = function() {
 		var div = document.createElement('div'),
 			canvas = document.createElement('canvas');
 		canvas.width = canvas.height = 150;
@@ -450,4 +465,6 @@
 
 		setTimeout(function() { self.renderGame(game); }, 1000);
 	};
+
+	return SetsUI;
 })();

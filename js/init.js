@@ -1,4 +1,4 @@
-/*global $:false Assistant:false Sets:false SetsUI:false Settings:false */
+/*global $:false Assistant:false Sets:false Settings:false */
 
 $(document).ready(function() {
 	"use strict";
@@ -22,7 +22,8 @@ $(document).ready(function() {
 
 				var percent = (data.deck !== 0 ? Math.round(data.found / data.deck * 1000)/10 : 0);
 				$('#percent').html(percent + '%');
-			});
+			})
+			;
 	};
 
 	var bindGameToDOM = function(game, ui) {
@@ -40,7 +41,7 @@ $(document).ready(function() {
 
 	var buildAssistant = function(game, ui) {
 		// Assistant setup -> happens before game.start()
-		var assistant = new Assistant(/* delay = */ 5500),
+		var assistant = new window.Sets.Assistant(/* delay = */ 5500),
 			clearAndRestartSearch = function(e) {
 				if (Settings.helpMode()) {
 					assistant.stopClock();
@@ -65,6 +66,11 @@ $(document).ready(function() {
 			.bind('picked-not-possible', function(event, card) {
 				game.getCard(card.row, card.col).notPossible = true;
 				ui.updateSelected(game.board);
+			})
+			.bind('no-cards-possible', function() {
+				// console.log('no-cards-possible');
+				game.addCards();
+				game.tryEnd();
 			});
 		['start',
 			'end',
@@ -85,8 +91,8 @@ $(document).ready(function() {
 		return assistant;
 	};
 
-	var game = new Sets(), //game start is at the bottom, after we attach some events!
-		ui = new SetsUI(document.getElementById('game-area')),
+	var game = new window.Sets.Game(), //game start is at the bottom, after we attach some events!
+		ui = new window.Sets.SetsUI(document.getElementById('game-area')),
 		assistant = buildAssistant(game, ui);
 
 	bindGameToUI(game, ui);

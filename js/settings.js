@@ -1,6 +1,6 @@
 /*global Storage:false Event:false */
 
-window.Settings = (function($) {
+window.Settings = (function($, Storage) {
 	"use strict";
 
 	var Settings = {
@@ -73,22 +73,22 @@ window.Settings = (function($) {
 		}
 	};
 
-	$(document).ready(function() {
-		Settings.init();
-
-		// jquery plugin for '.scoreboard-display .time' is needed
-		$('.scoreboard-display [data-scoreboard-display]').bind('click', function() {
-			var elem = $(this);
-			var visible = elem.hide().next('[data-scoreboard-display]').show();
-			if (!visible.length) {
-				visible = elem.siblings('[data-scoreboard-display]').first().show();
-			}
-			Settings.data.scoreboardDisplay = visible.data('scoreboardDisplay');
-			Settings.save();
-			return false;
-		});
-	});
-
 	Event.patch.call(Settings);
 	return Settings;
-})(jQuery);
+})(jQuery, Storage);
+
+$(document).ready(function() {
+	Settings.init();
+
+	// jquery plugin for '.scoreboard-display .time' is needed
+	$('.scoreboard-display [data-scoreboard-display]').bind('click', function() {
+		var elem = $(this);
+		var visible = elem.hide().next('[data-scoreboard-display]').show();
+		if (!visible.length) {
+			visible = elem.siblings('[data-scoreboard-display]').first().show();
+		}
+		Settings.data.scoreboardDisplay = visible.data('scoreboardDisplay');
+		Settings.save();
+		return false;
+	});
+});
