@@ -315,6 +315,7 @@
 			this._clearSelection()
 				.trigger('selection-cleared', cards);
 		}
+		return this;
 	};
 	Sets.prototype._clearSelection = function() {
 		this.selected.forEach(function(card) { card.deselect(); });
@@ -362,7 +363,7 @@
 	};
 	SetsUI.renderCard = function(card) {
 		if (card) {
-			var elem = SetsUI.createCardElement(card.isSelected);
+			var elem = SetsUI.createCardElement();
 			card.draw(elem.firstChild.getContext('2d'));
 			return elem;
 		} else {
@@ -372,7 +373,7 @@
 	SetsUI.coordsToIndex = function(row, col) {
 		return (row * 3) + col;
 	};
-	SetsUI.createCardElement = function(isSelected) {
+	SetsUI.createCardElement = function() {
 		var div = document.createElement('div'),
 			canvas = document.createElement('canvas');
 		canvas.width = canvas.height = 150;
@@ -380,14 +381,14 @@
 		return div;
 	};
 
-	SetsUI.prototype.clearContainerElement = function() {
+	SetsUI.prototype._clearContainerElement = function() {
 		var p = this.container;
 		while (p.lastChild) { p.removeChild(p.lastChild); }
 		return this;
 	};
 
 	SetsUI.prototype.renderGame = function(game) {
-		this.clearContainerElement();
+		this._clearContainerElement();
 		var rows = game.board.length,
 			cols = game.board[0].length,
 			ui_board = SetsUI.makeBoard(rows, cols),
