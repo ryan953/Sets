@@ -1,6 +1,6 @@
 /*global Storage:false Event:false */
 
-window.Settings = (function($, Storage) {
+window.Settings = (function($, store) {
 	"use strict";
 
 	var Settings = {
@@ -14,21 +14,20 @@ window.Settings = (function($, Storage) {
 
 		init: function() {
 			this.inputs = $('[id^=settings-]');
-			this.store = Storage.factory();
 			this.loadData();
 			this.initUI();
 			this.bindEvents();
 		},
 
 		loadData: function() {
-			this.data = this.store.get(this._storagekey);
+			this.data = store.get(this._storagekey);
 			if (!this.data) {
 				this.data = this._defaults;
 			}
 		},
 
 		save: function() {
-			this.store.put(this._storagekey, this.data);
+			store.put(this._storagekey, this.data);
 		},
 
 		initUI: function() {
@@ -75,13 +74,16 @@ window.Settings = (function($, Storage) {
 
 	Event.patch.call(Settings);
 	return Settings;
-})(jQuery, Storage);
+})(jQuery, Storage.factory());
 
 $(document).ready(function() {
 	Settings.init();
 
-	// jquery plugin for '.scoreboard-display .time' is needed
-	$('.scoreboard-display [data-scoreboard-display]').bind('click', function() {
+	var scoreboards = $('.scoreboard-display [data-scoreboard-display]');
+	if (Settings.data.scoreboardDisplay) {
+		scoreboards.hide().filter('[data-scoreboard-display='+Settings.data.scoreboardDisplay+']').show();
+	}
+	scoreboards.bind('click', function() {
 		var elem = $(this);
 		var visible = elem.hide().next('[data-scoreboard-display]').show();
 		if (!visible.length) {

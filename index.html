@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="sets.appcache">
+<html>
 <head>
 <title>Sets!</title>
 
@@ -44,7 +44,7 @@
 		<a href="#" data-scoreboard-display="score">Deck: <span id="score">0/0</span></a>
 		<a href="#" data-scoreboard-display="remaining" class="hide"><span id="remaining">0</span> cards remaining</a>
 		<a href="#" data-scoreboard-display="percent" class="hide">Sets Found: <span id="percent">00%</span></a>
-		<a href="#" data-x-scoreboard-display="time" class="hide">Time: <span id="time">0:00</span></a>
+		<a href="#" data-scoreboard-display="time" class="hide">Time: <span id="time">0:00</span></a>
 	</p>
 </div>
 
@@ -111,15 +111,19 @@
 <script src="./lib/jquery-1.6.4.js"></script>
 <script src="./lib/NoClickDelay.js"></script>
 <script src="./lib/event.js"></script>
+<script src="./lib/jintervals-0.7-min.js"></script>
 <script src="./js/appcache.js"></script>
 <script src="./js/utils.js"></script>
 <script src="./js/store.js"></script>
 <script src="./js/assistant.js"></script>
 <script src="./js/logic.js"></script>
+
+<script src="./js/game-timer.js"></script>
+
 <script src="./js/init.js"></script>
 
-<script src="./js/lightbox.js"></script>
 <script src="./js/settings.js"></script>
+<script src="./js/lightbox.js"></script>
 
 <script>
 	document.getElementById('game-area').ontouchmove = function(e){ e.preventDefault(); };

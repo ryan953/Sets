@@ -1,4 +1,4 @@
-/*global $:false Assistant:false Sets:false Settings:false */
+/*global $:false Assistant:false Sets:false Settings:false GameTimer:false */
 
 $(document).ready(function() {
 	"use strict";
@@ -97,6 +97,8 @@ $(document).ready(function() {
 
 	bindGameToUI(game, ui);
 	bindGameToDOM(game, ui);
+
+	GameTimer.init(game);
 
 	//after init
 	setTimeout(function() {
