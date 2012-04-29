@@ -193,7 +193,9 @@ Sets.Game = (function(Deck) {
 			})
 			.bind('found-set', function() {
 				this.trigger('score.change', _getScore(this));
-				this.tryEnd();
+				if (this.hasFoundAllCards()) {
+					this.trigger('end', {'win': true});
+				}
 			});
 	};
 
@@ -285,16 +287,14 @@ Sets.Game = (function(Deck) {
 		}
 		return lst;
 	};
+	Game.prototype.hasFoundAllCards = function() {
+		return (this.deck.size == this.foundSets.length * 3);
+	};
 	Game.prototype.start = function(mode) {
 		return this
 			._init(mode)
 			._loadBoard()
 			.trigger('start');
-	};
-	Game.prototype.tryEnd = function() {
-		if (this.deck.size == this.foundSets.length * 3) {
-			this.trigger('end');
-		}
 	};
 	Game.prototype.getCard = function(row, col) {
 		return this.board[row][col];

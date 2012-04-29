@@ -4,8 +4,8 @@ $(document).ready(function() {
 	"use strict";
 	var bindGameToUI = function(game, ui) {
 		game
-			.bind('end', function() {
-				window.location = '#game-over';
+			.bind('end', function(result) {
+				window.location = (result.win ? '#game-over-win' : '#game-over-lose');
 			})
 			.bind('start', function() {
 				ui.renderGame(this);
@@ -68,9 +68,12 @@ $(document).ready(function() {
 				ui.updateSelected(game.board);
 			})
 			.bind('no-cards-possible', function() {
-				// console.log('no-cards-possible');
-				game.addCards();
-				game.tryEnd();
+				if (game.hasFoundAllCards()) {
+					this.trigger('end', {'win': false});
+				} else {
+					game.addCards();
+					ui.updateSelected(game.board);
+				}
 			});
 		['start',
 			'end',
