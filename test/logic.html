@@ -17,7 +17,8 @@ var Game = Sets.Game;
 
 $(document).ready(function () {
 	module('Event');
-	asyncTest('Create and fire an event', function() {
+	test('Create and fire an event', function() {
+		stop();
 		var evt = new Event(),
 			obj = {
 				test:function(e, data) {
@@ -130,7 +131,7 @@ $(document).ready(function () {
 	});
 
 
-	module('Game Game');
+	module('Game');
 	test('isASet is detecting correctly', function() {
 		var diff_color = [
 			new Card( 1, "Oval", "striped", "green"),
@@ -176,7 +177,8 @@ $(document).ready(function () {
 	});
 
 	function gameStartTest(mode) {
-		asyncTest('Game Starts in ' + mode + ' mode', function() {
+		test('Game Starts in ' + mode + ' mode', function() {
+			stop();
 			expect(4); // the event gets fired twice cuz we call game.start() twice
 
 			var game = new Game(),
@@ -234,7 +236,8 @@ $(document).ready(function () {
 			.selectCard(game.getCard(1, 0));
 	});
 	
-	asyncTest('selecting a card and deselecting it fires `selection-cleared` event', function() {
+	test('selecting a card and deselecting it fires `selection-cleared` event', function() {
+		stop();
 		expect(1);
 		
 		var game = new Game().start(),
@@ -249,7 +252,8 @@ $(document).ready(function () {
 			.selectCard(card);
 	});
 
-	asyncTest('`found-set` is triggered after a set is selected', function() {
+	test('`found-set` is triggered after a set is selected', function() {
+		stop();
 		expect(2);
 
 		var game = new Game(),
@@ -265,6 +269,34 @@ $(document).ready(function () {
 		game._loadBoard();
 
 		game.bind('found-set', foundHandler)
+			.selectCard(game.getCard(0, 0))
+			.selectCard(game.getCard(0, 1))
+			.selectCard(game.getCard(0, 2));
+
+		strictEqual(game.selected.length, 0, 'After finding a set, not cards should be selected');
+	});
+
+	test('`end` is triggered after the last set is selected', function() {
+		stop();
+		expect(3);
+
+		var game = new Game(),
+		endHandler = function(e, result) {
+			ok(true, 'game is over');
+			ok(result.win, 'result is a win');
+			start();
+		};
+
+		game._init();
+		game.deck.pickRandomCard = function(idx) {
+			return this.pickCard(0);
+		};
+		game.hasFoundAllCards = function() {
+			return true;
+		};
+		game._loadBoard();
+
+		game.bind('end', endHandler)
 			.selectCard(game.getCard(0, 0))
 			.selectCard(game.getCard(0, 1))
 			.selectCard(game.getCard(0, 2));
