@@ -19,5 +19,7 @@
 <body>
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
+
+	<a href="./cards.html">Card Drawing Test</a>
 </body>
 </html>

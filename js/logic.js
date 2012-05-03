@@ -47,7 +47,7 @@ Sets.Card = (function() {
 	};
 
 	Card.counts = [1, 2, 3];
-	Card.shapes = ['Diamond', 'Squiggle', 'Oval'];
+	Card.shapes = ['Triangle', 'Circle', 'Square' /*, 'Diamond', 'Squiggle', 'Oval'*/];
 	Card.fills = ['solid', 'empty', 'striped'];
 	Card.colors = ['red', 'green', 'blue'];
 	Card.stripedFills = {
@@ -69,6 +69,21 @@ Sets.Card = (function() {
 		Squiggle: function(ctx) {
 			ctx.beginPath();
 			ctx.moveTo(70, 10); ctx.bezierCurveTo(0, -20, -20, 75, 30, 40); ctx.bezierCurveTo(100, 70, 120, -25, 70, 10);
+			ctx.closePath();
+		},
+		Square: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(2, 5); ctx.lineTo(98, 5); ctx.lineTo(98, 45); ctx.lineTo(2, 45);
+			ctx.closePath();
+		},
+		Circle: function(ctx) {
+			ctx.beginPath();
+			ctx.arc(52, 25, 20, 0, Math.PI*2, false);
+			ctx.closePath();
+		},
+		Triangle: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(50, 5); ctx.lineTo(10, 45); ctx.lineTo(90, 45);
 			ctx.closePath();
 		}
 	};

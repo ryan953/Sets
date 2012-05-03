@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sets!</title>
+<style>
+#cards {
+	text-align: center;
+}
+canvas {
+	border: 1px solid blue;
+}
+</style>
+</head>
+<body>
+
+<div id="cards"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="../js/logic.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+	drawAllCards();
+});
+
+function drawAllCards() {
+	console.log('paths', Sets.Card.paths);
+	Sets.Card.shapes = $.map(Sets.Card.paths, function(val, key) {
+		console.log('key', key, val, this);
+		return key;
+	});
+	var deck = new Sets.Deck();
+	deck.generateDeck();
+
+	while(card = deck.pickCard(0)) {
+		var ctx = $('<canvas width="150" height="150" />')
+			.appendTo('#cards')[0]
+			.getContext('2d');
+		card.draw(ctx);
+	}
+}
+</script>
+</body>
+</html>
