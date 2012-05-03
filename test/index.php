@@ -18,7 +18,6 @@
 </head>
 <body>
 	<div id="qunit"></div>
-	<div id="qunit-fixture">
-</div>
+	<div id="qunit-fixture"></div>
 </body>
 </html>
