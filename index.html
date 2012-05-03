@@ -62,7 +62,40 @@
 
 <div class="lightbox" id="stats">
 	<h2>Stats</h2>
-	<p>123</p>
+	<strong>Games</strong>
+	<dl class="table">
+		<dt>Games Started</dt><dd data-stat="games-start">0</dd>
+		<dt>Games Won</dt><dd data-stat="games-win">0</dd>
+		<dt>Games Lost</dt><dd data-stat="games-lose">0</dd>
+		<dt>Games Incomplete</dt><dd data-stat="games-incomplete">0</dd>
+		<dt>Percent Won</dt><dd data-stat="games-percent">0</dd>
+	</dl>
+	<hr/>
+	<strong>Time</strong>
+	<dl class="table">
+		<dt>Total Time Played</dt><dd data-stat="time-total">0:00</dd>
+		<dt>Average Game Time</dt><dd data-stat="time-average">0:00</dd>
+		<dt>Average Win Time</dt><dd data-stat="time-average-win">0:00</dd>
+		<dt>Shortest Win Time</dt><dd data-stat="time-shortest-win">0:00</dd>
+		<dt>Longest Win Time</dt><dd data-stat="time-longest-win">0:00</dd>
+	</dl>å
+	<hr/>
+	<strong>Streaks</strong>
+	<dl class="table">
+		<dt>Current Streak</dt><dd data-stat="streak-current">0 wins</dd>
+		<dt>Longest Win Streak</dt><dd data-stat="streak-win">0</dd>
+		<dt>Longest Lose Streak</dt><dd data-stat="streak-lose">0</dd>
+	</dl>
+	<hr/>
+	<strong>Cards Remaining</strong>
+	<dl class="table">
+		<dt>No cards left over</dt><dd data-stat="cards-0">0</dd>
+		<dt>3 Remaining</dt><dd data-stat="cards-3">0</dd>
+		<dt>6 Remaining</dt><dd data-stat="cards-6">0</dd>
+		<dt>9 Remaining</dt><dd data-stat="cards-9">0</dd>
+		<dt>more than 9</dt><dd data-stat="cards-more">0</dd>
+	</dl>
+	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
 </div>
 
 <div class="lightbox" id="help">
@@ -113,7 +146,7 @@
 	<a href="#" class="button game-reset"><span>Play Again</span></a>
 </div>
 
-<script src="./lib/jquery-1.6.4.js"></script>
+<script src="./lib/jquery-1.7.2.min.js"></script>
 <script src="./lib/NoClickDelay.js"></script>
 <script src="./lib/event.js"></script>
 <script src="./lib/jintervals-0.7-min.js"></script>
@@ -122,8 +155,8 @@
 <script src="./js/store.js"></script>
 <script src="./js/assistant.js"></script>
 <script src="./js/logic.js"></script>
-
 <script src="./js/game-timer.js"></script>
+<script src="./js/stats.js"></script>
 
 <script src="./js/init.js"></script>
 

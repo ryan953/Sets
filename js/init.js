@@ -1,4 +1,4 @@
-/*global $:false Assistant:false Sets:false Settings:false GameTimer:false */
+/*global $:false Assistant:false Stats:false Sets:false Settings:false GameTimer:false */
 
 $(document).ready(function() {
 	"use strict";
@@ -102,6 +102,16 @@ $(document).ready(function() {
 	bindGameToDOM(game, ui);
 
 	GameTimer.init(game);
+	Stats.init();
+	Stats.bindEvents(game, assistant);
+
+	$('#stats').click(function() {
+		Stats.display();
+	});
+	$('#stats-reset').click(function() {
+		Stats.reset();
+		Stats.display();
+	});
 
 	//after init
 	setTimeout(function() {
