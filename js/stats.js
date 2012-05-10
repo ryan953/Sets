@@ -21,7 +21,7 @@ window.Stats = (function($, store) {
 			'cards-3': 0,
 			'cards-6': 0,
 			'cards-9': 0,
-			'cards-more': 0	
+			'cards-more': 0
 		},
 		data: {},
 
@@ -44,20 +44,40 @@ window.Stats = (function($, store) {
 
 		save: function() {
 			store.put(this._storagekey, this.data);
+			this.display();
+		},
+
+		_incStreak: function(type) {
+			if (this.data['streak-current-type'] === type) {
+				this.data['streak-current'] += 1;
+			} else {
+				if (type != 'win') {
+					this.data['streak-win'] = Math.max(this.data['streak-current'], this.data['streak-win']);
+				} else {
+					this.data['streak-lose'] = Math.max(this.data['streak-current'], this.data['streak-lose']);
+				}
+				this.data['streak-current'] += 1;
+				this.data['streak-current-type'] = type;
+			}
 		},
 
 		bindEvents: function(game, assistant) {
-			var data = this.data;
+			var _this = this,
+				data = _this.data;
 			game
 				.bind('start', function() {
 					data['games-start'] += 1;
+					_this.save();
 				})
 				.bind('end', function(result) {
 					if (result.win) {
 						data['games-win'] += 1;
+						_this._incStreak('win');
 					} else {
 						data['games-lose'] += 1;
+						_this._incStreak('lose');
 					}
+					_this.save();
 				});
 		},
 
