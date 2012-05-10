@@ -1,4 +1,4 @@
-/*global $:false */
+/*global $ */
 
 (function(){
 	"use strict";
@@ -35,9 +35,6 @@
 				newVal:newVal
 			});
 		};
-		function get() {
-			return 1;
-		}
 	}
 
 	var LocalStore = function() {};

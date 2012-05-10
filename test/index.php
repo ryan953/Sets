@@ -12,7 +12,8 @@
 	QUnit.testSuites([
 		"./logic.html",
 		"./logic-setsui.html",
-		"./assistant.html"
+		"./assistant.html",
+		"./store.html"
    	]);
 	</script>
 </head>

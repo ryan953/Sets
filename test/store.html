@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Test: logic.js</title>
+<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
+<script src="../lib/qunit.js"></script>
+<script src="../lib/jquery-1.7.2.min.js"></script>
+
+<script src="../js/store.js"></script>
+
+<script>
+"use strict";
+
+$(document).ready(function () {
+	module('Store', {
+		setup: function() {
+			localStorage.clear();
+			this.store = window.Storage.factory();
+			this.orig_fire = this.store.fire;
+		},
+		teardown: function() {
+			localStorage.clear();
+			this.store.fire = this.orig_fire;
+		}
+	});
+
+	test('store.fire', function() {
+		expect(1);
+		stop();
+		$(this.store).on('event.name', function(event, params) {
+			deepEqual({
+				oldVal: 'old',
+				newVal: 'new'
+			}, params);
+			start();
+		});
+		this.store.fire('event', 'name', 'old', 'new');
+	});
+
+	test('store.put', function() {
+		stop();
+		this.store.fire = function(key, action, oldVal, newVal) {
+			equal('test', key);
+			equal('add', action);
+			equal(undefined, oldVal);
+			equal('foobar', newVal);
+			start();
+		};
+
+		this.store.put('test', 'foobar');
+		equal('"foobar"', localStorage.getItem('test'));
+	});
+
+	test('store.appendTo', function() {
+		stop();
+		this.store.fire = function(key, action, oldVal, newVal) {
+			equal('test', key);
+			equal('change', action);
+			deepEqual([1,2], oldVal);
+			deepEqual([1,2,3], newVal);
+			start();
+		};
+
+		localStorage.setItem('test', '[1,2]');
+		this.store.appendTo('test', 3);
+		equal("[1,2,3]", localStorage.getItem('test'));
+	});
+
+	test('store.get', function() {
+		localStorage.setItem('test', '{"foo":"bar"}');
+		deepEqual({foo:'bar'}, this.store.get('test'));
+	});
+
+	test('store.remove', function() {
+		stop();
+		this.store.fire = function(key, action, oldVal, newVal) {
+			equal('test', key);
+			equal('remove', action);
+			deepEqual(123, oldVal);
+			deepEqual(null, newVal);
+			start();
+		};
+
+		localStorage.setItem('test', '123');
+		this.store.remove('test');
+		equal(undefined, localStorage.getItem('test'));
+	});
+
+	test('store.clear', function() {
+		stop();
+		this.store.fire = function(key, action, oldVal, newVal) {
+			equal('*', key);
+			equal('clear', action);
+			deepEqual(null, oldVal);
+			deepEqual(null, newVal);
+			start();
+		};
+
+		localStorage.setItem('test', '123');
+		this.store.clear();
+		equal(undefined, localStorage.getItem('test'));
+	});
+});
+</script>
+
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
