@@ -2,8 +2,7 @@
 
 window.Stats = (function($, store) {
 	"use strict";
-
-	var Stats = {
+	return {
 		_storagekey: 'stats',
 		_defaults: {
 			'games-start': 0,
@@ -67,11 +66,13 @@ window.Stats = (function($, store) {
 			var stats = $.extend({}, this.data);
 			stats['games-incomplete'] = stats['games-start'] - stats['games-win'] - stats['games-lose'];
 			stats['games-percent'] = stats['games-win'] / (stats['games-win'] + stats['games-lose']) || 0;
+
 			// stats['time-total'] = jintervals(stats['time-total'], STATS_TIME_FORMAT);
 			// stats['time-average'] = jintervals(stats['time-average'], STATS_TIME_FORMAT);
 			// stats['time-average-win'] = jintervals(stats['time-average-win'], STATS_TIME_FORMAT);
 			// stats['time-shortest-win'] = jintervals(stats['time-shortest-win'], STATS_TIME_FORMAT);
 			// stats['time-longest-win'] = jintervals(stats['time-longest-win'], STATS_TIME_FORMAT);
+
 			this.statsDisplays.each(function() {
 				var elem = $(this);
 				var statName = elem.data('stat');
@@ -79,6 +80,4 @@ window.Stats = (function($, store) {
 			});
 		}
 	};
-
-	return Stats;
 })(jQuery, Storage.factory());

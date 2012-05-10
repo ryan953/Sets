@@ -1,9 +1,8 @@
-/*global $:false */
+/*global $ jintervals */
 
 window.GameTimer = (function() {
-	
-
-	var timer = {
+	"use strict";
+	return {
 		init: function(game) {
 			var _this = this;
 			var tick = function() {
@@ -26,5 +25,4 @@ window.GameTimer = (function() {
 			});
 		}
 	};
-	return timer;
 })();
