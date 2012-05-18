@@ -25,7 +25,7 @@ $(document).ready(function () {
 			new Card( 1, "Oval", "striped", "blue")
 		];
 	}
-	
+
 	module('Assistant::init');
 	test('requires `delay` param', function() {
 		raises(function() { new Assistant(); }, Error, 'delay param is required');
@@ -41,7 +41,7 @@ $(document).ready(function () {
 			assistant = new Assistant(this.delay);
 		expect(count+1 + 2);
 		stop(count+1 + 2);
-		
+
 		assistant.bind('timer.start', function() {
 			ok(true, 'timer.start event caught');
 			start();
@@ -56,13 +56,13 @@ $(document).ready(function () {
 			return count--;
 		});
 	});
-	
+
 	test('clock can be stopped early', function() {
 		var count = 3,
 			assistant = new Assistant(this.delay);
 		expect(2);
 		stop(1);
-		
+
 		assistant.bind('timer.start', function() {
 			ok(true, 'timer.start event caught');
 		});
@@ -76,7 +76,7 @@ $(document).ready(function () {
 		});
 		assistant.stopClock();
 	});
-	
+
 	module('Assistant::shuffle');
 	test('shuffles non-lists', function() {
 		var undef;
@@ -97,29 +97,29 @@ $(document).ready(function () {
 	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
 		board.pop();
-		
+
 		var unmatched = Assistant.listNotPossibleCards(board);
 		equal(unmatched.length, 2, 'not enough cards to make a match');
 		deepEqual(unmatched, [board[0], board[1]], 'not enough cards to make a match');
 	});
-	
+
 	test('all have matches', function() {
 		var board = getSimpleBoard();
-		
+
 		var unmatched = Assistant.listNotPossibleCards(board);
 		equal(unmatched.length, 0, 'all cards should have a match');
 		deepEqual(unmatched, [], 'all cards should have a match');
 	});
-	
+
 	test('only the last should be unmatched', function() {
 		var board = getSimpleBoard();
 		board.push(new Card(2, "Oval" ,"striped", "green"));
-		
+
 		var unmatched = Assistant.listNotPossibleCards(board);
 		equal(unmatched.length, 1, 'only one is not a match');
 		deepEqual(unmatched, [board[3]], 'the last card has no match');
 	});
-	
+
 	test('Finds unmatched: no selection', function() {
 		var tests = listNotPossibleCardsDataProvider(),
 			testcase = null;
@@ -130,7 +130,7 @@ $(document).ready(function () {
 			deepEqual(noMatchFound, testcase.notPossible);
 		}
 	});
-	
+
 	test('Finds unmatched: one card selected', function() {
 		var tests = listNotPossibleCardsOneSelectedDataProvider(),
 			testcase = null;
@@ -174,16 +174,17 @@ $(document).ready(function () {
 			// nothing
 		]};
 		var assistant = new Assistant(this.delay);
-		
+
 		expect(1);
 		stop(1);
-		
+
 		assistant.bind('timer.stop', function() {
 			ok(true, 'timer.stop event caught');
 			start();
 		});
-		assistant.bind('picked-not-possible', function() {
+		assistant.bind('assistant.picked-not-possible', function() {
 			ok(false, 'Should not find card in this board');
+			start();
 		});
 
 		assistant.startSearchForUnmatched(testcase.board);
@@ -206,11 +207,11 @@ $(document).ready(function () {
 			Card.factory({"count":2,"shape":"Diamond", "fill":"solid","color":"blue" , "hasSet": false})
 		]};
 		var assistant = new Assistant(this.delay);
-		
+
 		expect(testcase.notPossible.length);
 		stop(testcase.notPossible.length);
 
-		assistant.bind('picked-not-possible', function(event, card) {
+		assistant.bind('assistant.picked-not-possible', function(event, card) {
 			ok(true, 'picked-not-possible event caught '+ card);
 			start();
 		});
@@ -228,11 +229,11 @@ $(document).ready(function () {
 			{"count":2,"shape":"Diamond", "fill":"solid","color":"blue" }
 		];
 		var assistant = new Assistant(this.delay);
-		
+
 		expect(1);
 		stop(1);
 
-		assistant.bind('no-cards-possible', function(event) {
+		assistant.bind('assistant.no-cards-possible', function(event) {
 			ok(true, 'no-cards-possible event caught');
 			start();
 		});
@@ -253,21 +254,21 @@ $(document).ready(function () {
 			{"count":3,"shape":"Diamond", "fill":"solid","color":"red",   "hasSet":true},
 			{"count":1,"shape":"Squiggle","fill":"solid","color":"green", "hasSet":true}
 		], notPossible: [
-			// nothing	
+			// nothing
 		]};
 		var assistant = new Assistant(this.delay);
-		
+
 		expect(1);
 		stop(1);
-		
+
 		assistant.bind('timer.stop', function() {
 			ok(true, 'timer.stop event caught');
 			start();
 		});
-		
+
 		assistant.startSearchForUnmatched(testcase.board);
 	});
-	
+
 	function listNotPossibleCardsDataProvider() {
 		return [
 			{board: [
@@ -400,7 +401,7 @@ $(document).ready(function () {
 			]}
 		];
 	}
-	
+
 	function listNotPossibleCardsOneSelectedDataProvider() {
 		return [
 			{board: [
