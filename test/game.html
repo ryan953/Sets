@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test: logic.js</title>
+<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
+<script src="../lib/qunit.js"></script>
+<script src="../lib/jquery-1.7.2.min.js"></script>
+<script src="../lib/event.js"></script>
+
+<script src="../js/sets.js"></script>
+<script src="../js/game.js"></script>
+
+<script>
+"use strict";
+var Card = Sets.Card;
+var Deck = Sets.Deck;
+var Game = Sets.Game;
+
+$(document).ready(function () {
+	module('Game');
+	function gameStartTest(mode) {
+		test('Game Starts in ' + mode + ' mode', function() {
+			stop();
+			expect(4); // the event gets fired twice cuz we call game.start() twice
+
+			var game = new Game(),
+			startHandler = function() {
+				ok(this, '`start` event caught');
+				start();
+			};
+
+			game.bind('game.start', startHandler);
+
+			game.start(mode); //triggers an event with an assertion
+
+			mode = (mode ? mode : 'easy');
+
+			ok(game.board, 'game board is not empty');
+			ok(!game.selected.length, 'no cards are selected when we start');
+			equal(game.board.length, Game.modes[mode].rows, mode + ' mode has 4 rows (3 for easy)');
+
+			game.unbind('start', startHandler);
+		});
+	}
+	gameStartTest('regular');
+	gameStartTest('easy');
+	gameStartTest();
+
+	test('selecting a card fires `select-card` & adds/removes it from the list', function() {
+		stop(7);
+		expect(16);
+
+		var game = new Game().start(),
+		expectedSelectedCounts = [1, 2, 3, 1, 2, 1, 0],
+		selectHandler = function(e, selected) {
+			var expectedCount = expectedSelectedCounts.shift();
+			equal(e.name, 'game.select-card', 'The correct event was fired');
+			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
+			start();
+		},
+		deselectHandler = function(e, selected) {
+			var expectedCount = expectedSelectedCounts.shift();
+			equal(e.name, 'game.deselect-card', 'The correct event was fired');
+			equal(selected.length, expectedCount, expectedCount + ' card(s) are selected');
+			start();
+		},
+		selectionClearedHandler = function(e, selected) {
+			equal(e.name, 'game.selection-cleared', 'The correct event was fired');
+			start();
+		};
+		game
+			.bind('game.select-card', selectHandler)
+			.bind('game.deselect-card', deselectHandler)
+			.bind('game.selection-cleared', selectionClearedHandler)
+
+			.selectCard(game.getCard(0, 0))
+			.selectCard(game.getCard(0, 1))
+			.selectCard(game.getCard(0, 2))
+
+			.selectCard(game.getCard(1, 0))
+			.selectCard(game.getCard(1, 1))
+			.selectCard(game.getCard(1, 0))
+			.selectCard(game.getCard(1, 1));
+	});
+
+	test('selecting a card and deselecting it fires `selection-cleared` event', function() {
+		stop();
+		expect(1);
+
+		var game = new Game().start(),
+		card = game.getCard(0, 0),
+		clearedHandler = function(e, selected) {
+			equal(e.name, 'game.selection-cleared', 'The `selection-cleared` event was caught');
+			start();
+		};
+
+		game.bind('game.selection-cleared', clearedHandler)
+			.selectCard(card)
+			.selectCard(card);
+	});
+
+	test('`found-set` is triggered after a set is selected', function() {
+		stop();
+		expect(2);
+
+		var game = new Game(),
+		foundHandler = function(e, set) {
+			ok(true, 'found a set');
+			start();
+		};
+
+		Game.modes.test = {rows: 1, cols: 3};
+		game._init('test');
+		game.deck.pickRandomCard = function(idx) {
+			return this.pickCard(0);
+		};
+		game._loadBoard();
+
+		game.bind('game.found-set', foundHandler)
+
+		game.selectCard(game.getCard(0, 0))
+			.selectCard(game.getCard(0, 1))
+			.selectCard(game.getCard(0, 2));
+
+		strictEqual(game.selected.length, 0, 'After finding a set, not cards should be selected');
+	});
+
+	test('replaceSet() removed from the board and replaces the cards you pass in', function() {
+		var game = new Game().start();
+
+		var orig_cards = [ game.board[0][0] ];
+		game.replaceSet(orig_cards);
+		var new_cards = [ game.board[0][0] ];
+
+		notDeepEqual(new_cards, orig_cards, 'the passed in cards have been matched and replaced');
+	});
+
+	test('listCardsOnBoard() gives back all cards in order', function() {
+		var game = new Game();
+		var cards = [
+			new Card(),
+			new Card(),
+			new Card(),
+			new Card()
+		];
+		game._addCardToBoard(cards[0], 0, 0);
+		game._addCardToBoard(cards[1], 0, 1);
+		game._addCardToBoard(cards[2], 1, 0);
+		game._addCardToBoard(cards[3], 1, 1);
+
+		deepEqual(game.listCardsOnBoard(), cards, 'have a list of all cards returned');
+	});
+});
+</script>
+
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
