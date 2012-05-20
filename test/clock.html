@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test: assistant.js</title>
+<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
+<script src="../lib/qunit.js"></script>
+<script src="../lib/jquery-1.7.2.min.js"></script>
+<script src="../lib/event.js"></script>
+
+<script src="../js/clock.js"></script>
+
+<script>
+"use strict";
+
+$(document).ready(function () {
+	// module('Clock::factory');
+	// test('requires `delay` param', function() {
+	// 	raises(function() { new Assistant(); }, Error, 'delay param is required');
+	// });
+
+	module('Clock', {
+		setup: function() {
+			this.delay = 50;
+		}
+	});
+	test('clock ticks 3 times', function() {
+		var count = 2,
+			clock = new Clock(function() {
+				ok(true, 'Clock tick ' + count);
+				start();
+				return count--;
+			}, this.delay);
+		expect(count+1 + 2);
+		stop(count+1 + 2);
+
+		clock.bind('clock.start', function() {
+			ok(true, 'timer.start event caught');
+			start();
+		});
+		clock.bind('clock.stop', function() {
+			ok(true, 'clock.stop event caught');
+			start();
+		});
+		clock.start();
+	});
+
+	test('clock can be stopped early', function() {
+		var count = 3,
+			clock = new Clock(function() {
+				ok(false, 'Should not have a chance to tick');
+				return count--;
+			}, this.delay);
+		expect(2);
+		stop(1);
+
+		clock.bind('clock.start', function() {
+			ok(true, 'clock.start event caught');
+		});
+		clock.bind('clock.stop', function() {
+			ok(true, 'clock.stop event caught');
+			start();
+		});
+		clock.start();
+		clock.stop();
+	});
+});
+</script>
+
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
