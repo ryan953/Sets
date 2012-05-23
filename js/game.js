@@ -30,7 +30,7 @@ Sets.Game = (function(Sets, Deck, Assistant) {
 			});
 	};
 
-	Game.modes = { // TODO: hello world
+	Game.modes = { // TODO: hello world game mode
 		'easy': {rows:3, cols:3},
 		'regular': {rows:4, cols:3}
 	};

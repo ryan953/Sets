@@ -78,7 +78,7 @@
 		<dt>Average Win Time</dt><dd data-stat="time-average-win">0:00</dd>
 		<dt>Shortest Win Time</dt><dd data-stat="time-shortest-win">0:00</dd>
 		<dt>Longest Win Time</dt><dd data-stat="time-longest-win">0:00</dd>
-	</dl>å
+	</dl>
 	<hr/>
 	<strong>Streaks</strong>
 	<dl class="table">
@@ -150,18 +150,22 @@
 <script src="./lib/NoClickDelay.js"></script>
 <script src="./lib/event.js"></script>
 <script src="./lib/jintervals-0.7-min.js"></script>
-<script src="./js/appcache.js"></script>
-<script src="./js/utils.js"></script>
+<script src="./lib/modernizr-2.5.3-custom-build.js"></script>
+
+<script src="./js/clock.js"></script><!-- Event -->
 <script src="./js/store.js"></script>
-<script src="./js/assistant.js"></script>
-<script src="./js/logic.js"></script>
-<script src="./js/game-timer.js"></script>
-<script src="./js/stats.js"></script>
+
+<script src="./js/game-timer.js"></script><!-- jQuery -->
+<script src="./js/lightbox.js"></script><!-- jQuery -->
+<script src="./js/settings.js"></script><!-- jQuery, Storage -->
+<script src="./js/stats.js"></script><!-- jQuery, Storage -->
+
+<script src="./js/sets.js"></script><!-- -->
+<script src="./js/ui.js"></script><!-- -->
+<script src="./js/assistant.js"></script><!-- Event, Clock, Sets -->
+<script src="./js/game.js"></script><!-- Sets, Sets.Deck, Sets.Assistant -->
 
 <script src="./js/init.js"></script>
-
-<script src="./js/settings.js"></script>
-<script src="./js/lightbox.js"></script>
 
 <script>
 	document.getElementById('game-area').ontouchmove = function(e){ e.preventDefault(); };
