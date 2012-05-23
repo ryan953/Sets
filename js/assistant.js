@@ -1,48 +1,21 @@
 /*jshint smarttabs:true */
-/*global Event:false Error:false Sets:false smarttabs:true */
-
-window.Sets = window.Sets || {};
+/*global Error Event Clock Sets */
 
 Sets.Assistant = (function(Sets) {
 	"use strict";
 
 	var Assistant = function (delay) {
+		var _this = this;
 		if (!delay) {
 			throw new Error('Missing required param: delay');
 		}
+
 		Event.patch.call(this);
-		this.delay = delay;
-		this.timer = null;
 		this.not_possible_cards = [];
-	};
-
-	/**
-	 * Takes a delay between clock ticks, and an action to do each tick
-	 * when the action returns false the clock will turn itself off
-	 */
-	Assistant.prototype._startClock = function(tickAction) {
-		this.stopClock();
-		var self = this,
-			clockTick = function() {
-			if (tickAction()) {
-				self.timer = setTimeout(clockTick, self.delay);
-			} else {
-				self.trigger('timer.stop');
-			}
-		};
-		this.timer = setTimeout(clockTick, this.delay);
-		this.trigger('timer.start');
-	};
-
-	/**
-	 * Stop the timer so we don't return any cards
-	 */
-	Assistant.prototype.stopClock = function() {
-		if (this.timer) {
-			clearTimeout(this.timer);
-			this.timer = null;
-			this.trigger('timer.stop');
-		}
+		this.clock = new Clock(function() {
+			_this._revealNotPossibleCard();
+			return _this.not_possible_cards.length > 0;
+		}, delay);
 	};
 
 	/**
@@ -50,17 +23,20 @@ Sets.Assistant = (function(Sets) {
 	 */
 	Assistant.prototype.startSearchForUnmatched = function(board) {
 		var self = this;
-		this.stopClock();
+		if (this.board === board || board.length === 0) {
+			return false;
+		}
+
+		this.clock.stop();
+		this.board = board;
 		this.not_possible_cards = Assistant.shuffle(Assistant.listNotPossibleCards(board));
 
 		if (this.not_possible_cards.length === board.length) {
-			this.trigger('no-cards-possible');
+			this.trigger('assistant.no-cards-possible');
 		} else {
-			this._startClock(function() {
-				self._revealNotPossibleCard();
-				return self.not_possible_cards.length > 0;
-			});
+			this.clock.start();
 		}
+		return true;
 	};
 
 	/**
@@ -68,7 +44,7 @@ Sets.Assistant = (function(Sets) {
 	 */
 	Assistant.prototype._revealNotPossibleCard = function() {
 		if (this.not_possible_cards.length) {
-			this.trigger('picked-not-possible', this.not_possible_cards.shift());
+			this.trigger('assistant.picked-not-possible', this.not_possible_cards.shift());
 		}
 	};
 
@@ -107,7 +83,7 @@ Sets.Assistant = (function(Sets) {
 		if (board.length < 3) {
 			return board;
 		} else if (board.length == 3) {
-			return (Sets.Game.isASet(board) ? [] : board);
+			return (Sets.isASet(board) ? [] : board);
 		}
 
 		if (selected.length == 1) {
@@ -116,14 +92,13 @@ Sets.Assistant = (function(Sets) {
 			set1 = [selected[0]];
 			set2 = [selected[1]];
 		}
-		// console.log('searching with selected', selected);
 
 		set1.forEach(function(card1) {
 			set2.forEach(function(card2) {
 				if (card2 == card1) { return; }
 				set3.forEach(function(card3) {
 					if (card1 == card3 || card2 == card3) { return; }
-					if ( Sets.Game.isASet([card1, card2, card3]) ) {
+					if ( Sets.isASet([card1, card2, card3]) ) {
 						card1.hasSet = card2.hasSet = card3.hasSet = true;
 					}
 				});

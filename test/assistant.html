@@ -7,6 +7,7 @@
 <script src="../lib/jquery-1.7.2.min.js"></script>
 <script src="../lib/event.js"></script>
 
+<script src="../js/clock.js"></script>
 <script src="../js/sets.js"></script>
 <script src="../js/assistant.js"></script>
 
@@ -29,52 +30,6 @@ $(document).ready(function () {
 	module('Assistant::init');
 	test('requires `delay` param', function() {
 		raises(function() { new Assistant(); }, Error, 'delay param is required');
-	});
-
-	module('Assistant::Clock', {
-		setup: function() {
-			this.delay = 50;
-		}
-	});
-	test('clock ticks 3 times', function() {
-		var count = 2,
-			assistant = new Assistant(this.delay);
-		expect(count+1 + 2);
-		stop(count+1 + 2);
-
-		assistant.bind('timer.start', function() {
-			ok(true, 'timer.start event caught');
-			start();
-		});
-		assistant.bind('timer.stop', function() {
-			ok(true, 'timer.stop event caught');
-			start();
-		});
-		assistant._startClock(function() {
-			ok(true, 'Clock tick ' + count);
-			start();
-			return count--;
-		});
-	});
-
-	test('clock can be stopped early', function() {
-		var count = 3,
-			assistant = new Assistant(this.delay);
-		expect(2);
-		stop(1);
-
-		assistant.bind('timer.start', function() {
-			ok(true, 'timer.start event caught');
-		});
-		assistant.bind('timer.stop', function() {
-			ok(true, 'timer.stop event caught');
-			start();
-		});
-		assistant._startClock(function() {
-			ok(false, 'Should not have a chance to tick');
-			return count--;
-		});
-		assistant.stopClock();
 	});
 
 	module('Assistant::shuffle');
@@ -178,8 +133,8 @@ $(document).ready(function () {
 		expect(1);
 		stop(1);
 
-		assistant.bind('timer.stop', function() {
-			ok(true, 'timer.stop event caught');
+		assistant.clock.bind('clock.stop', function() {
+			ok(true, 'clock.stop event caught');
 			start();
 		});
 		assistant.bind('assistant.picked-not-possible', function() {
@@ -261,8 +216,8 @@ $(document).ready(function () {
 		expect(1);
 		stop(1);
 
-		assistant.bind('timer.stop', function() {
-			ok(true, 'timer.stop event caught');
+		assistant.clock.bind('clock.stop', function() {
+			ok(true, 'clock.stop event caught');
 			start();
 		});
 

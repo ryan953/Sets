@@ -57,20 +57,20 @@ $(document).ready(function() {
 			};
 
 		assistant
-			.bind('timer.start', function() {
+			.clock.bind('clock.start', function() {
 				ui.container.className = 'helping';
 			})
-			.bind('timer.stop', function() {
+			.clock.bind('clock.stop', function() {
 				ui.container.className = '';
 			})
-			.bind('picked-not-possible', function(event, card) {
+			.bind('assistant.picked-not-possible', function(event, card) {
 				game.getCard(card.row, card.col).notPossible = true;
 				ui.updateSelected(game.board);
 			})
-			.bind('no-cards-possible', function() {
 				if (game.hasFoundAllCards()) {
 					this.trigger('end', {'win': false});
 				} else {
+			.bind('assistant.no-cards-possible', function() {
 					game.addCards();
 					ui.updateSelected(game.board);
 				}
