@@ -7,6 +7,8 @@
 <script src="../lib/jquery-1.7.2.min.js"></script>
 <script src="../lib/event.js"></script>
 
+<script src="../js/utils.js"></script>
+
 <script src="../js/clock.js"></script>
 <script src="../js/sets.js"></script>
 <script src="../js/assistant.js"></script>
@@ -30,22 +32,6 @@ $(document).ready(function () {
 	module('Assistant::init');
 	test('requires `delay` param', function() {
 		raises(function() { new Assistant(); }, Error, 'delay param is required');
-	});
-
-	module('Assistant::shuffle');
-	test('shuffles non-lists', function() {
-		var undef;
-		var cases = [
-			null,
-			undef,
-			123,
-			'hello world',
-			{foo: 'hello', bar:'world'},
-			{length:3}
-		];
-		for(var i = 0; i < cases.length; i++) {
-			equal(cases[i], Assistant.shuffle(cases[i]), 'non-list returned a list');
-		}
 	});
 
 	module('Assistant::startSearchForUnmatched', {
@@ -73,8 +59,8 @@ $(document).ready(function () {
 		expect(1);
 		stop(1);
 
-		assistant.clock.bind('clock.stop', function() {
-			ok(true, 'clock.stop event caught');
+		assistant.bind('assistant.picked-last-card', function() {
+			ok(true, 'assistant.picked-last-card event caught');
 			start();
 		});
 		assistant.bind('assistant.picked-not-possible', function() {
@@ -103,13 +89,19 @@ $(document).ready(function () {
 		]};
 		var assistant = new Assistant(this.delay);
 
-		expect(testcase.notPossible.length);
-		stop(testcase.notPossible.length);
+		expect(testcase.notPossible.length + 1);
+		stop(testcase.notPossible.length + 1);
 
 		assistant.bind('assistant.picked-not-possible', function(event, card) {
 			ok(true, 'picked-not-possible event caught '+ card);
 			start();
 		});
+
+		assistant.bind('assistant.picked-last-card', function() {
+			ok(true, 'assistant.picked-last-card event caught');
+			start();
+		});
+
 
 		assistant.startSearchForUnmatched(testcase.board);
 	});
@@ -156,8 +148,8 @@ $(document).ready(function () {
 		expect(1);
 		stop(1);
 
-		assistant.clock.bind('clock.stop', function() {
-			ok(true, 'clock.stop event caught');
+		assistant.bind('assistant.picked-last-card', function() {
+			ok(true, 'assistant.picked-last-card event caught');
 			start();
 		});
 

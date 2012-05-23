@@ -5,17 +5,19 @@ Sets.Assistant = (function(Sets) {
 	"use strict";
 
 	var Assistant = function(delay) {
-		var _this = this;
 		if (!delay) {
 			throw new Error('Missing required param: delay');
 		}
+		var _this = this;
 
 		Event.patch.call(this);
 		this.not_possible_cards = [];
 		this.clock = new Clock(function() {
-			_this._revealNotPossibleCard();
-			return _this.not_possible_cards.length > 0;
+			return _this._revealNotPossibleCard();
 		}, delay);
+		this.clock.bind('clock.stop', function() {
+			_this.trigger('assistant.picked-last-card');
+		});
 	};
 
 	/**
@@ -29,7 +31,8 @@ Sets.Assistant = (function(Sets) {
 
 		this.clock.stop();
 		this.board = board;
-		this.not_possible_cards = Assistant.shuffle(Sets.listNotPossibleCards(board));
+
+		this.not_possible_cards = Array.shuffle.call(Sets.listNotPossibleCards(board));
 
 		if (this.not_possible_cards.length === board.length) {
 			this.trigger('assistant.no-cards-possible');
@@ -43,23 +46,10 @@ Sets.Assistant = (function(Sets) {
 	 * Pick a card that can't be made into a match based on the board we have.
 	 */
 	Assistant.prototype._revealNotPossibleCard = function() {
-		if (this.not_possible_cards.length) {
+		if (this.not_possible_cards.length > 0) {
 			this.trigger('assistant.picked-not-possible', this.not_possible_cards.shift());
 		}
-	};
-
-	Assistant.shuffle = function(array) {
-		if (!array) { return array; }
-		var tmp, current, top = array.length;
-
-		if(top) while(--top) {
-			current = Math.floor(Math.random() * (top + 1));
-			tmp = array[current];
-			array[current] = array[top];
-			array[top] = tmp;
-		}
-
-		return array;
+		return this.not_possible_cards.length > 0;
 	};
 
 	return Assistant;

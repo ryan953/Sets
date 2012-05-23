@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test: assistant.js</title>
+<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
+<script src="../lib/qunit.js"></script>
+<script src="../lib/jquery-1.7.2.min.js"></script>
+<script src="../lib/event.js"></script>
+
+<script src="../js/utils.js"></script>
+
+<script src="../js/clock.js"></script>
+<script src="../js/sets.js"></script>
+<script src="../js/assistant.js"></script>
+
+<script>
+"use strict";
+
+$(document).ready(function () {
+	module('Array::shuffle');
+	test('shuffles non-lists', function() {
+		var undef;
+		var cases = [
+			null,
+			undef,
+			123,
+			'hello world',
+			{foo: 'hello', bar:'world'},
+			{length:3}
+		];
+		for(var i = 0; i < cases.length; i++) {
+			equal(cases[i], Array.prototype.shuffle(cases[i]), 'non-list returned a list');
+		}
+	});
+});
+</script>
+
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
