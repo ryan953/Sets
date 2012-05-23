@@ -1,6 +1,6 @@
 /*global Event:false */
 
-Sets.Game = (function(Sets, Deck, Assistant) {
+Sets.Game = (function(Sets, Deck) {
 	"use strict";
 
 	var Game = function() {
@@ -22,7 +22,7 @@ Sets.Game = (function(Sets, Deck, Assistant) {
 					this.trigger('game.end', {'win': true});
 				} else if (!this.hasUndealtCards()) {
 					var cards_on_board = this.listCardsOnBoard();
-					var not_possible_cards = Assistant.listNotPossibleCards(cards_on_board);
+					var not_possible_cards = Sets.listNotPossibleCards(cards_on_board);
 					if (not_possible_cards.length == cards_on_board.length) {
 						this.trigger('game.end', {'win': false});
 					}
@@ -98,7 +98,7 @@ Sets.Game = (function(Sets, Deck, Assistant) {
 	Game.prototype.selectCard = function(card) {
 		var cards,
 			idx = this.selected.indexOf(card);
-			
+
 		if (!card) { return; }
 
 		if (idx < 0) {
@@ -149,4 +149,4 @@ Sets.Game = (function(Sets, Deck, Assistant) {
 	};
 
 	return Game;
-})(window.Sets, window.Sets.Deck, window.Sets.Assistant);
+})(window.Sets, window.Sets.Deck);
