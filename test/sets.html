@@ -145,6 +145,14 @@ $(document).ready(function () {
 
 
 	module('Sets::listNotPossibleCards');
+	function getSimpleBoard() {
+		return [
+			new Card( 1, "Oval", "striped", "green"),
+			new Card( 1, "Oval", "striped", "red"),
+			new Card( 1, "Oval", "striped", "blue")
+		];
+	}
+
 	test('less than three cards, must not be a match', function() {
 		var board = getSimpleBoard();
 		board.pop();

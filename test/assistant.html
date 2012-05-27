@@ -21,14 +21,6 @@ var Game = Sets.Game;
 var Assistant = Sets.Assistant;
 
 $(document).ready(function () {
-	function getSimpleBoard() {
-		return [
-			new Card( 1, "Oval", "striped", "green"),
-			new Card( 1, "Oval", "striped", "red"),
-			new Card( 1, "Oval", "striped", "blue")
-		];
-	}
-
 	module('Assistant::init');
 	test('requires `delay` param', function() {
 		raises(function() { new Assistant(); }, Error, 'delay param is required');
