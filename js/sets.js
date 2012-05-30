@@ -92,6 +92,7 @@ Sets.Card = (function() {
 	"use strict";
 
 	var Card = function(count, shape, fill, color) {
+		Event.patch.call(this);
 		this.isSelected = false;
 
 		this.count = count;
@@ -179,7 +180,7 @@ Sets.Card = (function() {
 		'notPossible': 'not-possible',
 		'invalidPick': 'error'
 	};
-	
+
 	Card.prototype.toString = function() {
 		return [this.count, this.fill, this.color, this.shape].join(' ');
 	};
@@ -187,9 +188,12 @@ Sets.Card = (function() {
 		return JSON.stringify(this);
 	};
 
-	Card.prototype.select = function() { this.isSelected = true; };
-	Card.prototype.deselect = function() { this.isSelected = false; };
-	Card.prototype.toggleSelect = function() { this.isSelected = !this.isSelected; };
+	Card.prototype.select = function() { this._toggleSelect(true); };
+	Card.prototype.deselect = function() { this._toggleSelect(false); };
+	Card.prototype._toggleSelect = function(select) {
+		this.isSelected = select;
+		this.trigger('change:selected', select);
+	};
 
 	Card.prototype.getClassAttr = function() {
 		var classes = [];
@@ -200,7 +204,7 @@ Sets.Card = (function() {
 		}
 		return classes.join(' ');
 	};
-	
+
 	Card.prototype.isEmpty = function() { return !(this.count && this.shape && this.fill && this.color); };
 
 	var visuals = function(card) {
@@ -220,7 +224,7 @@ Sets.Card = (function() {
 		};
 		return fills[card.fill];
 	};
-		
+
 	Card.prototype.draw = function(ctx) {
 		ctx.clearRect(0, 0, 150, 150);
 		for(var i = 0; i < this.count; i++) {

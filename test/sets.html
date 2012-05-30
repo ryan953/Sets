@@ -40,15 +40,13 @@ $(document).ready(function () {
 		ok(!(new Card( 1, "Oval", "striped", "green").isEmpty()), "A card with all 4 params is NOT empty");
 	});
 
-	test('select/deselect/toggle', function() {
+	test('select/deselect', function() {
 		var c = new Card();
 
 		c.select();
 		ok(c.isSelected, 'card gets selected');
 		c.deselect();
 		ok(!c.isSelected, 'card gets UNselected');
-		c.toggleSelect();
-		ok(c.isSelected, 'card gets toggled');
 	});
 
 	test('getClassAttr', function() {
