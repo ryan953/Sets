@@ -12,67 +12,62 @@ Sets.Game = (function(Sets, Deck) {
 				deck:game.deck.size
 			};
 		};
-		this._init('easy')
-			.bind('start', function() {
-				this.trigger('score.change', _getScore(this));
-			})
-			.bind('found-set', function() {
-				this.trigger('score.change', _getScore(this));
-				if (this.hasFoundAllCards()) {
-					this.trigger('game.end', {'win': true});
-				} else if (!this.hasUndealtCards()) {
-					var cards_on_board = this.listCardsOnBoard();
-					var not_possible_cards = Sets.listNotPossibleCards(cards_on_board);
-					if (not_possible_cards.length == cards_on_board.length) {
-						this.trigger('game.end', {'win': false});
-					}
+
+		this.bind('start', function() {
+			this.trigger('score.change', _getScore(this));
+		});
+
+		this.bind('found-set', function() {
+			this.trigger('score.change', _getScore(this));
+			if (this.hasFoundAllCards()) {
+				this.trigger('game.end', {'win': true});
+			} else if (!this.hasUndealtCards()) {
+				var cards_on_board = this.listCardsOnBoard();
+				var not_possible_cards = Sets.listNotPossibleCards(cards_on_board);
+				if (not_possible_cards.length == cards_on_board.length) {
+					this.trigger('game.end', {'win': false});
 				}
-			});
+			}
+		});
 	};
 
 	Game.modes = { // TODO: hello world game mode
 		'easy': {rows:3, cols:3},
 		'regular': {rows:4, cols:3}
 	};
-
-	Game.prototype._init = function(mode) {
+	Game.prototype.start = function(mode) {
 		this.mode = mode || 'easy';
 		this.deck = new Deck(this.mode);
-		this.board = [];
-		this.selected = [];
+		this.board = []; // board[row][col] = card
+		this.boardSize = Game.modes[this.mode]; // {rows, cols}
+		this.selected = []; // list of the currently selected cards
 		this.foundSets = [];
-		return this;
-	};
-	Game.prototype._addCardToBoard = function(card, row, col) {
-		this.board[row] = this.board[row] || [];
-		this.board[row][col] = card;
-		try {
-			card.row = row;
-			card.col = col;
-		} catch (err) { }
-		return this;
+
+		this._loadBoard();
+		return this.trigger('game.start');
 	};
 	Game.prototype._loadBoard = function() {
-		var row, col, card;
-		for(row = 0; row < Game.modes[this.mode].rows; row++) {
-			for(col = 0; col < Game.modes[this.mode].cols; col++) {
-				this._addCardToBoard(this.deck.pickRandomCard(), row, col);
-			}
+		for(var row = 0; row < this.boardSize.rows; row++) {
+			this.board[row] = this._dealRow();
 		}
-		return this;
+	};
+	Game.prototype._dealRow = function() {
+		var row = [];
+		for(var col = 0; col < this.boardSize.cols; col++) {
+			row[col] = this.deck.pickRandomCard();
+		}
+		return row;
 	};
 	Game.prototype.addCards = function() {
-		// debugger;
-		// var row = this.board.length, col;
-		// for(col = 0; col < this.board[0].length; col++) {
-		//    this._addCardToBoard(this.deck.pickRandomCard(), row, col);
-		// }
+		var rows = this.board.length;
+		this.board[rows] = this._dealRow();
 	};
+
 	Game.prototype.listCardsOnBoard = function() {
 		var row, col, card, lst = [];
 		for(row = 0; row < this.board.length; row++) {
 			for(col = 0; col < this.board[row].length; col++) {
-				card = this.board[row][col];
+				card = this.getCard(row, col);
 				if (card) {
 					lst.push(card);
 				}
@@ -80,20 +75,15 @@ Sets.Game = (function(Sets, Deck) {
 		}
 		return lst;
 	};
+
 	Game.prototype.hasUndealtCards = function() {
 		return (this.deck.length > 0);
 	};
 	Game.prototype.hasFoundAllCards = function() {
 		return (this.deck.size == this.foundSets.length * 3);
 	};
-	Game.prototype.start = function(mode) {
-		return this
-			._init(mode)
-			._loadBoard()
-			.trigger('game.start');
-	};
 	Game.prototype.getCard = function(row, col) {
-		return this.board[row][col];
+		return this.board[row][col] || null;
 	};
 	Game.prototype.selectCard = function(card) {
 		var cards,

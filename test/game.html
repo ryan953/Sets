@@ -18,8 +18,8 @@ var Game = Sets.Game;
 
 $(document).ready(function () {
 	module('Game');
-	function gameStartTest(mode) {
-		test('Game Starts in ' + mode + ' mode', function() {
+	function test_gameStart(expectedMode, mode) {
+		test('Game Starts in ' + expectedMode + ' mode', function() {
 			stop();
 			expect(4); // the event gets fired twice cuz we call game.start() twice
 
@@ -33,18 +33,52 @@ $(document).ready(function () {
 
 			game.start(mode); //triggers an event with an assertion
 
-			mode = (mode ? mode : 'easy');
-
 			ok(game.board, 'game board is not empty');
 			ok(!game.selected.length, 'no cards are selected when we start');
-			equal(game.board.length, Game.modes[mode].rows, mode + ' mode has 4 rows (3 for easy)');
+			equal(game.board.length, Game.modes[expectedMode].rows, expectedMode + ' mode has 4 rows (3 for easy)');
 
 			game.unbind('start', startHandler);
 		});
 	}
-	gameStartTest('regular');
-	gameStartTest('easy');
-	gameStartTest();
+	test_gameStart('regular', 'regular');
+	test_gameStart('easy', 'easy');
+	test_gameStart('easy', null);
+
+	test('addCards() will add a new row', function() {
+		var game = new Game();
+
+		game.start('easy');
+		equal(game.board.length, 3, 'started with 3 rows in easy mode');
+
+		game.addCards();
+		equal(game.board.length, 4, 'added a new row');
+
+		game.addCards();
+		equal(game.board.length, 5, 'added another new row');
+	});
+
+	test('listCardsOnBoard() gives back all cards in order', function() {
+		var game = new Game();
+		var cards = [
+			new Card('a'),
+			new Card('b'),
+			new Card('c'),
+			new Card('d')
+		];
+		game.board = [
+			[cards[0], cards[1]],
+			[cards[2], cards[3]]
+		];
+		deepEqual(game.listCardsOnBoard(), cards, 'have a list of all cards returned');
+
+		cards[4] = new Card('e');
+		game.board = [
+			[cards[0], cards[1]],
+			[cards[2], cards[3]],
+			[null, cards[4]]
+		];
+		deepEqual(game.listCardsOnBoard(), cards, 'have a list of all cards returned');
+	});
 
 	test('selecting a card fires `select-card` & adds/removes it from the list', function() {
 		stop(7);
@@ -133,22 +167,6 @@ $(document).ready(function () {
 		var new_cards = [ game.board[0][0] ];
 
 		notDeepEqual(new_cards, orig_cards, 'the passed in cards have been matched and replaced');
-	});
-
-	test('listCardsOnBoard() gives back all cards in order', function() {
-		var game = new Game();
-		var cards = [
-			new Card(),
-			new Card(),
-			new Card(),
-			new Card()
-		];
-		game._addCardToBoard(cards[0], 0, 0);
-		game._addCardToBoard(cards[1], 0, 1);
-		game._addCardToBoard(cards[2], 1, 0);
-		game._addCardToBoard(cards[3], 1, 1);
-
-		deepEqual(game.listCardsOnBoard(), cards, 'have a list of all cards returned');
 	});
 });
 </script>

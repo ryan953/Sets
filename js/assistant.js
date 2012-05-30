@@ -20,9 +20,6 @@ Sets.Assistant = (function(Sets) {
 		});
 	};
 
-	/**
-	 * Get the worker crunching the numbers
-	 */
 	Assistant.prototype.startSearchForUnmatched = function(board) {
 		var self = this;
 		if (this.board === board || board.length === 0) {
