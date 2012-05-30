@@ -26,35 +26,20 @@ $(document).ready(function() {
 			;
 	};
 
-	var bindGameToDOM = function(game, ui) {
-		$('.game-reset').click(function() {
-			game.start( Settings.selectedMode() );
-		});
+	var bindAssistantToGame = function(assistant, game, ui) {
+		var clearAndRestartSearch = function(e) {
+			if (Settings.helpMode()) {
+				assistant.stopClock();
+				assistant.startSearchForUnmatched(game.listCardsOnBoard());
 
-		$(ui.container).delegate('td', 'click', function() {
-			var self = $(this),
-				row = self.parent().index(),
-				col = self.index();
-			game.selectCard(game.getCard(row, col));
-		});
-	};
-
-	var buildAssistant = function(game, ui) {
-		// Assistant setup -> happens before game.start()
-		var assistant = new window.Sets.Assistant(/* delay = */ 5500),
-			clearAndRestartSearch = function(e) {
-				if (Settings.helpMode()) {
-					assistant.stopClock();
-					assistant.startSearchForUnmatched(game.listCardsOnBoard());
-
-					game.listCardsOnBoard().forEach(function(card) {
-						if (assistant.not_possible_cards.indexOf(card) === -1) {
-							card.notPossible = false;
-						}
-					});
-					ui.updateSelected(game.board);
-				}
-			};
+				game.listCardsOnBoard().forEach(function(card) {
+					if (assistant.not_possible_cards.indexOf(card) === -1) {
+						card.notPossible = false;
+					}
+				});
+				ui.updateSelected(game.board);
+			}
+		};
 
 		assistant
 			.clock.bind('clock.start', function() {
@@ -67,20 +52,18 @@ $(document).ready(function() {
 				game.getCard(card.row, card.col).notPossible = true;
 				ui.updateSelected(game.board);
 			})
-				if (game.hasFoundAllCards()) {
-					this.trigger('end', {'win': false});
-				} else {
 			.bind('assistant.no-cards-possible', function() {
+				if (!game.hasFoundAllCards() && game.hasUndealtCards()) {
 					game.addCards();
 					ui.updateSelected(game.board);
 				}
 			});
-		['start',
-			'end',
-			'select-card',
-			'deselect-card',
-			'selection-cleared',
-			'found-set'].forEach(function(event) {
+		['game.start',
+			'game.end',
+			'game.select-card',
+			'game.deselect-card',
+			'game.selection-cleared',
+			'game.found-set'].forEach(function(event) {
 			game.bind(event, clearAndRestartSearch);
 		});
 		Settings.bind('change:help-mode', function(e, enabled) {
@@ -94,17 +77,29 @@ $(document).ready(function() {
 		return assistant;
 	};
 
-	var game = new window.Sets.Game(), //game start is at the bottom, after we attach some events!
-		ui = new window.Sets.SetsUI(document.getElementById('game-area')),
-		assistant = buildAssistant(game, ui);
+	var gameArea = document.getElementById('game-area'),
+		game = new window.Sets.Game(), //game start is at the bottom, after we attach some events!
+		ui = new window.Sets.SetsUI(gameArea),
+		assistant = new window.Sets.Assistant(/* delay = */ 5500);
 
 	bindGameToUI(game, ui);
-	bindGameToDOM(game, ui);
+	bindAssistantToGame(assistant, game, ui);
+
+	$('.game-reset').click(function() {
+		game.start( Settings.selectedMode() );
+	});
+
+	$(gameArea).delegate('td', 'click', function() {
+		var self = $(this),
+			row = self.parent().index(),
+			col = self.index();
+		game.selectCard(game.getCard(row, col));
+	});
 
 	GameTimer.init(game);
+
 	Stats.init();
 	Stats.bindEvents(game, assistant);
-
 	$('#stats').click(function() {
 		Stats.display();
 	});
