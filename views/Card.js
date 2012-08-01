@@ -1,48 +1,127 @@
 /*global Backbone document */
-
 window.Views = window.Views || {};
-window.Views.Card = (function() {
+
+window.Views.Card = (function(Parent) {
+	"use strict";
+
+	var patterns = {
+		vertical: function(ctx, lineWidth) {
+			ctx.moveTo(lineWidth/2, 0);
+			ctx.lineTo(lineWidth/2, lineWidth*2);
+		},
+		diagonal: function(ctx, lineWidth) {
+			ctx.moveTo(0, 0);
+			ctx.lineTo(lineWidth*2, lineWidth*2);
+			ctx.moveTo(0, lineWidth*2-1);
+			ctx.lineTo(0, lineWidth*2+1);
+			ctx.moveTo(lineWidth*2-1, 0);
+			ctx.lineTo(lineWidth*2+1, 0);
+			ctx.stroke();
+		}
+	};
+
+	var getPattern = function(color, lineWidth, strategy) {
+		var stripes = document.createElement('canvas'),
+			ctx;
+
+		strategy = strategy || patterns.diagonal;
+
+		stripes.width = lineWidth * 2;
+		stripes.height = lineWidth * 2;
+		ctx = stripes.getContext('2d');
+		ctx.save();
+		ctx.strokeStyle = color;
+		ctx.lineWidth = lineWidth/2;
+
+		strategy(ctx, lineWidth);
+
+		ctx.restore();
+		return ctx.createPattern(stripes, 'repeat');
+	};
+
+	var stripedFills = {
+		red: getPattern('red', 4),
+		green: getPattern('green', 4),
+		blue: getPattern('blue', 4)
+	};
 
 	var visuals = function(card) {
 		var fills = {
 			solid: {
 				lineWidth:0,
-				fillStyle:card.color
+				fillStyle:card.get('color')
 			},
 			empty: {
 				lineWidth:4,
 				fillStyle:'transparent'
 			},
 			striped: {
-				lineWidth:1,
-				fillStyle:Card.stripedFills[card.color]
+				lineWidth: 1,
+				fillStyle: stripedFills[card.get('color')]
 			}
 		};
-		return fills[card.fill];
+		return fills[card.get('fill')];
 	};
 
-	return Backbone.View.extend({
+	var paths = {
+		Diamond: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(50, 2); ctx.lineTo(0, 25); ctx.lineTo(50, 48); ctx.lineTo(100, 25);
+			ctx.closePath();
+		},
+		Oval: function(ctx) {
+			ctx.beginPath();
+			ctx.arc(75, 25, 22, -Math.PI/2, Math.PI/2, false); ctx.arc(25, 25, 22, Math.PI/2, -Math.PI/2, false);
+			ctx.closePath();
+		},
+		Squiggle: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(70, 10); ctx.bezierCurveTo(0, -20, -20, 75, 30, 40); ctx.bezierCurveTo(100, 70, 120, -25, 70, 10);
+			ctx.closePath();
+		},
+		Square: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(2, 5); ctx.lineTo(98, 5); ctx.lineTo(98, 45); ctx.lineTo(2, 45);
+			ctx.closePath();
+		},
+		Circle: function(ctx) {
+			ctx.beginPath();
+			ctx.arc(52, 25, 20, 0, Math.PI*2, false);
+			ctx.closePath();
+		},
+		Triangle: function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(50, 5); ctx.lineTo(10, 45); ctx.lineTo(90, 45);
+			ctx.closePath();
+		}
+	};
+
+	return Parent.extend({
 		tagName: 'div',
-		className: '',
+		className: 'card',
 
 		events: {
 			click: 'handleClick'
 		},
 
+		initialize: function() {
+			this.model.on('change', this.render, this);
+		},
+
 		render: function() {
 			var canvas = this.make("canvas", {width: 150, height: 150});
 			this.draw(canvas.getContext('2d'));
-			this.$el.append(
-				canvas
-			);
+			this.$el.append(canvas);
+
+			return this;
 		},
 
 		draw: function(ctx) {
 			ctx.clearRect(0, 0, 150, 150);
-			for(var i = 0; i < this.model.get('count'); i++) {
+			for(var i = 0; i < this.model.get('num'); i++) {
 				ctx.save();
-				ctx.translate(25, ([50, 25, 0])[this.model.get('count')-1] + (i*50));
-				Card.paths[this.model.get('shape')](ctx);
+				ctx.translate(25, ([50, 25, 0])[this.model.get('num')-1] + (i*50));
+				paths[this.model.get('shape')](ctx);
 				var visualSettings = visuals(this.model);
 				ctx.lineWidth = visualSettings.lineWidth;
 				ctx.fillStyle = visualSettings.fillStyle;
@@ -54,7 +133,7 @@ window.Views.Card = (function() {
 		},
 
 		handleClick: function() {
-
+			this.model.toggleSelect();
 		}
 	});
-})();
+})(Backbone.View);

@@ -88,7 +88,7 @@ window.Sets = window.Sets || {};
 	};
 })(window.Sets);
 
-Sets.Card = (function() {
+window.Sets.Card = (function() {
 	"use strict";
 
 	var Card = function(count, shape, fill, color) {
@@ -244,7 +244,7 @@ Sets.Card = (function() {
 	return Card;
 })();
 
-Sets.Deck = (function(Card) {
+window.Sets.Deck = (function(Card) {
 	"use strict";
 
 	var Deck = function(mode) {

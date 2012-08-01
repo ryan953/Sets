@@ -144,7 +144,7 @@ $(document).ready(function () {
 		};
 
 		Game.modes.test = {rows: 1, cols: 3};
-		game._init('test');
+		game.start('test');
 		game.deck.pickRandomCard = function(idx) {
 			return this.pickCard(0);
 		};

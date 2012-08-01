@@ -156,38 +156,52 @@
 <script src="./lib/modernizr-2.5.3-custom-build.js"></script>
 
 <script src="./models/Card.js"></script>
+<script src="./models/Slot.js"></script>
 <script src="./collections/Deck.js"></script>
+<script src="./collections/Board.js"></script>
+<script src="./models/Sets.js"></script>
+
+<script src="./views/Card.js"></script>
+<script src="./views/Slot.js"></script>
+<script src="./views/Board.js?1"></script>
+<script src="./views/Chrome.js"></script>
+
+
 <script>
-window.Views = (function() {
-	"use strict";
-	var views = {};
-	_.each({
-		// 'card': './templates/card.html'
-	}, function(url, name) {
-		$.get(url, function(data) {
-			views[name] = _.template(data);
-		});
+$(document).ready(function() {
+	window.game = new Sets();
+
+	window.board = new Views.Board({
+		model: window.game
 	});
-	return views;
-})();
+	// window.chrome = new Views.Chrome({
+	// 	model: window.game
+	// });
+
+	$('#game-area').append(board.el);
+
+	game.start('easy');
+});
 </script>
 
-<script src="./js/utils.js"></script>
 
-<script src="./js/clock.js"></script><!-- Event -->
-<script src="./js/store.js"></script>
 
-<script src="./js/game-timer.js"></script><!-- jQuery -->
-<script src="./js/lightbox.js"></script><!-- jQuery -->
-<script src="./js/settings.js"></script><!-- jQuery, Storage -->
-<script src="./js/stats.js"></script><!-- jQuery, Storage -->
+<script xsrc="./js/utils.js"></script>
 
-<script src="./js/sets.js"></script><!-- -->
-<script src="./js/ui.js"></script><!-- -->
-<script src="./js/assistant.js"></script><!-- Event, Clock, Sets -->
-<script src="./js/game.js"></script><!-- Sets, Sets.Deck, Sets.Assistant -->
+<script xsrc="./js/clock.js"></script><!-- Event -->
+<script xsrc="./js/store.js"></script>
 
-<script src="./js/init.js"></script>
+<script xsrc="./js/game-timer.js"></script><!-- jQuery -->
+<script xsrc="./js/lightbox.js"></script><!-- jQuery -->
+<script xsrc="./js/settings.js"></script><!-- jQuery, Storage -->
+<script xsrc="./js/stats.js"></script><!-- jQuery, Storage -->
+
+<script xsrc="./js/sets.js"></script><!-- -->
+<script xsrc="./js/ui.js"></script><!-- -->
+<script xsrc="./js/assistant.js"></script><!-- Event, Clock, Sets -->
+<script xsrc="./js/game.js"></script><!-- Sets, Sets.Deck, Sets.Assistant -->
+
+<script xsrc="./js/init.js"></script>
 
 <script>
 	document.getElementById('game-area').ontouchmove = function(e){ e.preventDefault(); };

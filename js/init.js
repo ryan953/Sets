@@ -29,7 +29,7 @@ $(document).ready(function() {
 	var bindAssistantToGame = function(assistant, game, ui) {
 		var clearAndRestartSearch = function(e) {
 			if (Settings.helpMode()) {
-				assistant.stopClock();
+				assistant.clock.stop();
 				assistant.startSearchForUnmatched(game.listCardsOnBoard());
 
 				game.listCardsOnBoard().forEach(function(card) {

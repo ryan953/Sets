@@ -128,7 +128,7 @@ Sets.Game = (function(Sets, Deck) {
 			for(col = 0; col < this.board[row].length; col++) {
 				for(card_i = 0; card_i < cards.length; card_i++) {
 					if (this.board[row][col] == cards[card_i]) {
-						this._addCardToBoard(this.deck.pickRandomCard(), row, col);
+						this.board[row][col] = this.deck.pickRandomCard();
 						delete cards[card_i];
 						if (!cards.length) { return this; }
 					}

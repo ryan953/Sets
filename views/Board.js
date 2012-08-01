@@ -1,20 +1,58 @@
 /*global Backbone document */
-
 window.Views = window.Views || {};
-window.Views.Board = (function() {
 
-	return Backbone.View.extend({
-		tagName: 'div',
-		className: '',
+window.Views.Board = (function(Parent, Slot) {
+	"use strict";
 
-		events: {},
+	return Parent.extend({
+		tagName: 'table',
+		className: 'board',
+
+		child_views: [],
+
+		// Gets a Sets game object in the constructor
+
+		initialize: function() {
+			this.model.on('change', this.render, this);
+		},
 
 		render: function() {
-			var row = 0, col = 0,
-			rows = Math.max(this.size.rows, this.cards.length;
-			var 
-			this.make('table', {}, 
-				this.
+			var rows = this.model.get('rows'),
+				cols = this.model.get('cols');
+
+			this.removeChildren();
+
+			var slots = rows * cols;
+			for (var c = 0; c < slots; c++) {
+				this.child_views.push(new Slot({
+					model: this.model.board.at(c)
+				}).render());
+			}
+
+			for (var row = 0; row < rows; row++) {
+				var tr = this.make('tr');
+				for (var col = 0; col < cols; col++) {
+					var position = (row * cols) + col,
+						child = this.child_views[position];
+					tr.appendChild(child.el);
+				}
+				this.el.appendChild(tr);
+			}
+
+			return this;
+		},
+
+		remove: function() {
+			Parent.prototype.remove.call(this);
+			this.removeChildren();
+		},
+
+		removeChildren: function() {
+			_.each(this.child_views, function(view) {
+				view.remove();
+			});
+			this.child_views = [];
 		}
 	});
-})();
+
+})(Backbone.View, window.Views.Slot);
