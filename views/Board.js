@@ -5,7 +5,7 @@ window.Views.Board = (function(Parent, Slot) {
 	"use strict";
 
 	return Parent.extend({
-		tagName: 'table',
+		tagName: 'div',
 		className: 'board',
 
 		child_views: [],
@@ -29,6 +29,7 @@ window.Views.Board = (function(Parent, Slot) {
 				}).render());
 			}
 
+			var table = this.make('table');
 			for (var row = 0; row < rows; row++) {
 				var tr = this.make('tr');
 				for (var col = 0; col < cols; col++) {
@@ -36,8 +37,9 @@ window.Views.Board = (function(Parent, Slot) {
 						child = this.child_views[position];
 					tr.appendChild(child.el);
 				}
-				this.el.appendChild(tr);
+				table.appendChild(tr);
 			}
+			this.el.appendChild(table);
 
 			return this;
 		},

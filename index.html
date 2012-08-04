@@ -132,7 +132,8 @@
 	<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
 </div>
 
-<div id="game-area"></div>
+<div class="board"></div>
+
 <div class="helping-message">thinking...</div>
 
 <div class="popup" id="game-over-win">
@@ -166,8 +167,12 @@
 <script src="./views/Board.js?1"></script>
 <script src="./views/Chrome.js"></script>
 
-
 <script>
+_.each(document.getElementsByClassName('board'), function(node) {
+	node.ontouchmove = function(e) { e.preventDefault(); };
+});
+new NoClickDelay(document.getElementsByTagName('body')[0]);
+
 $(document).ready(function() {
 	window.game = new Sets();
 
@@ -178,34 +183,10 @@ $(document).ready(function() {
 	// 	model: window.game
 	// });
 
-	$('#game-area').append(board.el);
+	$('.board').replaceWith(board.el);
 
 	game.start('easy');
 });
-</script>
-
-
-
-<script xsrc="./js/utils.js"></script>
-
-<script xsrc="./js/clock.js"></script><!-- Event -->
-<script xsrc="./js/store.js"></script>
-
-<script xsrc="./js/game-timer.js"></script><!-- jQuery -->
-<script xsrc="./js/lightbox.js"></script><!-- jQuery -->
-<script xsrc="./js/settings.js"></script><!-- jQuery, Storage -->
-<script xsrc="./js/stats.js"></script><!-- jQuery, Storage -->
-
-<script xsrc="./js/sets.js"></script><!-- -->
-<script xsrc="./js/ui.js"></script><!-- -->
-<script xsrc="./js/assistant.js"></script><!-- Event, Clock, Sets -->
-<script xsrc="./js/game.js"></script><!-- Sets, Sets.Deck, Sets.Assistant -->
-
-<script xsrc="./js/init.js"></script>
-
-<script>
-	document.getElementById('game-area').ontouchmove = function(e){ e.preventDefault(); };
-	new NoClickDelay(document.getElementsByTagName('body')[0]);
 </script>
 </body>
 </html>

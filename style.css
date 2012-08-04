@@ -1,4 +1,4 @@
-html, body, #game-area table {
+html, body, .board table {
 	font-family:Verdana, Helvetica, Arial, sans;
 
 	width:100%;
@@ -13,7 +13,7 @@ html, body, #game-area table {
 
 .needs-localstorage { display:none; }
 
-#game-area, .board {
+.board {
 	width: 100%;
 	height: 100%;
 }
@@ -55,7 +55,7 @@ html, body, #game-area table {
 	100% { color: #000; }
 }
 
-#game-area table, .board table {
+.board table {
 	padding-top:2em;
 	background:url('./backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
 
@@ -67,12 +67,12 @@ html, body, #game-area table {
 
 	-webkit-tap-highlight-color:rgba(0,0,0,0) !important;
 }
-#game-area td, .board td {
+.board td {
 	padding:.45em .625em;
 	position:relative;
 }
 
-#game-area div, .board .card {
+.board .card {
 	border:2px solid;
 	border-color: white #DADADA #DADADA white;
 
@@ -101,21 +101,21 @@ html, body, #game-area table {
 	width:100%;
 	height:100%;
 }
-#game-area .selected div, .board .card.selected {
+.board .is_selected .card {
 	-webkit-box-shadow:0 0 1.5em blue;
 	box-shadow:0 0 1.5em blue;
 	border-color:blue;
 }
-#game-area .error div, .board .card.error {
+.board .error .card {
 	-webkit-box-shadow:0 0 1.5em red;
 	box-shadow:0 0 1.5em red;
 	border-color:red;
 }
-#game-area .not-possible div, .board .card.not-possible {
+.board .not-possible .card {
 	opacity:.5;
 	-webkit-transition: opacity 1s linear;
 }
-#game-area .found div, .board .card.found {
+.board .found .card {
 	-webkit-box-shadow:0 0 1.5em green;
 	box-shadow:0 0 1.5em green;
 	border-color:green;
@@ -140,15 +140,15 @@ html, body, #game-area table {
 	to { -ms-transform:scale(1); opacity:0;}
 }
 
-#game-area canvas, .card canvas {
+.card canvas {
 	position:absolute; top:0; bottom:0; left:0; right:0;
 	margin:auto;
 }
 
 /* iPad [portrait + landscape] */
 @media all and (min-device-width: 768px) and (max-device-width: 1024px) {
-	#game-area td, .board .slot { padding:.25em; }
-	#game-area div, .board .card {
+	.board .slot { padding:.25em; }
+	.board .card {
 		-webkit-border-radius:.5em;
 		-moz-border-radius:.5em;
 		border-radius:.5em;
@@ -158,8 +158,8 @@ html, body, #game-area table {
 }
 /* iPhone [portrait] WINDOW SIZE */
 @media all and (max-width: 480px) {
-	#game-area td, .board .slot { padding:.13em .25em; }
-	#game-area div, .board .card {
+	.board .slot { padding:.13em .25em; }
+	.board .card {
 		-webkit-border-radius:.5em;
 		-moz-border-radius:.5em;
 		border-radius:.5em;
@@ -169,8 +169,8 @@ html, body, #game-area table {
 }
 /* iPhone [landscape] WINDOW SIZE */
 @media all and (max-height:480px) {
-	#game-area td, .board .slot { padding:.13em .25em; }
-	#game-area div, .board .card {
+	.board .slot { padding:.13em .25em; }
+	.board .card {
 		-webkit-border-radius:.5em;
 		-moz-border-radius:.5em;
 		border-radius:.5em;
@@ -180,14 +180,14 @@ html, body, #game-area table {
 }
 
 @media all and (orientation:portrait) {
-	#game-area canvas, .card canvas {
+	.card canvas {
 		width:100%;
 		height:auto;
 		-webkit-transform: rotate(0deg);
 	}
 }
 @media all and (orientation:landscape) {
-	#game-area canvas, .card canvac {
+	.card canvac {
 		width:auto;
 		height:100%;
 		-webkit-transform: rotate(-90deg);

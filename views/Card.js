@@ -111,7 +111,7 @@ window.Views.Card = (function(Parent) {
 		render: function() {
 			var canvas = this.make("canvas", {width: 150, height: 150});
 			this.draw(canvas.getContext('2d'));
-			this.$el.append(canvas);
+			this.$el.html(canvas);
 
 			return this;
 		},
