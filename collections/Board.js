@@ -11,10 +11,10 @@ window.Collections.Board = (function(Slot) {
 			};
 		},
 		selectedCards = function(list) {
-			return _.filter(list, function(card) { return card.isSelected; });
+			return _.filter(list, function(card) { return card.is_selected; });
 		},
 		notSelectedCards = function(list) {
-			return _.filter(list, function(card) { return !card.isSelected; });
+			return _.filter(list, function(card) { return !card.is_selected; });
 		},
 		unmatchedCards = function(list) {
 			return _.filter(list, function(card) { return !card.hasSet; });
@@ -79,7 +79,7 @@ window.Collections.Board = (function(Slot) {
 			if (cards.length !== 3 ) { return false; }
 
 			var totals = {
-				counts: _.reduce(cards, propCounter('count'), {}),
+				counts: _.reduce(cards, propCounter('num'), {}),
 				shapes: _.reduce(cards, propCounter('shape'), {}),
 				fills: _.reduce(cards, propCounter('fill'), {}),
 				colors: _.reduce(cards, propCounter('color'), {})
