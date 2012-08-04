@@ -9,17 +9,32 @@ window.Models.Slot = (function(Card) {
 			'card': null,
 
 			'is_selected': false,
-			'possible': null,
-			'invalid': null
+			'is_possible': true,
+			'is_invalid': false,
+			'is_valid': false
 		},
 
 		isInvalid: function(state) {
+
+			if (state) {
+				this.set({
+					is_selected: false,
+					is_invalid: true
+				});
+				_.delay(_.bind(this.isInvalid, this), 1000, false);
+			} else {
+				// If something is part of an invalid selection, allow setting is_selected before this is called via a timeout
+				this.set({is_invalid: false});
+			}
+		},
+
+		isMatched: function(state) {
 			this.set({
 				is_selected: false,
-				is_invalid: state
+				is_matched: state
 			});
 			if (state) {
-				_.delay(_.bind(this.isInvalid, this), 1000, false);
+				_.delay(_.bind(this.isMatched, this), 1000, false);
 			}
 		},
 

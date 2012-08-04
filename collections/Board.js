@@ -32,16 +32,20 @@ window.Collections.Board = (function(Slot) {
 							return slot.get('card').toJSON();
 						});
 						if (this.constructor.isASet(cardJSON)) {
-							this.trigger('selected:valid-set', selected);
+							_.defer(_.bind(this.trigger, this,
+								'selected:valid-set', selected));
 						} else {
-							this.trigger('selected:invalid-set', selected);
+							_.defer(_.bind(this.trigger, this,
+								'selected:invalid-set', selected));
 						}
 					}
 				}
 			});
 
 			this.on('selected:valid-set', function(slots) {
-				
+				_.each(slots, function(slot) {
+					slot.isMatched(true);
+				});
 			});
 
 			this.on('selected:invalid-set', function(slots) {
@@ -60,8 +64,7 @@ window.Collections.Board = (function(Slot) {
 		drawCards: function(deck) {
 			this.each(function(slot) {
 				if (slot.isEmpty() && deck.hasCards()) {
-					var card = deck.drawRandomCard();
-					slot.revealCard(card);
+					slot.revealCard(deck.drawRandomCard());
 				}
 			});
 		}

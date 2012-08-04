@@ -12,28 +12,37 @@ window.Views.Slot = (function(Parent, Card) {
 			click: 'handleClick'
 		},
 
+		statesStyleMap: {
+			'is_selected': 'is_selected',
+			'is_invalid': 'error',
+			'is_matched': 'found'
+		},
+
 		initialize: function() {
-			this.model.on('change:is_selected', this.renderSlot, this);
-			this.model.on('change:is_invalid', this.renderInvalid, this);
-			this.model.on('change:card', this.renderChild, this);
+			this.model.on('change', this.renderSlotState, this);
+			this.model.on('change:card', this.renderChildCard, this);
 		},
 
 		render: function() {
-			this.renderSlot();
-			this.renderChild();
+			this.renderSlotState();
+			this.renderChildCard();
 			return this;
 		},
 
-		renderSlot: function() {
-			this.$el
-				.toggleClass('is_selected', this.model.get('is_selected'));
+		renderSlotState: function(model, props) {
+			props = props || {changes:{}};
+
+			var _this = this,
+				styleMap = this.statesStyleMap;
+
+			_.each(props.changes, function(val, key) {
+				if (styleMap[key]) {
+					_this.$el.toggleClass(styleMap[key], model.get(key));
+				}
+			});
 		},
 
-		renderInvalid: function() {
-			this.$el.toggleClass('error', this.model.get('is_invalid'));
-		},
-
-		renderChild: function() {
+		renderChildCard: function() {
 			this.removeChild();
 
 			var card = this.model.get('card');
