@@ -100,12 +100,8 @@ window.Views.Card = (function(Parent) {
 		tagName: 'div',
 		className: 'card',
 
-		events: {
-			click: 'handleClick'
-		},
-
 		initialize: function() {
-			this.model.on('change', this.render, this);
+			this.model.on('change:is_selected', this.render, this);
 		},
 
 		render: function() {
@@ -130,10 +126,6 @@ window.Views.Card = (function(Parent) {
 				ctx.fill();
 				ctx.restore();
 			}
-		},
-
-		handleClick: function() {
-			this.model.toggleSelect();
 		}
 	});
 })(Backbone.View);
