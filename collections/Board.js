@@ -23,7 +23,9 @@ window.Collections.Board = (function(Slot) {
 	return Backbone.Collection.extend({
 		model: Slot,
 
-		initialize: function() {
+		initialize: function(options) {
+			this.deck = options.deck;
+
 			this.on('change:is_selected', function(model, value) {
 				if (value) {
 					var selected = this.selected();
@@ -53,6 +55,10 @@ window.Collections.Board = (function(Slot) {
 					slot.isInvalid(true);
 				});
 			});
+
+			this.on('card:removed', function(slot) {
+				slot.revealCard(this.deck.drawRandomCard());
+			});
 		},
 
 		selected: function() {
@@ -69,13 +75,13 @@ window.Collections.Board = (function(Slot) {
 			});
 		}
 	}, {
-		factory: function(rows, cols) {
-			var board = new this();
-			for (var row = 0; row < rows; row++) {
-				for (var col = 0; col < cols; col++) {
-					board.add(new Slot());
-				}
+		factory: function(deck, rows, cols) {
+			var board = new this({deck: deck}),
+				slots = [];
+			for (var i = 0; i < rows * cols; i++) {
+				slots.push(new Slot());
 			}
+			board.reset(slots);
 			return board;
 		},
 		isASet: function(cards) {

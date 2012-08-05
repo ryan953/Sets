@@ -6,26 +6,34 @@ window.Sets = (function(Deck, Board) {
 	return Backbone.Model.extend({
 		initialize: function() {
 			this.on('game:start', function(mode) {
-				this.set({mode: mode});
-
-				this.board.drawCards(this.deck);
-			});
-
-			this.on('change:mode', function(model, mode) {
-				var baseSize = {rows: 4, cols: 3};
-				if (mode == 'easy') {
-					baseSize = {rows: 3, cols: 3};
-				}
-				this.baseSize = baseSize;
-				this.set(baseSize);
+				var baseSize = this.getBaseSize(mode);
 
 				this.deck = Deck.factory(mode);
-				this.board = Board.factory(baseSize.rows, baseSize.cols);
+				this.board = Board.factory(
+					this.deck,
+					baseSize.rows,
+					baseSize.cols
+				);
+
+				this.set({
+					mode: mode,
+					rows: baseSize.rows,
+					cols: baseSize.cols
+				});
+
+				this.board.drawCards(this.deck);
 			});
 		},
 
 		start: function(mode) {
 			this.trigger('game:start', mode);
+		},
+
+		getBaseSize: function(mode) {
+			if (mode == 'easy') {
+				return {rows: 3, cols: 3};
+			}
+			return {rows: 4, cols: 3};
 		}
 
 	});

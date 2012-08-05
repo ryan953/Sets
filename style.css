@@ -101,15 +101,15 @@ html, body, .board table {
 	width:100%;
 	height:100%;
 }
-.board .is_selected .card {
-	-webkit-box-shadow:0 0 1.5em blue;
-	box-shadow:0 0 1.5em blue;
-	border-color:blue;
-}
 .board .error .card {
 	-webkit-box-shadow:0 0 1.5em red;
 	box-shadow:0 0 1.5em red;
 	border-color:red;
+}
+.board .is_selected .card {
+	-webkit-box-shadow:0 0 1.5em blue;
+	box-shadow:0 0 1.5em blue;
+	border-color:blue;
 }
 .board .not-possible .card {
 	opacity:.5;

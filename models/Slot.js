@@ -11,7 +11,8 @@ window.Models.Slot = (function(Card) {
 			'is_selected': false,
 			'is_possible': true,
 			'is_invalid': false,
-			'is_valid': false
+			'is_valid': false,
+			'is_matched': false
 		},
 
 		isInvalid: function(state) {
@@ -35,6 +36,8 @@ window.Models.Slot = (function(Card) {
 			});
 			if (state) {
 				_.delay(_.bind(this.isMatched, this), 1000, false);
+			} else {
+				this.collection.trigger('card:removed', this);
 			}
 		},
 

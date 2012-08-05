@@ -183,9 +183,9 @@ $(document).ready(function() {
 	// 	model: window.game
 	// });
 
-	$('.board').replaceWith(board.el);
+	$('.board').replaceWith(window.board.el);
 
-	game.start('easy');
+	window.game.start('easy');
 });
 </script>
 </body>
