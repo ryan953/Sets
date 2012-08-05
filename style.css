@@ -13,7 +13,7 @@ html, body, .board table {
 
 .needs-localstorage { display:none; }
 
-.board {
+.sets-game, .board {
 	width: 100%;
 	height: 100%;
 }
@@ -62,6 +62,7 @@ html, body, .board table {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
 
@@ -77,6 +78,7 @@ html, body, .board table {
 	border-color: white #DADADA #DADADA white;
 
 	-webkit-box-shadow:0 .6em 1em #333;
+	-moz-box-shadow:0 .6em 1em #333;
 	box-shadow:0 .6em 1em #333;
 	-webkit-border-radius:1.5em;
 	-moz-border-radius:1.5em;
@@ -103,20 +105,27 @@ html, body, .board table {
 }
 .board .error .card {
 	-webkit-box-shadow:0 0 1.5em red;
+	-moz-box-shadow:0 0 1.5em red;
 	box-shadow:0 0 1.5em red;
 	border-color:red;
 }
 .board .is_selected .card {
 	-webkit-box-shadow:0 0 1.5em blue;
+	-moz-box-shadow:0 0 1.5em blue;
 	box-shadow:0 0 1.5em blue;
 	border-color:blue;
 }
 .board .not-possible .card {
 	opacity:.5;
 	-webkit-transition: opacity 1s linear;
+	-moz-transition: opacity 1s linear;
+	-ms-transition: opacity 1s linear;
+	-o-transition: opacity 1s linear;
+	transition: opacity 1s linear;
 }
 .board .found .card {
 	-webkit-box-shadow:0 0 1.5em green;
+	-moz-box-shadow:0 0 1.5em green;
 	box-shadow:0 0 1.5em green;
 	border-color:green;
 
@@ -139,6 +148,11 @@ html, body, .board table {
 	50% { -ms-transform:scale(1.1); opacity:.25; }
 	to { -ms-transform:scale(1); opacity:0;}
 }
+keyframes zoom {
+	from { transform:scale(1); opacity:1; }
+	50% { transform:scale(1.1); opacity:.25; }
+	to { transform:scale(1); opacity:0; }
+}
 
 .card canvas {
 	position:absolute; top:0; bottom:0; left:0; right:0;
@@ -153,6 +167,7 @@ html, body, .board table {
 		-moz-border-radius:.5em;
 		border-radius:.5em;
 		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
 		box-shadow:none !important;
 	}
 }
@@ -164,6 +179,7 @@ html, body, .board table {
 		-moz-border-radius:.5em;
 		border-radius:.5em;
 		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
 		box-shadow:none !important;
 	}
 }
@@ -175,6 +191,7 @@ html, body, .board table {
 		-moz-border-radius:.5em;
 		border-radius:.5em;
 		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
 		box-shadow:none !important;
 	}
 }
@@ -184,6 +201,10 @@ html, body, .board table {
 		width:100%;
 		height:auto;
 		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
 	}
 }
 @media all and (orientation:landscape) {
@@ -191,6 +212,10 @@ html, body, .board table {
 		width:auto;
 		height:100%;
 		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		transform: rotate(-90deg);
 	}
 }
 
@@ -217,7 +242,8 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 
 .lightbox {
 	display:none;
-	background:rgba(0,0,0,.75);
+	background: #333;
+	background:rgba(0, 0, 0, .75);
 	position:absolute;
 	z-index:100;
 	width:100%;
@@ -296,7 +322,8 @@ a.button:hover {
 	line-height:24px;
 	padding:3px 10px;
 }
-.button:hover span, .button.active span {
+.button:hover span,
+.button.active span {
 	background: rgb(76,76,76); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 25%, rgba(71,71,71,1) 39%, rgba(44,44,44,1) 50%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(76,76,76,1)), color-stop(12%,rgba(89,89,89,1)), color-stop(25%,rgba(102,102,102,1)), color-stop(39%,rgba(71,71,71,1)), color-stop(50%,rgba(44,44,44,1)), color-stop(51%,rgba(0,0,0,1)), color-stop(60%,rgba(17,17,17,1)), color-stop(76%,rgba(43,43,43,1)), color-stop(91%,rgba(28,28,28,1)), color-stop(100%,rgba(19,19,19,1))); /* Chrome,Safari4+ */
@@ -342,6 +369,7 @@ a.button:hover {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
 
