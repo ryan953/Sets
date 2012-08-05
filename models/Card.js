@@ -8,9 +8,7 @@ window.Models.Card = (function() {
 		counts: [1, 2, 3],
 		shapes: ['Diamond', 'Squiggle', 'Oval'], //['Triangle', 'Circle', 'Square'],
 		fills: ['solid', 'empty', 'striped'],
-		colors: ['red', 'green', 'blue'],
-
-		is_selected: false
+		colors: ['red', 'green', 'blue']
 	};
 
 	return Backbone.Model.extend({

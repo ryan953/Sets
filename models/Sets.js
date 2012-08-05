@@ -4,21 +4,33 @@ window.Sets = (function(Deck, Board) {
 	"use strict";
 
 	return Backbone.Model.extend({
+		defaults: {
+			mode: null,
+			baseSize: {rows: 0, cols: 0}
+		},
+
+		toJSON: function() {
+			var attrs = _.clone(this.attributes);
+			attrs.deck = this.deck.toJSON();
+			attrs.board = this.board.toJSON();
+			return attrs;
+		},
+
 		initialize: function() {
+			this.deck = new Deck();
+			this.board = new Board(null, {deck: this.deck});
+
 			this.on('game:start', function(mode) {
 				var baseSize = this.getBaseSize(mode);
 
-				this.deck = Deck.factory(mode);
-				this.board = Board.factory(
-					this.deck,
+				this.deck.rebuild(mode);
+				this.board.rebuild(
 					baseSize.rows,
 					baseSize.cols
 				);
-
 				this.set({
 					mode: mode,
-					rows: baseSize.rows,
-					cols: baseSize.cols
+					baseSize: baseSize
 				});
 
 				this.board.drawCards(this.deck);

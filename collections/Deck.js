@@ -21,29 +21,34 @@ window.Collections.Deck = (function(Card) {
 			return this.drawCard(
 				Math.floor(Math.random()*this.length)
 			);
-		}
-	}, {
-		factory: function(mode) {
+		},
+
+		rebuild: function(mode) {
 			mode = mode || 'easy';
-			var deck = new this(),
-				props = {};
+			var cards = [];
 			Card.counts.forEach(function(num) {
-				props.num = num;
 				Card.shapes.forEach(function(shape) {
-					props.shape = shape;
 					Card.colors.forEach(function(color) {
-						props.color = color;
 						if (mode == 'easy') {
-							deck.add(props);
+							cards.push({
+								num: num,
+								shape: shape,
+								color: color
+							});
 						} else {
 							Card.fills.forEach(function(shade) {
-								deck.add(props);
+								cards.push({
+									num: num,
+									shape: shape,
+									color: color,
+									shade: shade
+								});
 							});
 						}
 					});
 				});
 			});
-			return deck;
+			this.reset(cards);
 		}
 	});
 

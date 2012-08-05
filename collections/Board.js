@@ -23,7 +23,15 @@ window.Collections.Board = (function(Slot) {
 	return Backbone.Collection.extend({
 		model: Slot,
 
-		initialize: function(options) {
+		boardSize: {rows: 0, cols: 0},
+
+		toJSON: function() {
+			var attrs = Backbone.Collection.prototype.toJSON.call(this);
+			attrs.boardSize = _.clone(this.boardSize);
+			return attrs;
+		},
+
+		initialize: function(models, options) {
 			this.deck = options.deck;
 
 			this.on('change:is_selected', function(model, value) {
@@ -73,17 +81,20 @@ window.Collections.Board = (function(Slot) {
 					slot.revealCard(deck.drawRandomCard());
 				}
 			});
-		}
-	}, {
-		factory: function(deck, rows, cols) {
-			var board = new this({deck: deck}),
-				slots = [];
+		},
+
+		rebuild: function(rows, cols) {
+			var slots = [];
 			for (var i = 0; i < rows * cols; i++) {
 				slots.push(new Slot());
 			}
-			board.reset(slots);
-			return board;
-		},
+			this.reset(slots);
+			this.boardSize = {
+				rows: rows,
+				cols: cols
+			};
+		}
+	}, {
 		isASet: function(cards) {
 			if (cards.length !== 3 ) { return false; }
 
