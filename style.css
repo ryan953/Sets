@@ -108,6 +108,12 @@ html, body, .board table {
 	-moz-box-shadow:0 0 1.5em red;
 	box-shadow:0 0 1.5em red;
 	border-color:red;
+
+	-webkit-animation: wiggle .25s 1;
+	-moz-animation:    wiggle .25s 1;
+	-ms-animation:     wiggle .25s 1;
+	-o-animation:     wiggle .25s 1;
+	animation:         wiggle .25s 1;
 }
 .board .is_selected .card {
 	-webkit-box-shadow:0 0 1.5em blue;
@@ -132,7 +138,46 @@ html, body, .board table {
 	-webkit-animation: zoom 1s 1;
 	-moz-animation:    zoom 1s 1;
 	-ms-animation:     zoom 1s 1;
+	-o-animation:     zoom 1s 1;
+	animation:         zoom 1s 1;
 }
+
+@-webkit-keyframes wiggle {
+	from { -webkit-transform:rotate(0deg); }
+	20% { -webkit-transform:rotate(7deg); }
+	60% { -webkit-transform:rotate(-7deg); }
+	80% { -webkit-transform:rotate(7deg); }
+	to { -webkit-transform:rotate(0deg); }
+}
+@-moz-keyframes wiggle {
+	from { -moz-transform:rotate(0deg); }
+	20% { -moz-transform:rotate(7deg); }
+	60% { -moz-transform:rotate(-7deg); }
+	80% { -moz-transform:rotate(7deg); }
+	to { -moz-transform:rotate(0deg); }
+}
+@-ms-keyframes wiggle {
+	from { -ms-transform:rotate(0deg); }
+	20% { -ms-transform:rotate(7deg); }
+	60% { -ms-transform:rotate(-7deg); }
+	80% { -ms-transform:rotate(7deg); }
+	to { -ms-transform:rotate(0deg); }
+}
+@-o-keyframes wiggle {
+	from { -o-transform:rotate(0deg); }
+	20% { -o-transform:rotate(7deg); }
+	60% { -o-transform:rotate(-7deg); }
+	80% { -o-transform:rotate(7deg); }
+	to { -o-transform:rotate(0deg); }
+}
+@keyframes wiggle {
+	from { transform:rotate(0deg); }
+	20% { transform:rotate(7deg); }
+	60% { transform:rotate(-7deg); }
+	80% { transform:rotate(7deg); }
+	to { transform:rotate(0deg); }
+}
+
 @-webkit-keyframes zoom {
 	from { -webkit-transform:scale(1); opacity:1; }
 	50% { -webkit-transform:scale(1.1); opacity:.25; }
@@ -147,6 +192,11 @@ html, body, .board table {
 	from { -ms-transform:scale(1); opacity:1; }
 	50% { -ms-transform:scale(1.1); opacity:.25; }
 	to { -ms-transform:scale(1); opacity:0;}
+}
+@-o-keyframes zoom {
+	from { -o-transform:scale(1); opacity:1; }
+	50% { -o-transform:scale(1.1); opacity:.25; }
+	to { -o-transform:scale(1); opacity:0;}
 }
 keyframes zoom {
 	from { transform:scale(1); opacity:1; }
