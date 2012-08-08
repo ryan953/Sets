@@ -258,7 +258,7 @@ keyframes zoom {
 	}
 }
 @media all and (orientation:landscape) {
-	.card canvac {
+	.card canvas {
 		width:auto;
 		height:100%;
 		-webkit-transform: rotate(-90deg);
