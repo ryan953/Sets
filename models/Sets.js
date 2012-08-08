@@ -44,8 +44,10 @@ window.Sets = (function(Deck, Board) {
 		getBaseSize: function(mode) {
 			if (mode == 'easy') {
 				return {rows: 3, cols: 3};
+			} else if (mode == 'normal') {
+				return {rows: 4, cols: 3};
 			}
-			return {rows: 4, cols: 3};
+			return {rows: 0, cols: 0};
 		}
 
 	});

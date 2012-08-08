@@ -101,7 +101,7 @@ window.Views.Card = (function(Parent) {
 		className: 'card',
 
 		initialize: function() {
-			this.model.on('change:is_selected', this.render, this);
+			this.card = this.options.card;
 		},
 
 		render: function() {
@@ -114,14 +114,14 @@ window.Views.Card = (function(Parent) {
 
 		draw: function(ctx) {
 			ctx.clearRect(0, 0, 150, 150);
-			for(var i = 0; i < this.model.get('num'); i++) {
+			for(var i = 0; i < this.card.get('num'); i++) {
 				ctx.save();
-				ctx.translate(25, ([50, 25, 0])[this.model.get('num')-1] + (i*50));
-				paths[this.model.get('shape')](ctx);
-				var visualSettings = visuals(this.model);
+				ctx.translate(25, ([50, 25, 0])[this.card.get('num')-1] + (i*50));
+				paths[this.card.get('shape')](ctx);
+				var visualSettings = visuals(this.card);
 				ctx.lineWidth = visualSettings.lineWidth;
 				ctx.fillStyle = visualSettings.fillStyle;
-				ctx.strokeStyle = this.model.get('color');
+				ctx.strokeStyle = this.card.get('color');
 				ctx.stroke();
 				ctx.fill();
 				ctx.restore();

@@ -166,6 +166,7 @@
 <script src="./views/Slot.js"></script>
 <script src="./views/Board.js?1"></script>
 <script src="./views/Chrome.js"></script>
+<script src="./views/Sets.js"></script>
 
 <script>
 _.each(document.getElementsByClassName('board'), function(node) {
@@ -176,16 +177,13 @@ new NoClickDelay(document.getElementsByTagName('body')[0]);
 $(document).ready(function() {
 	window.game = new Sets();
 
-	window.board = new Views.Board({
-		model: window.game
+	$('.board').replaceWith(new Views.Sets({
+		game: window.game
+	}).render().el);
+
+	$('.game-reset').click(function() {
+		window.game.start('easy');
 	});
-	// window.chrome = new Views.Chrome({
-	// 	model: window.game
-	// });
-
-	$('.board').replaceWith(window.board.el);
-
-	window.game.start('easy');
 });
 </script>
 </body>

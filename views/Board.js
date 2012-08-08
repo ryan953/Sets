@@ -10,38 +10,39 @@ window.Views.Board = (function(Parent, Slot) {
 
 		child_views: [],
 
-		// Gets a Sets game object in the constructor
+		MAX_COLS: 3,
 
 		initialize: function() {
-			this.model.on('change', this.render, this);
+			this.board = this.options.board;
+			this.board.on('reset', this.render, this);
 		},
 
 		render: function() {
-			var rows = this.model.get('rows'),
-				cols = this.model.get('cols');
-
 			this.removeChildren();
+			this.renderGameTable();
 
-			var slots = rows * cols;
-			for (var c = 0; c < slots; c++) {
+			return this;
+		},
+
+		renderGameTable: function() {
+			for (var c = 0; c < this.board.length; c++) {
 				this.child_views.push(new Slot({
-					model: this.model.board.at(c)
+					slot: this.board.at(c)
 				}).render());
 			}
 
-			var table = this.make('table');
+			var table = this.make('table'),
+				rows = Math.ceil(this.board.length / this.MAX_COLS);
 			for (var row = 0; row < rows; row++) {
 				var tr = this.make('tr');
-				for (var col = 0; col < cols; col++) {
-					var position = (row * cols) + col,
+				for (var col = 0; col < this.MAX_COLS; col++) {
+					var position = (row * this.MAX_COLS) + col,
 						child = this.child_views[position];
 					tr.appendChild(child.el);
 				}
 				table.appendChild(tr);
 			}
 			this.el.appendChild(table);
-
-			return this;
 		},
 
 		remove: function() {
@@ -54,6 +55,7 @@ window.Views.Board = (function(Parent, Slot) {
 				view.remove();
 			});
 			this.child_views = [];
+			this.$el.empty();
 		}
 	});
 

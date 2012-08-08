@@ -54,13 +54,13 @@ window.Collections.Board = (function(Slot) {
 
 			this.on('selected:valid-set', function(slots) {
 				_.each(slots, function(slot) {
-					slot.isMatched(true);
+					slot.setMatched(true);
 				});
 			});
 
 			this.on('selected:invalid-set', function(slots) {
 				_.each(slots, function(slot) {
-					slot.isInvalid(true);
+					slot.setInvalid(true);
 				});
 			});
 
@@ -89,10 +89,6 @@ window.Collections.Board = (function(Slot) {
 				slots.push(new Slot());
 			}
 			this.reset(slots);
-			this.boardSize = {
-				rows: rows,
-				cols: cols
-			};
 		}
 	}, {
 		isASet: function(cards) {

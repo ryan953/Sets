@@ -19,8 +19,9 @@ window.Views.Slot = (function(Parent, Card) {
 		},
 
 		initialize: function() {
-			this.model.on('change', this.renderSlotState, this);
-			this.model.on('change:card', this.renderChildCard, this);
+			this.slot = this.options.slot;
+			this.slot.on('change', this.renderSlotState, this);
+			this.slot.on('change:card', this.renderChildCard, this);
 		},
 
 		render: function() {
@@ -45,10 +46,10 @@ window.Views.Slot = (function(Parent, Card) {
 		renderChildCard: function() {
 			this.removeChild();
 
-			var card = this.model.get('card');
-			if (!_.isEmpty(card)) {
+			var card = this.slot.get('card');
+			if (_.isObject(card)) {
 				this.cardView = new Card({
-					model: card
+					card: card
 				}).render();
 				this.el.appendChild(this.cardView.el);
 			}
@@ -68,7 +69,7 @@ window.Views.Slot = (function(Parent, Card) {
 		},
 
 		handleClick: function() {
-			this.model.toggleSelect();
+			this.slot.toggleSelect();
 		}
 	});
 
