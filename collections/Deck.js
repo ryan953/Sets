@@ -4,6 +4,11 @@ window.Collections = window.Collections || {};
 window.Collections.Deck = (function(Card) {
 	"use strict";
 
+	var modes = {
+		NORMAL: 'normal',
+		EASY: 'easy'
+	};
+
 	return Backbone.Collection.extend({
 		model: Card,
 
@@ -24,18 +29,21 @@ window.Collections.Deck = (function(Card) {
 		},
 
 		rebuild: function(mode) {
-			mode = mode || 'easy';
+			if (_.indexOf(_.values(modes), mode) === -1) {
+				this.reset();
+				return;
+			}
 			var cards = [];
 			Card.counts.forEach(function(num) {
 				Card.shapes.forEach(function(shape) {
 					Card.colors.forEach(function(color) {
-						if (mode == 'easy') {
+						if (mode == modes.EASY) {
 							cards.push({
 								num: num,
 								shape: shape,
 								color: color
 							});
-						} else {
+						} else if (modes.NORMAL) {
 							Card.fills.forEach(function(shade) {
 								cards.push({
 									num: num,
@@ -50,6 +58,6 @@ window.Collections.Deck = (function(Card) {
 			});
 			this.reset(cards);
 		}
-	});
+	}, modes);
 
 })(window.Models.Card);
