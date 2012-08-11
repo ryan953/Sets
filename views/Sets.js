@@ -8,8 +8,6 @@ window.Views.Sets = (function(Parent, Board, Chrome) {
 		tagName: 'div',
 		className: 'sets-game',
 
-		events: {},
-
 		initialize: function() {
 			this.game = this.options.game;
 		},
@@ -17,23 +15,29 @@ window.Views.Sets = (function(Parent, Board, Chrome) {
 		render: function() {
 			this.removeChild();
 
+			this.chrome = new Chrome({
+				game: this.game
+			}).render();
+			this.$el.append(this.chrome.el);
+
 			this.boardView = new Board({
 				board: this.game.board
 			}).render();
-			this.$el.html(this.boardView.el);
-
-			// window.chrome = new Views.Chrome({
-			// 	game: this.game
-			// });
+			this.$el.append(this.boardView.el);
 
 			return this;
 		},
 
 		removeChild: function() {
+			if (this.chromeView) {
+				this.chromeView.remove();
+				delete this.chromeView;
+			}
 			if (this.boardView) {
 				this.boardView.remove();
 				delete this.boardView;
 			}
+			this.$el.empty();
 		}
 	});
 
