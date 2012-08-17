@@ -20,32 +20,8 @@ window.Views.Slot = (function(Parent, CardView) {
 
 		initialize: function() {
 			this.slot = this.options.slot;
-			this.slot.on('change', this.renderSlotState, this);
-			this.slot.on('change:card', this.replaceChild, this);
-		},
-
-		render: function() {
-			Parent.prototype.render.call(this);
-			this.renderSlotState();
-			return this;
-		},
-
-		renderSlotState: function(model, props) {
-			props = _.extend({changes:{}}, props);
-
-			var _this = this,
-				styleMap = this.statesStyleMap;
-
-			_.each(props.changes, function(val, key) {
-				if (styleMap[key]) {
-					_this.$el.toggleClass(styleMap[key], model.get(key));
-				}
-			});
-		},
-
-		replaceChild: function() {
-			this.removeChildren();
-			this.renderChildren();
+			this.slot.on('change', this.handleSlotState, this);
+			this.slot.on('change:card', this.render, this);
 		},
 
 		renderChildren: function() {
@@ -60,6 +36,19 @@ window.Views.Slot = (function(Parent, CardView) {
 
 		handleClick: function() {
 			this.slot.toggleSelect();
+		},
+
+		handleSlotState: function(model, props) {
+			props = _.extend({changes:{}}, props);
+
+			var _this = this,
+				styleMap = this.statesStyleMap;
+
+			_.each(props.changes, function(val, key) {
+				if (styleMap[key]) {
+					_this.$el.toggleClass(styleMap[key], model.get(key));
+				}
+			});
 		}
 	});
 
