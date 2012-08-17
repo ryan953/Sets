@@ -1,7 +1,7 @@
-/*global Backbone */
+/*global */
 window.Views = window.Views || {};
 
-window.Views.Slot = (function(Parent, Card) {
+window.Views.Slot = (function(Parent, CardView) {
 	"use strict";
 
 	return Parent.extend({
@@ -21,17 +21,17 @@ window.Views.Slot = (function(Parent, Card) {
 		initialize: function() {
 			this.slot = this.options.slot;
 			this.slot.on('change', this.renderSlotState, this);
-			this.slot.on('change:card', this.renderChildCard, this);
+			this.slot.on('change:card', this.replaceChild, this);
 		},
 
 		render: function() {
+			Parent.prototype.render.call(this);
 			this.renderSlotState();
-			this.renderChildCard();
 			return this;
 		},
 
 		renderSlotState: function(model, props) {
-			props = props || {changes:{}};
+			props = _.extend({changes:{}}, props);
 
 			var _this = this,
 				styleMap = this.statesStyleMap;
@@ -43,28 +43,18 @@ window.Views.Slot = (function(Parent, Card) {
 			});
 		},
 
-		renderChildCard: function() {
-			this.removeChild();
+		replaceChild: function() {
+			this.removeChildren();
+			this.renderChildren();
+		},
 
+		renderChildren: function() {
 			var card = this.slot.get('card');
 			if (_.isObject(card)) {
-				this.cardView = new Card({
+				this.child_views.cardView = new CardView({
 					card: card
 				}).render();
-				this.el.appendChild(this.cardView.el);
-			}
-		},
-
-		remove: function() {
-			Parent.prototype.remove.call(this);
-
-			this.removeChild();
-		},
-
-		removeChild: function() {
-			if (this.cardView) {
-				this.cardView.remove();
-				delete this.cardView;
+				this.el.appendChild(this.child_views.cardView.el);
 			}
 		},
 
@@ -73,4 +63,4 @@ window.Views.Slot = (function(Parent, Card) {
 		}
 	});
 
-})(Backbone.View, window.Views.Card);
+})(window.Views.Bases.ParentView, window.Views.Card);

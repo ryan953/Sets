@@ -1,7 +1,7 @@
-/*global Backbone document */
+/*global document */
 window.Views = window.Views || {};
 
-window.Views.Sets = (function(Parent, Board, Chrome) {
+window.Views.Sets = (function(Parent, BoardView, Chrome) {
 	"use strict";
 
 	return Parent.extend({
@@ -12,33 +12,20 @@ window.Views.Sets = (function(Parent, Board, Chrome) {
 			this.game = this.options.game;
 		},
 
-		render: function() {
-			this.removeChild();
-
-			this.chrome = new Chrome({
+		renderChildren: function() {
+			var children = {};
+			children.chrome = new Chrome({
 				game: this.game
 			}).render();
-			this.$el.append(this.chrome.el);
 
-			this.boardView = new Board({
+			children.boardView = new BoardView({
 				board: this.game.board
 			}).render();
-			this.$el.append(this.boardView.el);
 
-			return this;
-		},
+			this.$el.append(_.pluck(children, 'el'));
 
-		removeChild: function() {
-			if (this.chromeView) {
-				this.chromeView.remove();
-				delete this.chromeView;
-			}
-			if (this.boardView) {
-				this.boardView.remove();
-				delete this.boardView;
-			}
-			this.$el.empty();
+			return children;
 		}
 	});
 
-})(Backbone.View, window.Views.Board, window.Views.Chrome);
+})(window.Views.Bases.ParentView, window.Views.Board, window.Views.Chrome);
