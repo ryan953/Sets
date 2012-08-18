@@ -1,6 +1,6 @@
 /*globals _, Backbone */
 
-window.Sets = (function(Deck, Board) {
+window.Sets = (function(Settings, Deck, Board) {
 	"use strict";
 
 	return Backbone.Model.extend({
@@ -19,6 +19,9 @@ window.Sets = (function(Deck, Board) {
 		initialize: function() {
 			this.deck = new Deck();
 			this.board = new Board(null, {deck: this.deck});
+
+			this.settings = new Settings({id: 1});
+			this.settings.fetch();
 
 			this.on('game:start', function(mode) {
 				var baseSize = this.getBaseSize(mode);
@@ -51,4 +54,4 @@ window.Sets = (function(Deck, Board) {
 		}
 
 	});
-}(window.Collections.Deck, window.Collections.Board));
+}(window.Models.Settings, window.Collections.Deck, window.Collections.Board));

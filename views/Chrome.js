@@ -1,7 +1,7 @@
-/*global Backbone document */
+/*global $ _ Backbone document */
 window.Views = window.Views || {};
 
-window.Views.Chrome = (function(Parent) {
+window.Views.Chrome = (function(Parent, Scoreboard) {
 	"use strict";
 
 	return Parent.extend({
@@ -21,6 +21,12 @@ window.Views.Chrome = (function(Parent) {
 		render: function() {
 			this.$el.html(this.template());
 
+			this.$('.scoreboard-placeholder').append(
+				new Scoreboard({
+					settings: this.game.settings
+				}).render().el
+			);
+
 			// Lightbox stuff -> jquery plugin?
 			$('<a>')
 				.addClass('right button lightbox-close')
@@ -38,4 +44,4 @@ window.Views.Chrome = (function(Parent) {
 		}
 	});
 
-})(Backbone.View);
+})(Backbone.View, window.Views.Scoreboard);

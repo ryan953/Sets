@@ -27,10 +27,11 @@ window.Views.Slot = (function(Parent, CardView) {
 		renderChildren: function() {
 			var card = this.slot.get('card');
 			if (_.isObject(card)) {
-				this.child_views.cardView = new CardView({
+				var cardView = new CardView({
 					card: card
 				}).render();
-				this.el.appendChild(this.child_views.cardView.el);
+				this.el.appendChild(cardView.el);
+				return [cardView];
 			}
 		},
 

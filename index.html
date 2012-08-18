@@ -41,13 +41,17 @@
 	<div class="right">
 		<a class="button game-reset"><span>Reset</span></a>
 	</div>
-	<p class="center scoreboard-display">
-		<a href="#" data-scoreboard-display="score">Deck: <span id="score">0/0</span></a>
-		<a href="#" data-scoreboard-display="remaining" class="hide"><span id="remaining">0</span> cards remaining</a>
-		<a href="#" data-scoreboard-display="percent" class="hide">Sets Found: <span id="percent">00%</span></a>
-		<a href="#" data-scoreboard-display="time" class="hide">Time: <span id="time">0:00</span></a>
-	</p>
+	<div class="scoreboard-placeholder"></div>
 </div>
+</script>
+
+<script type="text/html" id="tmpl-scoreboard">
+<p class="center scoreboard-display">
+	<a href="#" class="hide" data-scoreboard-display="score">Deck: <span id="score">0/0</span></a>
+	<a href="#" class="hide" data-scoreboard-display="remaining"><span id="remaining">0</span> cards remaining</a>
+	<a href="#" class="hide" data-scoreboard-display="percent">Sets Found: <span id="percent">00%</span></a>
+	<a href="#" class="hide" data-scoreboard-display="time">Time: <span id="time">0:00</span></a>
+</p>
 </script>
 
 <div class="board"></div>
@@ -159,20 +163,25 @@
 <script src="./lib/NoClickDelay.js"></script>
 <script src="./lib/event.js"></script>
 <script src="./lib/jintervals-0.7-min.js"></script>
-<script src="./lib/modernizr-2.5.3-custom-build.js"></script>
+<!-- <script src="./lib/modernizr-2.5.3-custom-build.js"></script> -->
 
-<script src="./views/bases/ParentView.js"></script>
+<script src="./lib/backbone.localStorage.js"></script>
 
+<script src="./models/Settings.js"></script>
 <script src="./models/Card.js"></script>
 <script src="./models/Slot.js"></script>
 <script src="./collections/Deck.js"></script>
-<script src="./collections/Board.js?1"></script>
+<script src="./collections/Board.js"></script>
 <script src="./models/Sets.js"></script>
 
+<script src="./views/bases/ParentView.js"></script>
 <script src="./views/Card.js"></script>
 <script src="./views/Slot.js"></script>
-<script src="./views/Board.js?1"></script>
+<script src="./views/Board.js"></script>
+
+<script src="./views/Scoreboard.js"></script>
 <script src="./views/Chrome.js"></script>
+
 <script src="./views/Sets.js"></script>
 
 <script>
