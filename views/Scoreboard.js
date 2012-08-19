@@ -9,31 +9,34 @@ window.Views.Scoreboard = (function(Parent) {
 		className: '',
 
 		events: {
-			'click [data-scoreboard-display]': function() {
-				this.settings.setNextScoreboardDisplay();
+			'click a': function() {
+				this.game.settings.setNextScoreboardDisplay();
 			}
 		},
 
 		initialize: function() {
-			this.settings = this.options.settings;
+			this.game = this.options.game;
 
-			this.settings.on('change:scoreboard-display', this.renderScore, this);
+			this.game.on('game:start', this.render, this);
+			this.game.on('change:foundSets', this.render, this);
+			this.game.settings.on('change:scoreboard-display', this.render, this);
 
 			this.template = _.template($('#tmpl-scoreboard').text());
 		},
 
 		render: function() {
-			this.$el.html(this.template());
-			this.renderScore();
+			var found = this.game.getFoundCardCount(),
+				deckSize = this.game.getStartingDeckSize();
+
+			this.$el.html(this.template({
+				type: this.game.settings.get('scoreboard-display'),
+				percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
+				remaining: deckSize - found,
+				found: found,
+				deckSize: deckSize
+			}));
 
 			return this;
-		},
-
-		renderScore: function() {
-			var boardName = this.settings.get('scoreboard-display');
-			console.log('renderScore', boardName);
-			this.$('[data-scoreboard-display]').hide()
-				.filter('[data-scoreboard-display='+boardName+']').show();
 		}
 	});
 

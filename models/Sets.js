@@ -6,7 +6,8 @@ window.Sets = (function(Settings, Deck, Board) {
 	return Backbone.Model.extend({
 		defaults: {
 			mode: null,
-			baseSize: {rows: 0, cols: 0}
+			baseSize: {rows: 0, cols: 0},
+			foundSets: []
 		},
 
 		toJSON: function() {
@@ -23,21 +24,9 @@ window.Sets = (function(Settings, Deck, Board) {
 			this.settings = new Settings({id: 1});
 			this.settings.fetch();
 
-			this.on('game:start', function(mode) {
-				var baseSize = this.getBaseSize(mode);
+			this.on('game:start', this.initGame, this);
 
-				this.deck.rebuild(mode);
-				this.board.rebuild(
-					baseSize.rows,
-					baseSize.cols
-				);
-				this.set({
-					mode: mode,
-					baseSize: baseSize
-				});
-
-				this.board.drawCards(this.deck);
-			});
+			this.board.on('selected:valid-set', this.recordFoundSet, this);
 		},
 
 		start: function(mode) {
@@ -51,6 +40,46 @@ window.Sets = (function(Settings, Deck, Board) {
 				return {rows: 4, cols: 3};
 			}
 			return {rows: 0, cols: 0};
+		},
+
+		initGame: function(mode) {
+			this.setFoundSets([]);
+
+			var baseSize = this.getBaseSize(mode);
+
+			this.deck.rebuild(mode);
+			this.board.rebuild(
+				baseSize.rows,
+				baseSize.cols
+			);
+			this.set({
+				mode: mode,
+				baseSize: baseSize
+			});
+
+			this.board.drawCards(this.deck);
+		},
+
+		recordFoundSet: function(slots) {
+			var found = this.get('foundSets');
+			found.push(_.map(slots, function(slot) {
+				return slot.get('card');
+			}));
+			this.setFoundSets(found);
+		},
+
+		setFoundSets: function(found) {
+			this.set({foundSets: found});
+			this.trigger('change:foundSets'); // TODO: pass normal params for a change events
+			this.trigger('change');           // TODO: pass normal params for a change events
+		},
+
+		getFoundCardCount: function() {
+			return this.get('foundSets').length * 3 || 0;
+		},
+
+		getStartingDeckSize: function() {
+			return this.deck.startingLength;
 		}
 
 	});

@@ -23,7 +23,7 @@ window.Views.Chrome = (function(Parent, Scoreboard) {
 
 			this.$('.scoreboard-placeholder').append(
 				new Scoreboard({
-					settings: this.game.settings
+					game: this.game
 				}).render().el
 			);
 

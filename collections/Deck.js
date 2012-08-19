@@ -12,6 +12,8 @@ window.Collections.Deck = (function(Card) {
 	return Backbone.Collection.extend({
 		model: Card,
 
+		startingLength: 0,
+
 		hasCards: function() {
 			return this.length > 0;
 		},
@@ -26,6 +28,14 @@ window.Collections.Deck = (function(Card) {
 			return this.drawCard(
 				Math.floor(Math.random()*this.length)
 			);
+		},
+
+		reset: function(items) {
+			this.startingLength = 0;
+			if (items) {
+				this.startingLength = items.length;
+			}
+			Backbone.Collection.prototype.reset.call(this, items);
 		},
 
 		rebuild: function(mode) {

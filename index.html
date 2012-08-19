@@ -47,19 +47,22 @@
 
 <script type="text/html" id="tmpl-scoreboard">
 <p class="center scoreboard-display">
-	<a href="#" class="hide" data-scoreboard-display="score">Deck: <span id="score">0/0</span></a>
-	<a href="#" class="hide" data-scoreboard-display="remaining"><span id="remaining">0</span> cards remaining</a>
-	<a href="#" class="hide" data-scoreboard-display="percent">Sets Found: <span id="percent">00%</span></a>
-	<a href="#" class="hide" data-scoreboard-display="time">Time: <span id="time">0:00</span></a>
+	{% if (type === 'score') { %}
+		<a href="#">Deck: {{found}}/{{deckSize}}</a>
+	{% } else if (type === 'remaining') { %}
+		<a href="#">{{remaining}} cards remaining</a>
+	{% } else if (type === 'percent') { %}
+		<a href="#">Sets Found: {{percent}}%</a>
+	{% } else if (type === 'time') { %}
+		<a href="#">Time: <span class="time">0:00</span></a>
+	{% } %}
 </p>
 </script>
+
 
 <div class="board"></div>
 
 <div class="helping-message">thinking...</div>
-
-
-
 
 <div class="lightbox" id="settings">
 	<h2>Settings</h2>
@@ -195,7 +198,8 @@ $(document).ready(function() {
 
 	// Mustache Style Templates: {{var}}
 	_.templateSettings = {
-		interpolate : /\{\{(.+?)\}\}/g
+		interpolate : /\{\{(.+?)\}\}/g,
+		evaluate    : /\{%([\s\S]+?)%\}/g,
 	};
 
 	$('.board').replaceWith(new Views.Sets({
