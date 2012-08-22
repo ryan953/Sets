@@ -12,16 +12,16 @@ window.Views.Slot = (function(Parent, CardView) {
 			click: 'handleClick'
 		},
 
-		statesStyleMap: {
-			'is_selected': 'is_selected',
-			'is_invalid': 'error',
-			'is_matched': 'found'
+		enabledStyleMap: {
+			is_selected: 'is_selected',
+			is_invalid_trio: 'error',
+			is_valid_trio: 'found'
 		},
 
 		initialize: function() {
 			this.slot = this.options.slot;
-			this.slot.on('change', this.handleSlotState, this);
 			this.slot.on('change:card', this.render, this);
+			this.slot.on('change', this.handleSlotState, this);
 		},
 
 		renderChildren: function() {
@@ -33,6 +33,7 @@ window.Views.Slot = (function(Parent, CardView) {
 				this.el.appendChild(cardView.el);
 				return [cardView];
 			}
+			return [];
 		},
 
 		handleClick: function() {
@@ -43,13 +44,18 @@ window.Views.Slot = (function(Parent, CardView) {
 			props = _.extend({changes:{}}, props);
 
 			var _this = this,
-				styleMap = this.statesStyleMap;
+				enabledStyleMap = this.enabledStyleMap,
+				disabledStyleMap = this.disabledStyleMap;
 
 			_.each(props.changes, function(val, key) {
-				if (styleMap[key]) {
-					_this.$el.toggleClass(styleMap[key], model.get(key));
+				if (enabledStyleMap[key]) {
+					_this.$el.toggleClass(enabledStyleMap[key], model.get(key));
 				}
 			});
+
+			if (model.get('is_possible_revealed')) {
+				this.$el.toggleClass('not-possible', !model.get('is_possible'));
+			}
 		}
 	});
 
