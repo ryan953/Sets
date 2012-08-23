@@ -73,32 +73,18 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.on('reset:not_possible', function(board) {
-				var is_possible = board.pluck('is_possible');
-				var selected = board.where({is_selected:true});
-
-				console.group(_.map(selected, function(slot) {
-					return slot.toJSON();
+				var notPossible = _.shuffle(this.where({
+					is_possible: false,
+					is_possible_revealed: false
 				}));
-				console.log(is_possible.slice(0, 3));
-				console.log(is_possible.slice(3, 6));
-				console.log(is_possible.slice(6));
-				console.groupEnd();
-			});
-
-			this.on('reset:not_possible', function(board) {
-				var notPossible = _.shuffle(this.notPossible());
 				_.each(notPossible, function(slot, index) {
-					slot.delayReveal(index + 1);
+					slot.delayReveal((index + 1) /** 3*/);
 				});
 			});
 		},
 
 		selected: function() {
 			return this.where({is_selected: true});
-		},
-
-		notPossible: function() {
-			return this.where({is_possible: false});
 		},
 
 		emptySlots: function() {
@@ -123,12 +109,6 @@ window.Collections.Board = (function(Slot) {
 			this.reset(slots);
 		},
 
-		resetPossibilities: function() {
-			this.each(function(slot) {
-				slot.resetPossibility();
-			});
-		},
-
 		resetNotPossibleSlots: function() {
 			var isASet = _.bind(this.constructor.isASet, this.constructor),
 				getCardJson = _.bind(this.getCardJson, this),
@@ -140,14 +120,14 @@ window.Collections.Board = (function(Slot) {
 			// Escape hatch for short lists
 			if (this.length < 3) {
 				this.each(function(slot) {
-					slot.setIsPossible(false);
+					slot.set({is_possible: false});
 				});
 				return;
 			} else if (this.length === 3) {
 				var cardJson = getCardJson(this.models);
 				if (!isASet(cardJson)) {
 					this.each(function(slot) {
-						slot.setIsPossible(false);
+						slot.set({is_possible: false});
 					});
 				}
 				return;
@@ -178,7 +158,7 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.each(function(slot) {
-				slot.setIsPossible(!!slot.hasSet);
+				slot.set({is_possible: (!!slot.hasSet)});
 				delete slot.hasSet;
 			});
 

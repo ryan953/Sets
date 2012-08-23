@@ -55,6 +55,8 @@ window.Views.Slot = (function(Parent, CardView) {
 
 			if (model.get('is_possible_revealed')) {
 				this.$el.toggleClass('not-possible', !model.get('is_possible'));
+			} else {
+				this.$el.removeClass('not-possible');
 			}
 		}
 	});
