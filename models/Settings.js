@@ -15,7 +15,7 @@ window.Models.Settings = (function(Storage) {
 		localStorage: new Storage("settings"),
 
 		defaults: {
-			'mode': 'easy',
+			mode: 'easy',
 			'scoreboard-display': 'score'
 		},
 

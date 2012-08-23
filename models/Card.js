@@ -13,10 +13,10 @@ window.Models.Card = (function() {
 
 	return Backbone.Model.extend({
 		defaults: {
-			'num': allowedTypes.counts[0],
-			'shape': allowedTypes.shapes[0],
-			'color': allowedTypes.colors[0],
-			'fill': allowedTypes.fills[0]
+			num: allowedTypes.counts[0],
+			shape: allowedTypes.shapes[0],
+			color: allowedTypes.colors[0],
+			fill: allowedTypes.fills[0]
 		}
 	}, allowedTypes);
 

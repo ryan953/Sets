@@ -36,7 +36,7 @@ window.Sets = (function(Settings, Deck, Board) {
 		getBaseSize: function(mode) {
 			if (mode == Deck.EASY) {
 				return {rows: 3, cols: 3};
-			} else if (mode == 'normal') {
+			} else if (mode == Deck.NORMAL) {
 				return {rows: 4, cols: 3};
 			}
 			return {rows: 0, cols: 0};
