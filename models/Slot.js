@@ -83,9 +83,12 @@ window.Models.Slot = (function(Card) {
 			this.trigger('change', this);
 		},
 
-		delayReveal: function() {
-			// do fancier stuff
-			this.set({is_possible_revealed: true});
+		delayReveal: function(seconds) {
+			if (this._revealTimer) {
+				clearTimeout(this._revealTimer);
+			}
+			this._revealTimer = _.delay(_.bind(this.set, this),
+				seconds * 1000, {is_possible_revealed: true});
 		},
 
 		resetPossibility: function() {

@@ -88,7 +88,7 @@ window.Collections.Board = (function(Slot) {
 			this.on('reset:not_possible', function(board) {
 				var notPossible = _.shuffle(this.notPossible());
 				_.each(notPossible, function(slot, index) {
-					slot.delayReveal(index + 1);
+					slot.delayReveal((index + 1) * 3);
 				});
 			});
 		},
