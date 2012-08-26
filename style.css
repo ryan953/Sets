@@ -138,7 +138,7 @@ html, body, .board table {
 	-webkit-animation: zoom 1s 1;
 	-moz-animation:    zoom 1s 1;
 	-ms-animation:     zoom 1s 1;
-	-o-animation:     zoom 1s 1;
+	-o-animation:      zoom 1s 1;
 	animation:         zoom 1s 1;
 }
 

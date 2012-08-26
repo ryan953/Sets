@@ -4,6 +4,10 @@ window.Models = window.Models || {};
 window.Models.Slot = (function(Card) {
 	"use strict";
 
+	var MICRO_TO_SECOND_FACTOR = 1000;
+	var FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR;
+	var INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
+
 	return Backbone.Model.extend({
 		defaults: {
 			card: null,
@@ -22,6 +26,7 @@ window.Models.Slot = (function(Card) {
 			this.on('change:is_possible', function(model, value) {
 				if (value) {
 					// setting is_possible to true, must not be faded
+					this._clearRevealTimer();
 					this.set({is_possible_revealed: false});
 				} else {
 					// slot is not possible to make a set with
@@ -51,7 +56,7 @@ window.Models.Slot = (function(Card) {
 					is_selected: false,
 					is_invalid_trio: true
 				});
-				_.delay(_.bind(this.setInvalid, this), 250, false);
+				_.delay(_.bind(this.setInvalid, this), INVALID_WIGGLE_ANIMATION_TIME, false);
 			} else {
 				// If something is part of an invalid selection,
 				// allow setting is_selected=false before this is called via a timeout
@@ -65,7 +70,7 @@ window.Models.Slot = (function(Card) {
 				is_valid_trio: state
 			});
 			if (state) {
-				_.delay(_.bind(this.setMatched, this), 1000, false);
+				_.delay(_.bind(this.setMatched, this), FOUND_ZOOM_ANIMATION_TIME, false);
 			} else {
 				this.collection.trigger('card:removed', this);
 			}
@@ -77,24 +82,17 @@ window.Models.Slot = (function(Card) {
 			});
 		},
 
-		setIsPossible: function(state) {
-			this.set({ is_possible: state }, {silent: true});
-			this.trigger('change:is_possible', this);
-			this.trigger('change', this);
+		delayReveal: function(seconds) {
+			this._clearRevealTimer();
+			this._revealTimer = _.delay(function(model) {
+				model.set({is_possible_revealed: true});
+			}, seconds * MICRO_TO_SECOND_FACTOR, this);
 		},
 
-		delayReveal: function(seconds) {
+		_clearRevealTimer: function() {
 			if (this._revealTimer) {
 				clearTimeout(this._revealTimer);
 			}
-			this._revealTimer = _.delay(_.bind(this.set, this),
-				seconds * 1000, {is_possible_revealed: true});
-		},
-
-		resetPossibility: function() {
-			this.set({
-				is_possible: true
-			}, {silent: true});
 		}
 	});
 
