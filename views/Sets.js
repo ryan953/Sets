@@ -1,4 +1,4 @@
-/*global document */
+/*global document _ */
 window.Views = window.Views || {};
 
 window.Views.Sets = (function(Parent, BoardView, Chrome) {

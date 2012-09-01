@@ -1,47 +1,27 @@
-/*global $ _ Backbone document */
+/*global document $ _ Backbone */
 window.Views = window.Views || {};
 
-window.Views.Chrome = (function(Parent, Scoreboard) {
+window.Views.Chrome = (function(Parent, Router, Menubar) {
 	"use strict";
 
 	return Parent.extend({
 		tagName: 'div',
 		className: '',
 
-		events: {
-			'click .game-reset': 'resetGame'
-		},
-
 		initialize: function() {
 			this.game = this.options.game;
-
-			this.template = _.template($('#tmpl-menu').text());
 		},
 
-		render: function() {
-			this.$el.html(this.template());
+		renderChildren: function() {
+			var children = {};
+			children.menubar = new Menubar({
+				game: this.game
+			}).render();
 
-			this.$('.scoreboard-placeholder').append(
-				new Scoreboard({
-					game: this.game
-				}).render().el
-			);
+			this.$el.append(_.pluck(children, 'el'));
 
-			// Lightbox stuff -> jquery plugin?
-			$('<a>')
-				.addClass('right button lightbox-close')
-				.text('Close')
-				.prop('href', '#')
-				.wrapInner('<span>')
-				.appendTo( $('.lightbox') );
-			$('.lightbox').wrapInner('<div>');
-
-			return this;
-		},
-
-		resetGame: function() {
-			this.game.start('easy');
+			return children;
 		}
 	});
 
-})(Backbone.View, window.Views.Scoreboard);
+})(window.Views.Bases.ParentView, window.Router, window.Views.Menubar);

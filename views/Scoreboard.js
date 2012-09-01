@@ -5,13 +5,11 @@ window.Views.Scoreboard = (function(Parent) {
 	"use strict";
 
 	return Parent.extend({
-		tagName: 'div',
-		className: '',
+		tagName: 'p',
+		className: 'center scoreboard-display',
 
 		events: {
-			'click a': function() {
-				this.game.settings.setNextScoreboardDisplay();
-			}
+			'click a': 'nextScoreboard'
 		},
 
 		initialize: function() {
@@ -37,6 +35,10 @@ window.Views.Scoreboard = (function(Parent) {
 			}));
 
 			return this;
+		},
+
+		nextScoreboard: function() {
+			this.game.settings.setNextScoreboardDisplay();
 		}
 	});
 
