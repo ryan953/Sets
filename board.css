@@ -1,0 +1,213 @@
+.board table {
+	padding-top:2em;
+	background:url('./backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
+
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+
+	-webkit-tap-highlight-color:rgba(0,0,0,0) !important;
+}
+.board td {
+	padding:.45em .625em;
+	position:relative;
+}
+
+.board .card {
+	border:2px solid;
+	border-color: white #DADADA #DADADA white;
+
+	-webkit-box-shadow:0 .6em 1em #333;
+	-moz-box-shadow:0 .6em 1em #333;
+	box-shadow:0 .6em 1em #333;
+	-webkit-border-radius:1.5em;
+	-moz-border-radius:1.5em;
+	border-radius:1.5em;
+
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* W3C */
+
+	position:relative;
+	margin:auto;
+	width:100%;
+	height:100%;
+}
+.board .error .card {
+	-webkit-box-shadow:0 0 1.5em red;
+	-moz-box-shadow:0 0 1.5em red;
+	box-shadow:0 0 1.5em red;
+	border-color:red;
+
+	-webkit-animation: wiggle .25s 1;
+	-moz-animation:    wiggle .25s 1;
+	-ms-animation:     wiggle .25s 1;
+	-o-animation:     wiggle .25s 1;
+	animation:         wiggle .25s 1;
+}
+.board .is_selected .card {
+	-webkit-box-shadow:0 0 1.5em blue;
+	-moz-box-shadow:0 0 1.5em blue;
+	box-shadow:0 0 1.5em blue;
+	border-color:blue;
+}
+.board .not-possible .card {
+	opacity:.5;
+	-webkit-transition: opacity 1s linear;
+	-moz-transition: opacity 1s linear;
+	-ms-transition: opacity 1s linear;
+	-o-transition: opacity 1s linear;
+	transition: opacity 1s linear;
+}
+.board .found .card {
+	-webkit-box-shadow:0 0 1.5em green;
+	-moz-box-shadow:0 0 1.5em green;
+	box-shadow:0 0 1.5em green;
+	border-color:green;
+
+	-webkit-animation: zoom 1s 1;
+	-moz-animation:    zoom 1s 1;
+	-ms-animation:     zoom 1s 1;
+	-o-animation:      zoom 1s 1;
+	animation:         zoom 1s 1;
+}
+
+@-webkit-keyframes wiggle {
+	from { -webkit-transform:rotate(0deg); }
+	20% { -webkit-transform:rotate(7deg); }
+	60% { -webkit-transform:rotate(-7deg); }
+	80% { -webkit-transform:rotate(7deg); }
+	to { -webkit-transform:rotate(0deg); }
+}
+@-moz-keyframes wiggle {
+	from { -moz-transform:rotate(0deg); }
+	20% { -moz-transform:rotate(7deg); }
+	60% { -moz-transform:rotate(-7deg); }
+	80% { -moz-transform:rotate(7deg); }
+	to { -moz-transform:rotate(0deg); }
+}
+@-ms-keyframes wiggle {
+	from { -ms-transform:rotate(0deg); }
+	20% { -ms-transform:rotate(7deg); }
+	60% { -ms-transform:rotate(-7deg); }
+	80% { -ms-transform:rotate(7deg); }
+	to { -ms-transform:rotate(0deg); }
+}
+@-o-keyframes wiggle {
+	from { -o-transform:rotate(0deg); }
+	20% { -o-transform:rotate(7deg); }
+	60% { -o-transform:rotate(-7deg); }
+	80% { -o-transform:rotate(7deg); }
+	to { -o-transform:rotate(0deg); }
+}
+@keyframes wiggle {
+	from { transform:rotate(0deg); }
+	20% { transform:rotate(7deg); }
+	60% { transform:rotate(-7deg); }
+	80% { transform:rotate(7deg); }
+	to { transform:rotate(0deg); }
+}
+
+@-webkit-keyframes zoom {
+	from { -webkit-transform:scale(1); opacity:1; }
+	50% { -webkit-transform:scale(1.1); opacity:.25; }
+	to { -webkit-transform:scale(1); opacity:0;}
+}
+@-moz-keyframes zoom {
+	from { -moz-transform:scale(1); opacity:1; }
+	50% { -moz-transform:scale(1.1); opacity:.25; }
+	to { -moz-transform:scale(1); opacity:0;}
+}
+@-ms-keyframes zoom {
+	from { -ms-transform:scale(1); opacity:1; }
+	50% { -ms-transform:scale(1.1); opacity:.25; }
+	to { -ms-transform:scale(1); opacity:0;}
+}
+@-o-keyframes zoom {
+	from { -o-transform:scale(1); opacity:1; }
+	50% { -o-transform:scale(1.1); opacity:.25; }
+	to { -o-transform:scale(1); opacity:0;}
+}
+keyframes zoom {
+	from { transform:scale(1); opacity:1; }
+	50% { transform:scale(1.1); opacity:.25; }
+	to { transform:scale(1); opacity:0; }
+}
+
+.card canvas {
+	position:absolute; top:0; bottom:0; left:0; right:0;
+	margin:auto;
+}
+
+/* iPad [portrait + landscape] */
+@media all and (min-device-width: 768px) and (max-device-width: 1024px) {
+	.board .slot { padding:.25em; }
+	.board .card {
+		-webkit-border-radius:.5em;
+		-moz-border-radius:.5em;
+		border-radius:.5em;
+		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
+		box-shadow:none !important;
+	}
+}
+/* iPhone [portrait] WINDOW SIZE */
+@media all and (max-width: 480px) {
+	.board .slot { padding:.13em .25em; }
+	.board .card {
+		-webkit-border-radius:.5em;
+		-moz-border-radius:.5em;
+		border-radius:.5em;
+		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
+		box-shadow:none !important;
+	}
+}
+/* iPhone [landscape] WINDOW SIZE */
+@media all and (max-height:480px) {
+	.board .slot { padding:.13em .25em; }
+	.board .card {
+		-webkit-border-radius:.5em;
+		-moz-border-radius:.5em;
+		border-radius:.5em;
+		-webkit-box-shadow:none !important;
+		-moz-box-shadow:none !important;
+		box-shadow:none !important;
+	}
+}
+
+@media all and (orientation:portrait) {
+	.card canvas {
+		width:100%;
+		height:auto;
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+}
+@media all and (orientation:landscape) {
+	.card canvas {
+		width:auto;
+		height:100%;
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}
+}
