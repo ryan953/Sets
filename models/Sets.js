@@ -27,6 +27,10 @@ window.Sets = (function(Settings, Deck, Board) {
 			this.on('game:start', this.initGame, this);
 
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
+
+			this.board.on('none_possible', function() {
+				//console.log('none are possible :(');
+			});
 		},
 
 		start: function(mode) {

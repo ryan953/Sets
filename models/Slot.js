@@ -82,11 +82,15 @@ window.Models.Slot = (function(Card) {
 			});
 		},
 
+		delayFromPosition: function(order) {
+			return (order + 1) * 3 * MICRO_TO_SECOND_FACTOR;
+		},
+
 		delayReveal: function(seconds) {
 			this._clearRevealTimer();
 			this._revealTimer = _.delay(function(model) {
 				model.set({is_possible_revealed: true});
-			}, seconds * MICRO_TO_SECOND_FACTOR, this);
+			}, seconds, this);
 		},
 
 		_clearRevealTimer: function() {

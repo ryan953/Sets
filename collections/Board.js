@@ -73,13 +73,16 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.on('reset:not_possible', function(board) {
-				var notPossible = _.shuffle(this.where({
-					is_possible: false,
-					is_possible_revealed: false
-				}));
-				_.each(notPossible, function(slot, index) {
-					slot.delayReveal((index + 1) * 3);
-				});
+				var selected = this.selected(),
+					notPossible = this.where({
+						is_possible: false
+					});
+				if (selected.length === 0 &&
+				notPossible.length == this.length) {
+					this.trigger('none_possible');
+				} else {
+					this.revealNotPossible();
+				}
 			});
 		},
 
@@ -107,6 +110,16 @@ window.Collections.Board = (function(Slot) {
 				slots.push(new Slot());
 			}
 			this.reset(slots);
+		},
+
+		revealNotPossible: function() {
+			var notPossible = _.shuffle(this.where({
+				is_possible: false,
+				is_possible_revealed: false
+			}));
+			_.each(notPossible, function(slot, index) {
+				slot.delayReveal(slot.delayFromPosition(index));
+			});
 		},
 
 		resetNotPossibleSlots: function() {
