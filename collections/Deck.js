@@ -54,12 +54,12 @@ window.Collections.Deck = (function(Card) {
 								color: color
 							});
 						} else if (modes.NORMAL) {
-							Card.fills.forEach(function(shade) {
+							Card.fills.forEach(function(fill) {
 								cards.push({
 									num: num,
 									shape: shape,
 									color: color,
-									shade: shade
+									fill: fill
 								});
 							});
 						}
