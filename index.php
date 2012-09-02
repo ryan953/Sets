@@ -48,7 +48,7 @@ css("./board.css");
 			<ul>
 				<li><a href="#show/SettingsLightbox">Settings</a></li>
 				<li><a href="#show/Stats" class="needs-localstorage">Stats</a></li>
-				<li><a href="#show/About">About</a></li>
+				<li><a href="#about">About</a></li>
 			</ul>
 		</div>
 	</div>
@@ -82,43 +82,43 @@ css("./board.css");
 	</div>
 </script>
 
-<div class="lightbox hide" id="stats">
+<script type="text/html" id="tmpl-statslightbox">
 	<h2>Stats</h2>
 	<strong>Games</strong>
 	<dl class="table">
-		<dt>Games Started</dt><dd data-stat="games-start">0</dd>
-		<dt>Games Won</dt><dd data-stat="games-win">0</dd>
-		<dt>Games Lost</dt><dd data-stat="games-lose">0</dd>
-		<dt>Games Incomplete</dt><dd data-stat="games-incomplete">0</dd>
-		<dt>Percent Won</dt><dd data-stat="games-percent">0</dd>
+		<dt>Games Started</dt><dd>{{ games.start }}</dd>
+		<dt>Games Won</dt><dd>{{ games.win }}</dd>
+		<dt>Games Lost</dt><dd>{{ games.lose }}</dd>
+		<dt>Games Incomplete</dt><dd>{{ games.incomplete }}</dd>
+		<dt>Percent Won</dt><dd>{{ games.percent }}</dd>
 	</dl>
 	<hr/>
 	<strong>Time</strong>
 	<dl class="table">
-		<dt>Total Time Played</dt><dd data-stat="time-total">0:00</dd>
-		<dt>Average Game Time</dt><dd data-stat="time-average">0:00</dd>
-		<dt>Average Win Time</dt><dd data-stat="time-average-win">0:00</dd>
-		<dt>Shortest Win Time</dt><dd data-stat="time-shortest-win">0:00</dd>
-		<dt>Longest Win Time</dt><dd data-stat="time-longest-win">0:00</dd>
+		<dt>Total Time Played</dt><dd>{{ time.total }}</dd>
+		<dt>Average Game Time</dt><dd>{{ time.average.all }}</dd>
+		<dt>Average Win Time</dt><dd>{{ time.average.win }}</dd>
+		<dt>Shortest Win Time</dt><dd>{{ time.shortest.win }}</dd>
+		<dt>Longest Win Time</dt><dd>{{ time.longest.win }}</dd>
 	</dl>
 	<hr/>
 	<strong>Streaks</strong>
 	<dl class="table">
-		<dt>Current Streak</dt><dd data-stat="streak-current">0 wins</dd>
-		<dt>Longest Win Streak</dt><dd data-stat="streak-win">0</dd>
-		<dt>Longest Lose Streak</dt><dd data-stat="streak-lose">0</dd>
+		<dt>Current Streak</dt><dd>{{ streak.current.count }} {{ streak.current.type }}</dd>
+		<dt>Longest Win Streak</dt><dd>{{ streak.win }}</dd>
+		<dt>Longest Lose Streak</dt><dd>{{ streak.lose }}</dd>
 	</dl>
 	<hr/>
 	<strong>Cards Remaining</strong>
 	<dl class="table">
-		<dt>No cards left over</dt><dd data-stat="cards-0">0</dd>
-		<dt>3 Remaining</dt><dd data-stat="cards-3">0</dd>
-		<dt>6 Remaining</dt><dd data-stat="cards-6">0</dd>
-		<dt>9 Remaining</dt><dd data-stat="cards-9">0</dd>
-		<dt>more than 9</dt><dd data-stat="cards-more">0</dd>
+		<dt>No cards left over</dt><dd>{{ cards.0 }}</dd>
+		<dt>3 Remaining</dt><dd>{{ cards.3 }}</dd>
+		<dt>6 Remaining</dt><dd>{{ cards.6 }}</dd>
+		<dt>9 Remaining</dt><dd>{{ cards.9 }}</dd>
+		<dt>more than 9</dt><dd>{{ cards.more }}</dd>
 	</dl>
 	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
-</div>
+</script>
 
 <div class="lightbox hide" id="help">
 	<h2>How to play Sets!</h2>
@@ -192,6 +192,7 @@ js("./views/Board.js");
 js("./views/Scoreboard.js");
 js("./views/Menubar.js");
 js("./views/SettingsLightbox.js");
+js("./views/StatsLightbox.js");
 js("./views/Chrome.js");
 
 js("./views/Sets.js");
