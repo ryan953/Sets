@@ -73,12 +73,12 @@ css("./board.css");
 <script type="text/html" id="tmpl-settingslightbox">
 	<h2>Settings</h2>
 	<div>
-		<input type="checkbox" id="settings-easy-mode" name="easy-mode" value="easy" />
-		<label for="settings-easy-mode">Quick Start</label>
+		<input type="checkbox" id="settings-mode-easy" name="mode" value="easy" />
+		<label for="settings-mode-easy">Quick Start</label>
 	</div>
 	<div>
-		<input type="checkbox" id="settings-help-mode" name="help-mode" value="on" />
-		<label for="settings-help-mode">Show Helpful Hints</label>
+		<input type="checkbox" id="settings-help-on" name="help" value="on" />
+		<label for="settings-help-on">Show Helpful Hints</label>
 	</div>
 </script>
 

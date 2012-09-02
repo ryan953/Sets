@@ -37,7 +37,7 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 		},
 
 		resetGame: function() {
-			this.game.start('easy');
+			this.game.start(this.game.settings.get('mode'));
 		}
 	});
 

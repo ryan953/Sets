@@ -13,14 +13,16 @@ window.Router = (function(Parent, Sets, Views) {
 
 		initialize: function(options) {
 			this.options = options;
-			Backbone.history.start({root: "/sets"});
 
 			this.game = new Sets();
 			this.gameBoard = new Views.Sets({
 				game: this.game
 			}).render();
-
 			options.$root.append(this.gameBoard.el);
+
+			this.wrapLightbox($('.lightbox'));
+
+			Backbone.history.start({root: "/sets"});
 		},
 
 		hideLightboxes: function() {
@@ -46,19 +48,22 @@ window.Router = (function(Parent, Sets, Views) {
 				}).render();
 
 				$('body').append(lightbox.el);
-
-				$('<a>')
-					.addClass('right button lightbox-close')
-					.text('Close')
-					.prop('href', '#')
-					.wrapInner('<span>')
-					.appendTo( $('.lightbox') );
-				lightbox.$el.wrapInner('<div>');
+				this.wrapLightbox(lightbox.$el);
 
 				this.lightboxes[clazz] = lightbox;
 			}
 
 			return this.lightboxes[clazz];
+		},
+
+		wrapLightbox: function($el) {
+			$('<a>')
+				.addClass('right button lightbox-close')
+				.text('Close')
+				.prop('href', '#')
+				.wrapInner('<span>')
+				.appendTo( $el );
+			$el.wrapInner('<div>');
 		}
 	});
 })(Backbone.Router, window.Sets, window.Views);

@@ -9,31 +9,39 @@ window.Views.SettingsLightbox = (function(Parent) {
 		className: 'lightbox hide',
 
 		events: {
+			'change input[type=checkbox]': 'changeCheckbox'
 		},
 
 		initialize: function() {
-			// this.game = this.options.game;
+			this.game = this.options.game;
 
-			// this.game.on('game:start', this.render, this);
-			// this.game.on('change:foundSets', this.render, this);
-			// this.game.settings.on('change:scoreboard-display', this.render, this);
+			this.game.settings.on('change:mode', this.renderValues, this);
+			this.game.settings.on('change:help', this.renderValues, this);
 
 			this.template = _.template($('#tmpl-settingslightbox').text());
 		},
 
 		render: function() {
-			// var found = this.game.getFoundCardCount(),
-			// 	deckSize = this.game.getStartingDeckSize();
+			this.$el.html(this.template());
 
-			this.$el.html(this.template({}));
-			// 	type: this.game.settings.get('scoreboard-display'),
-			// 	percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
-			// 	remaining: deckSize - found,
-			// 	found: found,
-			// 	deckSize: deckSize
-			// }));
+			this.easy_mode = this.$('#settings-mode-easy');
+			this.help_on = this.$('#settings-help-on');
+
+			this.renderValues();
 
 			return this;
+		},
+
+		renderValues: function() {
+			this.easy_mode.prop('checked', this.game.settings.get('mode') === 'easy');
+			this.help_on.prop('checked', this.game.settings.get('help'));
+		},
+
+		changeCheckbox: function(e) {
+			var elem = $(e.target),
+				update = {};
+			update[elem.attr('name')] = (elem.is(':checked') ? elem.val() : 'normal');
+			this.game.settings.set(update);
 		}
 	});
 
