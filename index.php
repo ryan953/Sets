@@ -200,9 +200,6 @@ js("./routers/Lightboxes.js");
 ?>
 
 <script>
-_.each(document.getElementsByClassName('board'), function(elem) {
-	elem.ontouchmove = function(e) { e.preventDefault(); };
-});
 new NoClickDelay(document.getElementsByTagName('body')[0]);
 
 $(document).ready(function() {

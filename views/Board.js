@@ -13,6 +13,8 @@ window.Views.Board = (function(Parent, SlotView) {
 		initialize: function() {
 			this.board = this.options.board;
 			this.board.on('reset', this.render, this);
+
+			this.el.ontouchmove = function(e) { e.preventDefault(); };
 		},
 
 		render: function() {
