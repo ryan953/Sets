@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<?php
+$time = mktime();
+?>
+
 <title>Sets!</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -8,8 +13,8 @@
 
 <meta name="viewport" content="width=device-width; user-scalable=no; initial-scale=1.0; maximum-scale=1.0;">
 
-<link rel="stylesheet" href="./style.css" type="text/css">
-<link rel="stylesheet" href="./board.css" type="text/css">
+<link rel="stylesheet" href="./style.css?<?php echo $time ?>" type="text/css">
+<link rel="stylesheet" href="./board.css?<?php echo $time ?>" type="text/css">
 
 </head>
 <body>
@@ -151,37 +156,37 @@
 	<a href="#" class="button game-reset"><span>Play Again</span></a>
 </div>
 
-<script src="./lib/jquery-1.7.2.min.js"></script>
-<script src="./lib/underscore-1.3.3.min.js"></script>
-<script src="./lib/backbone-0.9.2.min.js"></script>
+<script src="./lib/jquery-1.7.2.min.js?<?php echo $time ?>"></script>
+<script src="./lib/underscore-1.3.3.min.js?<?php echo $time ?>"></script>
+<script src="./lib/backbone-0.9.2.min.js?<?php echo $time ?>"></script>
 
-<script src="./lib/NoClickDelay.js"></script>
-<script src="./lib/event.js"></script>
-<script src="./lib/jintervals-0.7-min.js"></script>
-<!-- <script src="./lib/modernizr-2.5.3-custom-build.js"></script> -->
+<script src="./lib/NoClickDelay.js?<?php echo $time ?>"></script>
+<script src="./lib/event.js?<?php echo $time ?>"></script>
+<script src="./lib/jintervals-0.7-min.js?<?php echo $time ?>"></script>
+<!-- <script src="./lib/modernizr-2.5.3-custom-build.js?<?php echo $time ?>"></script> -->
 
-<script src="./lib/backbone.localStorage.js"></script>
+<script src="./lib/backbone.localStorage.js?<?php echo $time ?>"></script>
 
-<script src="./models/Settings.js"></script>
-<script src="./models/Card.js"></script>
-<script src="./models/Slot.js"></script>
-<script src="./collections/Deck.js"></script>
-<script src="./collections/Board.js"></script>
-<script src="./models/Sets.js"></script>
+<script src="./models/Settings.js?<?php echo $time ?>"></script>
+<script src="./models/Card.js?<?php echo $time ?>"></script>
+<script src="./models/Slot.js?<?php echo $time ?>"></script>
+<script src="./collections/Deck.js?<?php echo $time ?>"></script>
+<script src="./collections/Board.js?<?php echo $time ?>"></script>
+<script src="./models/Sets.js?<?php echo $time ?>"></script>
 
-<script src="./views/bases/ParentView.js"></script>
-<script src="./views/Card.js"></script>
-<script src="./views/Slot.js"></script>
-<script src="./views/Board.js"></script>
+<script src="./views/bases/ParentView.js?<?php echo $time ?>"></script>
+<script src="./views/Card.js?<?php echo $time ?>"></script>
+<script src="./views/Slot.js?<?php echo $time ?>"></script>
+<script src="./views/Board.js?<?php echo $time ?>"></script>
 
-<script src="./views/Scoreboard.js"></script>
-<script src="./views/Chrome.js"></script>
-<script src="./views/Menubar.js"></script>
-<script src="./views/SettingsLightbox.js"></script>
+<script src="./views/Scoreboard.js?<?php echo $time ?>"></script>
+<script src="./views/Menubar.js?<?php echo $time ?>"></script>
+<script src="./views/SettingsLightbox.js?<?php echo $time ?>"></script>
+<script src="./views/Chrome.js?<?php echo $time ?>"></script>
 
-<script src="./views/Sets.js"></script>
+<script src="./views/Sets.js?<?php echo $time ?>"></script>
 
-<script src="./models/Router.js?4"></script>
+<script src="./models/Router.js?<?php echo $time ?>"></script>
 
 <script>
 _.each(document.getElementsByClassName('board'), function(elem) {
