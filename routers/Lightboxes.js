@@ -6,7 +6,7 @@ window.Router = (function(Parent, Sets, Views) {
 	return Parent.extend({
 		routes: {
 			'show/:lightbox': 'lightbox',    // #help
-			'*': 'hideLightboxes'
+			'': 'hideLightboxes'
 		},
 
 		lightboxes: {},
