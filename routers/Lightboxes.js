@@ -6,14 +6,14 @@ window.Router = (function(Parent, Sets, Views) {
 	return Parent.extend({
 		routes: {
 			'show/:lightbox': 'lightbox',    // #help
-			'': 'home'
+			'*': 'hideLightboxes'
 		},
 
 		lightboxes: {},
 
 		initialize: function(options) {
 			this.options = options;
-			Backbone.history.start({root: "/sets", silent: true});
+			Backbone.history.start({root: "/sets"});
 
 			this.game = new Sets();
 			this.gameBoard = new Views.Sets({
@@ -23,8 +23,8 @@ window.Router = (function(Parent, Sets, Views) {
 			options.$root.append(this.gameBoard.el);
 		},
 
-		home: function() {
-			this.hideLightboxes();
+		hideLightboxes: function() {
+			$('.lightbox').addClass('hide');
 		},
 
 		lightbox: function(clazz) {
@@ -41,11 +41,11 @@ window.Router = (function(Parent, Sets, Views) {
 				return null;
 			}
 			if (!this.lightboxes[clazz]) {
-				this.lightboxes[clazz] = new Views[clazz]({
+				var lightbox = new Views[clazz]({
 					game: this.game
 				}).render();
 
-				$('body').append(this.lightboxes[clazz].el);
+				$('body').append(lightbox.el);
 
 				$('<a>')
 					.addClass('right button lightbox-close')
@@ -53,14 +53,12 @@ window.Router = (function(Parent, Sets, Views) {
 					.prop('href', '#')
 					.wrapInner('<span>')
 					.appendTo( $('.lightbox') );
+				lightbox.$el.wrapInner('<div>');
+
+				this.lightboxes[clazz] = lightbox;
 			}
-			this.lightboxes[clazz].$el.wrapInner('<div>');
 
 			return this.lightboxes[clazz];
-		},
-
-		hideLightboxes: function() {
-			$('.lightbox').addClass('hide');
 		}
 	});
 })(Backbone.Router, window.Sets, window.Views);
