@@ -13,35 +13,56 @@ window.Views.SettingsLightbox = (function(Parent) {
 			'change input[type=text]': 'changeText'
 		},
 
+		_cachedElems: {},
+
 		initialize: function(options) {
 			this.settings = options.game.settings;
 
+			this.template = _.template($('#tmpl-settingslightbox').text());
+
+			this.createRenderFunctions();
+			this.bindToSettings();
+		},
+
+		createRenderFunctions: function() {
+			this.renderModeEasy = _.bind(this.renderCheckbox, this,
+				'settings-mode-easy', 'mode', 'easy');
+			this.renderHelpOn = _.bind(this.renderCheckbox, this,
+				'settings-help-on', 'help', true);
+			this.renderSlotDelay = _.bind(this.renderTextbox, this,
+				'settings-invalid-slot-delay', 'invalid-slot-delay');
+		},
+
+		bindToSettings: function() {
 			this.settings.on('change:mode', this.renderModeEasy, this);
 			this.settings.on('change:help', this.renderHelpOn, this);
-
-			this.template = _.template($('#tmpl-settingslightbox').text());
+			this.settings.on('change:invalid-slot-delay', this.renderSlotDelay(), this);
 		},
 
 		render: function() {
 			this.$el.html(this.template());
 
-			this.mode_easy = this.$('#settings-mode-easy');
-			this.help_on = this.$('#settings-help-on');
-
 			this.renderModeEasy();
 			this.renderHelpOn();
+			this.renderSlotDelay();
 
 			return this;
 		},
 
-		renderModeEasy: function() {
-			this.mode_easy.prop('checked',
-				this.settings.get('mode') === 'easy');
+		_cachedElem: function(elem) {
+			if (!this._cachedElems[elem]) {
+				this._cachedElems[elem] = this.$(elem);
+			}
+			return this._cachedElems[elem];
 		},
 
-		renderHelpOn: function() {
-			this.help_on.prop('checked',
-				this.settings.get('help'));
+		renderCheckbox: function(elem, settingName, value) {
+			this._cachedElem(elem).prop('checked',
+				this.settings.get(settingName) === value);
+		},
+
+		renderTextbox: function(elem, settingName) {
+			this._cachedElem(elem).val(this.settings.get(settingName));
 		},
 
 		changeCheckbox: function(e) {

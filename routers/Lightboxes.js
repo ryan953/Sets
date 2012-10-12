@@ -9,7 +9,7 @@ window.Router = (function(Parent, Sets, Views) {
 			'': 'hideLightboxes'
 		},
 
-		lightboxes: {},
+		_cachedLightboxes: {},
 
 		initialize: function(options) {
 			this.options = options;
@@ -34,17 +34,17 @@ window.Router = (function(Parent, Sets, Views) {
 		lightbox: function(clazz) {
 			this.hideLightboxes();
 
-			var lightbox = this.getLightbox(clazz);
+			var lightbox = this._cachedLightbox(clazz);
 			if (lightbox) {
 				lightbox.$el.removeClass('hide');
 			}
 		},
 
-		getLightbox: function(clazz) {
+		_cachedLightbox: function(clazz) {
 			if (!Views[clazz]) {
 				return null;
 			}
-			if (!this.lightboxes[clazz]) {
+			if (!this._cachedLightboxes[clazz]) {
 				var lightbox = new Views[clazz]({
 					game: this.game
 				}).render();
@@ -52,10 +52,10 @@ window.Router = (function(Parent, Sets, Views) {
 				$('body').append(lightbox.el);
 				this.wrapLightbox(lightbox.$el);
 
-				this.lightboxes[clazz] = lightbox;
+				this._cachedLightboxes[clazz] = lightbox;
 			}
 
-			return this.lightboxes[clazz];
+			return this._cachedLightboxes[clazz];
 		},
 
 		wrapLightbox: function($el) {
