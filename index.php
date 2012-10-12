@@ -80,6 +80,10 @@ css("./board.css");
 		<input type="checkbox" id="settings-help-on" name="help" value="on" />
 		<label for="settings-help-on">Show Helpful Hints</label>
 	</div>
+	<div>
+		<input type="text" id="settings-invalid-slot-delay" name="invalid-delay" value="3" />
+		<label for="settings-invalid-slot-delay">Invalid Slot Animation Delay (seconds)</label>
+	</div>
 </script>
 
 <script type="text/html" id="tmpl-statslightbox">
@@ -210,8 +214,11 @@ $(document).ready(function() {
 		evaluate    : /\{%([\s\S]+?)%\}/g,
 	};
 
+	window.settings = new Models.Settings({id: 1});
+
 	window.router = new Router({
-		$root: $('body')
+		$root: $('body'),
+		settings: window.settings
 	});
 });
 </script>

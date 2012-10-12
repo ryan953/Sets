@@ -15,12 +15,15 @@ window.Models.Settings = (function(Storage) {
 		localStorage: new Storage("settings"),
 
 		defaults: {
+			'scoreboard-display': 'score',
 			'mode': 'easy',
-			'scoreboard-display': 'score'
+			'help': false,
+			'slot-delay': 3
 		},
 
 		initialize: function() {
 			this.on('change', this.save, this);
+			this.fetch();
 		},
 
 		setNextScoreboardDisplay: function() {
@@ -35,8 +38,6 @@ window.Models.Settings = (function(Storage) {
 			}
 			return displays[pos];
 		}
-	}, {
-		scoreboardDisplays: scoreboardDisplays
 	});
 
 }(Backbone.LocalStorage));

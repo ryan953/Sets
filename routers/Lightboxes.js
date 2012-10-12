@@ -14,7 +14,9 @@ window.Router = (function(Parent, Sets, Views) {
 		initialize: function(options) {
 			this.options = options;
 
-			this.game = new Sets();
+			this.game = new Sets({
+				settings: options.settings
+			});
 			this.gameBoard = new Views.Sets({
 				game: this.game
 			}).render();

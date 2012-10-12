@@ -1,6 +1,6 @@
 /*globals _, Backbone */
 
-window.Sets = (function(Settings, Deck, Board) {
+window.Sets = (function(Deck, Board) {
 	"use strict";
 
 	return Backbone.Model.extend({
@@ -17,12 +17,14 @@ window.Sets = (function(Settings, Deck, Board) {
 			return attrs;
 		},
 
-		initialize: function() {
-			this.deck = new Deck();
-			this.board = new Board(null, {deck: this.deck});
+		initialize: function(options) {
+			this.settings = options.settings;
 
-			this.settings = new Settings({id: 1});
-			this.settings.fetch();
+			this.deck = new Deck();
+			this.board = new Board(null, {
+				settings: this.settings,
+				deck: this.deck
+			});
 
 			this.on('game:start', this.initGame, this);
 
@@ -87,4 +89,4 @@ window.Sets = (function(Settings, Deck, Board) {
 		}
 
 	});
-}(window.Models.Settings, window.Collections.Deck, window.Collections.Board));
+}(window.Collections.Deck, window.Collections.Board));

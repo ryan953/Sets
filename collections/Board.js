@@ -26,6 +26,7 @@ window.Collections.Board = (function(Slot) {
 
 		initialize: function(models, options) {
 			this.deck = options.deck;
+			this.settings = options.settings;
 
 			this.on('change:is_selected', function(model, value) {
 				if (value) {
@@ -107,7 +108,9 @@ window.Collections.Board = (function(Slot) {
 		rebuild: function(rows, cols) {
 			var slots = [];
 			for (var i = 0; i < rows * cols; i++) {
-				slots.push(new Slot());
+				slots.push(new Slot(null, {
+					settings: this.settings
+				}));
 			}
 			this.reset(slots);
 		},

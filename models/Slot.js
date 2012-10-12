@@ -22,7 +22,9 @@ window.Models.Slot = (function(Card) {
 			is_possible_revealed: false
 		},
 
-		initialize: function() {
+		initialize: function(attrs, options) {
+			this.settings = options.settings;
+
 			this.on('change:is_possible', function(model, value) {
 				if (value) {
 					// setting is_possible to true, must not be faded
@@ -83,7 +85,7 @@ window.Models.Slot = (function(Card) {
 		},
 
 		delayFromPosition: function(order) {
-			return (order + 1) * 3 * MICRO_TO_SECOND_FACTOR;
+			return (order + 1) * this.settings.get('slot-delay') * MICRO_TO_SECOND_FACTOR;
 		},
 
 		delayReveal: function(seconds) {
