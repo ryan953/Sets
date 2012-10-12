@@ -167,7 +167,7 @@ css("./board.css");
 
 <?php
 js("./lib/jquery-1.7.2.min.js");
-js("./lib/underscore-1.3.3.min.js");
+js("./lib/underscore-1.4.2.min.js");
 js("./lib/backbone-0.9.2.min.js");
 
 js("./lib/NoClickDelay.js");
