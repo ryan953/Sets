@@ -9,14 +9,15 @@ window.Views.SettingsLightbox = (function(Parent) {
 		className: 'lightbox hide',
 
 		events: {
-			'change input[type=checkbox]': 'changeCheckbox'
+			'change input[type=checkbox]': 'changeCheckbox',
+			'change input[type=text]': 'changeText'
 		},
 
-		initialize: function() {
-			this.game = this.options.game;
+		initialize: function(options) {
+			this.settings = options.game.settings;
 
-			this.game.settings.on('change:mode', this.renderValues, this);
-			this.game.settings.on('change:help', this.renderValues, this);
+			this.settings.on('change:mode', this.renderModeEasy, this);
+			this.settings.on('change:help', this.renderHelpOn, this);
 
 			this.template = _.template($('#tmpl-settingslightbox').text());
 		},
@@ -24,24 +25,37 @@ window.Views.SettingsLightbox = (function(Parent) {
 		render: function() {
 			this.$el.html(this.template());
 
-			this.easy_mode = this.$('#settings-mode-easy');
+			this.mode_easy = this.$('#settings-mode-easy');
 			this.help_on = this.$('#settings-help-on');
 
-			this.renderValues();
+			this.renderModeEasy();
+			this.renderHelpOn();
 
 			return this;
 		},
 
-		renderValues: function() {
-			this.easy_mode.prop('checked', this.game.settings.get('mode') === 'easy');
-			this.help_on.prop('checked', this.game.settings.get('help'));
+		renderModeEasy: function() {
+			this.mode_easy.prop('checked',
+				this.settings.get('mode') === 'easy');
+		},
+
+		renderHelpOn: function() {
+			this.help_on.prop('checked',
+				this.settings.get('help'));
 		},
 
 		changeCheckbox: function(e) {
 			var elem = $(e.target),
 				update = {};
 			update[elem.attr('name')] = (elem.is(':checked') ? elem.val() : 'normal');
-			this.game.settings.set(update);
+			this.settings.set(update);
+		},
+
+		changeText: function(e) {
+			var elem = $(e.target),
+				update = {};
+			update[elem.attr('name')] = elem.val();
+			this.settings.set(update);
 		}
 	});
 

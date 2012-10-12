@@ -10,6 +10,12 @@ window.Sets = (function(Deck, Board) {
 			foundSets: []
 		},
 
+		baseSizes: {
+			'test': {rows: 2, cols: 3},
+			'easy': {rows: 3, cols: 3},
+			'normal': {rows: 4, cols: 3}
+		},
+
 		toJSON: function() {
 			var attrs = _.clone(this.attributes);
 			attrs.deck = this.deck.toJSON();
@@ -40,10 +46,8 @@ window.Sets = (function(Deck, Board) {
 		},
 
 		getBaseSize: function(mode) {
-			if (mode == Deck.EASY) {
-				return {rows: 3, cols: 3};
-			} else if (mode == Deck.NORMAL) {
-				return {rows: 4, cols: 3};
+			if (this.baseSizes[mode]) {
+				return this.baseSizes[mode];
 			}
 			return {rows: 0, cols: 0};
 		},

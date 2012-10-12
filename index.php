@@ -69,7 +69,7 @@ css("./board.css");
 		<label for="settings-help-on">Show Helpful Hints</label>
 	</div>
 	<div>
-		<input type="text" id="settings-invalid-slot-delay" name="invalid-delay" value="3" />
+		<input type="text" id="settings-invalid-slot-delay" name="invalid-slot-delay" value="3" />
 		<label for="settings-invalid-slot-delay">Invalid Slot Animation Delay (seconds)</label>
 	</div>
 </script>

@@ -85,7 +85,8 @@ window.Models.Slot = (function(Card) {
 		},
 
 		delayFromPosition: function(order) {
-			return (order + 1) * this.settings.get('slot-delay') * MICRO_TO_SECOND_FACTOR;
+			var delay = this.settings.get('invalid-slot-delay') || 3;
+			return (order + 1) * delay * MICRO_TO_SECOND_FACTOR;
 		},
 
 		delayReveal: function(seconds) {
