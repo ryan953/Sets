@@ -1,6 +1,6 @@
 /*globals $ Backbone */
 
-window.Router = (function(Parent, Sets, Views) {
+window.GameRouter = (function(Parent, Sets, Views) {
 	"use strict";
 
 	return Parent.extend({
@@ -24,7 +24,7 @@ window.Router = (function(Parent, Sets, Views) {
 
 			this.wrapLightbox($('.lightbox'));
 
-			Backbone.history.start({root: "/sets"});
+			Backbone.history.start({root: window.location.pathname});
 		},
 
 		hideLightboxes: function() {

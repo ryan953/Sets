@@ -189,7 +189,7 @@ js("./views/Chrome.js");
 
 js("./views/Sets.js");
 
-js("./routers/Lightboxes.js");
+js("./routers/GameRouter.js");
 ?>
 
 <script>
@@ -205,7 +205,7 @@ $(document).ready(function() {
 
 	window.settings = new Models.Settings({id: 1});
 
-	window.router = new Router({
+	window.router = new GameRouter({
 		$root: $('body'),
 		settings: window.settings
 	});
