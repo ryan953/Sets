@@ -6,7 +6,7 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 
 	return Parent.extend({
 		tagName: 'div',
-		className: 'menubar',
+		className: 'views-menubar',
 
 		events: {
 			'click a[data-route]': 'route',

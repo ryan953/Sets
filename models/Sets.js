@@ -33,16 +33,32 @@ window.Sets = (function(Deck, Board) {
 			});
 
 			this.on('game:start', this.initGame, this);
+			this.on('game:end', this.endExisting, this);
 
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
+			this.board.on('selected:valid-set', this.cardsRemoved, this);
+			this.board.on('none_possible', this.nonePossible, this);
+		},
 
-			this.board.on('none_possible', function() {
-				//console.log('none are possible :(');
-			});
+		cardsRemoved: function() {
+			if (this.isGameComplete()) {
+				this.trigger('game:end', 'win');
+			}
 		},
 
 		start: function(mode) {
 			this.trigger('game:start', mode);
+		},
+
+		nonePossible: function() {
+			this.trigger('game:end', 'lose');
+		},
+
+		endExisting: function() {
+			if (this.get('start-time')) {
+				this.trigger('game-ended', this.get('start-time'), new Date());
+				this.set({'start-time': null});
+			}
 		},
 
 		getBaseSize: function(mode) {
@@ -53,6 +69,8 @@ window.Sets = (function(Deck, Board) {
 		},
 
 		initGame: function(mode) {
+			this.endExisting();
+
 			this.setFoundSets([]);
 
 			var baseSize = this.getBaseSize(mode);
@@ -68,6 +86,8 @@ window.Sets = (function(Deck, Board) {
 			});
 
 			this.board.drawCards(this.deck);
+
+			this.set('start-time', new Date());
 		},
 
 		recordFoundSet: function(slots) {
@@ -90,6 +110,13 @@ window.Sets = (function(Deck, Board) {
 
 		getStartingDeckSize: function() {
 			return this.deck.startingLength;
+		},
+
+		isGameComplete: function() {
+			if (this.getFoundCardCount() === this.getStartingDeckSize()) {
+				return true;
+			}
+			return false;
 		}
 
 	});

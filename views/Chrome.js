@@ -6,7 +6,7 @@ window.Views.Chrome = (function(Parent, Router, Menubar) {
 
 	return Parent.extend({
 		tagName: 'div',
-		className: '',
+		className: 'views-chrome',
 
 		initialize: function() {
 			this.game = this.options.game;

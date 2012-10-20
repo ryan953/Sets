@@ -112,6 +112,19 @@ css("./board.css");
 	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
 </script>
 
+<script type="text/html" id="tmpl-sets-view">
+<div class="popup hide" id="game-over-win">
+	<h3>Game Over!</h3>
+	<p>You won!</p>
+	<a href="#" class="button game-reset"><span>Play Again</span></a>
+</div>
+<div class="popup hide" id="game-over-lose">
+	<h3>Game Over!</h3>
+	<p>You did not win this time.</p>
+	<a href="#" class="button game-reset"><span>Play Again</span></a>
+</div>
+</script>
+
 <div class="lightbox hide" id="help">
 	<h2>How to play Sets!</h2>
 	<p>blah blah blah</p>
@@ -146,17 +159,6 @@ css("./board.css");
 	<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
 </div>
 
-<div class="popup" id="game-over-win">
-	<h3>Game Over!</h3>
-	<p>You won!</p>
-	<a href="#" class="button game-reset"><span>Play Again</span></a>
-</div>
-<div class="popup" id="game-over-lose">
-	<h3>Game Over!</h3>
-	<p>You didn't win this time.</p>
-	<a href="#" class="button game-reset"><span>Play Again</span></a>
-</div>
-
 <?php
 js("./lib/jquery-1.7.2.min.js");
 js("./lib/underscore-1.4.2.min.js");
@@ -180,6 +182,7 @@ js("./views/bases/ParentView.js");
 js("./views/Card.js");
 js("./views/Slot.js");
 js("./views/Board.js");
+js("./views/EndGame.js");
 
 js("./views/Scoreboard.js");
 js("./views/Menubar.js");

@@ -31,7 +31,7 @@ html, body, .board table {
  * http://css-tricks.com/transitions-and-animations-on-css-generated-content/ 
 */
 /*#game-area.helping:after,*/
-.helping-message { display:none; }
+.helping-message { display: none; }
 #game-area.helping + .helping-message {
 	display: block;
 	position: absolute;
@@ -63,24 +63,22 @@ html, body, .board table {
 	100% { color: #000; }
 }
 
-.left { float:left; }
-.right { float:right; }
-.hide { display:none; }
-a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
+.left { float: left; }
+.right { float: right; }
+.hide { display: none; }
+a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 
 .scoreboard-display a {
 	color: black;
 }
 
 .popup {
-	display:none;
 	position: absolute;
 	top: 0;
 	text-align: center;
 	width: 100%;
 	padding-top: 45%;
 }
-.popup:target { display:block; }
 
 .lightbox {
 	background: #333;
@@ -92,19 +90,19 @@ a, a:hover, a:visited { cursor:pointer; text-decoration:none; }
 	height:100%;
 	overflow: auto;
 
-	padding:1em;
+	padding: 1em;
 
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-o-box-sizing:border-box;
-	box-sizing:border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
 
 	color: #555;
 	text-shadow: 1px 1px 1px white;
 }
-.lightbox:target { display:block; }
+.lightbox:target { display: block; }
 .lightbox a { color: black; }
-.lightbox a:hover { text-decoration:underline; }
+.lightbox a:hover { text-decoration: underline; }
 
 .lightbox > div {
 	background: #F0F0F0;
@@ -188,7 +186,7 @@ a.button:hover {
 	display: block;
 }
 
-.menubar {
+.views-menubar {
 	background: rgb(255,255,255); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
@@ -220,8 +218,8 @@ a.button:hover {
 	-o-box-sizing:border-box;
 	box-sizing:border-box;
 }
-.menubar .button,
-.menubar p {
+.views-menubar .button,
+.views-menubar p {
 	display:block;
 	font-size:14px;
 	font-weight:bold;
@@ -235,7 +233,7 @@ a.button:hover {
 	z-index:10;
 }
 
-.menubar .center {
+.views-menubar .center {
 	position:absolute;
 	width:100%;
 	text-align:center;
