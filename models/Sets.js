@@ -11,6 +11,7 @@ window.Sets = (function(Deck, Board) {
 		},
 
 		baseSizes: {
+			'unpossible': {rows: 2, cols: 3},
 			'test': {rows: 2, cols: 3},
 			'easy': {rows: 3, cols: 3},
 			'normal': {rows: 4, cols: 3}
@@ -65,7 +66,7 @@ window.Sets = (function(Deck, Board) {
 			if (this.baseSizes[mode]) {
 				return this.baseSizes[mode];
 			}
-			return {rows: 0, cols: 0};
+			throw new Error('cannot find board size for mode: ' + mode);
 		},
 
 		initGame: function(mode) {
