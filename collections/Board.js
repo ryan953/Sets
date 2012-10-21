@@ -16,12 +16,12 @@ window.Collections.Board = (function(Slot) {
 		},
 
 		getCardJson: function(slots) {
-			return _.map(slots, function(slot) {
+			return _.filter(_.map(slots, function(slot) {
 				var card = slot.get('card');
 				if (card) {
 					return card.toJSON();
 				}
-			});
+			}), _.identity);
 		},
 
 		initialize: function(models, options) {
@@ -74,12 +74,11 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.on('reset:not_possible', function(board) {
-				var selected = this.selected(),
-					notPossible = this.where({
+				var notPossible = this.where({
 						is_possible: false
 					});
-				if (selected.length === 0 &&
-				notPossible.length == this.length) {
+
+				if (notPossible.length == this.length) {
 					this.trigger('none_possible');
 				} else {
 					this.revealNotPossible();
@@ -131,17 +130,17 @@ window.Collections.Board = (function(Slot) {
 				selected = this.selected(),
 				board1 = this.models,
 				board2 = this.models,
-				board3 = this.models;
+				board3 = this.models,
+				jsonCards = getCardJson(this.models);
 
 			// Escape hatch for short lists
-			if (this.length < 3) {
+			if (jsonCards.length < 3) {
 				this.each(function(slot) {
 					slot.set({is_possible: false});
 				});
 				return;
-			} else if (this.length === 3) {
-				var cardJson = getCardJson(this.models);
-				if (!isASet(cardJson)) {
+			} else if (jsonCards.length === 3) {
+				if (!isASet(jsonCards)) {
 					this.each(function(slot) {
 						slot.set({is_possible: false});
 					});
@@ -163,8 +162,8 @@ window.Collections.Board = (function(Slot) {
 					_.each(board3, function(slot3) {
 						if (slot1 === slot3 || slot2 === slot3) { return; }
 						var slots = [slot1, slot2, slot3],
-							json_cards = getCardJson(slots);
-						if (isASet(json_cards)) {
+							jsonCards = getCardJson(slots);
+						if (isASet(jsonCards)) {
 							_.each(slots, function(slot) {
 								slot.hasSet = true;
 							});
