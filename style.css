@@ -77,6 +77,9 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 	top: 29%;
 	width: 100%;
 	padding: 0 2em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .popup div {
@@ -84,6 +87,8 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 	background: rgba(0, 0, 0, .5);
 	text-align: center;
 	padding: 1em 1em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
 	border-radius: 1em;
 }
 
