@@ -114,14 +114,18 @@ css("./board.css");
 
 <script type="text/html" id="tmpl-sets-view">
 <div class="popup hide" id="game-over-win">
-	<h3>Game Over!</h3>
-	<p>You won!</p>
-	<a href="#" class="button game-reset"><span>Play Again</span></a>
+	<div>
+		<h3>Game Over!</h3>
+		<p>You won!</p>
+		<a href="#" class="button game-reset"><span>Play Again</span></a>
+	</div>
 </div>
 <div class="popup hide" id="game-over-lose">
-	<h3>Game Over!</h3>
-	<p>You did not win this time.</p>
-	<a href="#" class="button game-reset"><span>Play Again</span></a>
+	<div>
+		<h3>Game Over!</h3>
+		<p>No more sets are possible.</p>
+		<a href="#" class="button game-reset"><span>Play Again</span></a>
+	</div>
 </div>
 </script>
 

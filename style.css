@@ -74,10 +74,17 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 
 .popup {
 	position: absolute;
-	top: 0;
-	text-align: center;
+	top: 29%;
 	width: 100%;
-	padding-top: 45%;
+	padding: 0 2em;
+	box-sizing: border-box;
+}
+.popup div {
+	color: white;
+	background: rgba(0, 0, 0, .5);
+	text-align: center;
+	padding: 1em 1em;
+	border-radius: 1em;
 }
 
 .lightbox {
