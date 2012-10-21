@@ -28,7 +28,7 @@ window.GameRouter = (function(Parent, Sets, Views) {
 		},
 
 		hideLightboxes: function() {
-			$('.lightbox').addClass('hide');
+			$('.lightbox').addClass('hide').detach();
 		},
 
 		lightbox: function(clazz) {
@@ -36,6 +36,7 @@ window.GameRouter = (function(Parent, Sets, Views) {
 
 			var lightbox = this._cachedLightbox(clazz);
 			if (lightbox) {
+				$('body').append(lightbox.el);
 				lightbox.$el.removeClass('hide');
 			}
 		},
@@ -49,7 +50,6 @@ window.GameRouter = (function(Parent, Sets, Views) {
 					game: this.game
 				}).render();
 
-				$('body').append(lightbox.el);
 				this.wrapLightbox(lightbox.$el);
 
 				this._cachedLightboxes[clazz] = lightbox;
