@@ -9,7 +9,6 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 		className: 'views-menubar',
 
 		events: {
-			'click a[data-route]': 'route',
 			'click .game-reset': 'resetGame'
 		},
 
@@ -29,11 +28,6 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 			);
 
 			return this;
-		},
-
-		route: function(e) {
-			var route = this.$(e.target).data('route');
-			this.trigger('route:change', route);
 		},
 
 		resetGame: function() {
