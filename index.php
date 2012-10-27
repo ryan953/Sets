@@ -29,18 +29,18 @@ css("./board.css");
 <body>
 
 <script type="text/html" id="tmpl-menu">
-	<div class="left dropdown">
-		<a href="#options" class="button"><span>Sets!</span></a>
+	<div class="left dropdown menubar-button">
+		<a href="#options" class="button">Sets!</a>
 		<div id="options">
-			<a href="#" class="button open"><span>Sets!</span></a>
+			<a href="#" class="button open">Sets!</a>
 			<ul>
 				<li><a href="#show/SettingsLightbox">Settings</a></li>
-				<li><a href="#show/Stats" class="needs-localstorage">Stats</a></li>
+				<li><a href="#show/StatsLightbox" class="needs-localstorage">Stats</a></li>
 				<li><a href="#about">About</a></li>
 			</ul>
 		</div>
 	</div>
-	<div class="right">
+	<div class="right menubar-button">
 		<a class="button game-reset"><span>Reset</span></a>
 	</div>
 	<div class="scoreboard-placeholder"></div>

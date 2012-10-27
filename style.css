@@ -113,8 +113,8 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 	text-shadow: 1px 1px 1px white;
 }
 .lightbox:target { display: block; }
-.lightbox a { color: black; }
-.lightbox a:hover { text-decoration: underline; }
+/*.lightbox a { color: black; }*/
+/*.lightbox a:hover { text-decoration: underline; }*/
 
 .lightbox > div {
 	background: #F0F0F0;
@@ -139,11 +139,6 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 	clear:both;
 }
 
-.button {
-	padding:4px 8px;
-	line-height:24px;
-	text-decoration:none;
-}
 .button,
 .button:hover,
 .button:visited {
@@ -154,7 +149,7 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 a.button:hover {
 	text-decoration:none;
 }
-.button span {
+.button {
 	background: rgb(149,149,149); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(149,149,149,1) 0%, rgba(13,13,13,1) 46%, rgba(1,1,1,1) 50%, rgba(10,10,10,1) 53%, rgba(78,78,78,1) 76%, rgba(56,56,56,1) 87%, rgba(27,27,27,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(149,149,149,1)), color-stop(46%,rgba(13,13,13,1)), color-stop(50%,rgba(1,1,1,1)), color-stop(53%,rgba(10,10,10,1)), color-stop(76%,rgba(78,78,78,1)), color-stop(87%,rgba(56,56,56,1)), color-stop(100%,rgba(27,27,27,1))); /* Chrome,Safari4+ */
@@ -170,9 +165,12 @@ a.button:hover {
 	-webkit-border-radius: .625em;
 	-moz-border-radius: .625em;
 	border-radius: .625em;
+	text-decoration: none;
 
-	line-height:24px;
-	padding:3px 10px;
+	line-height: 24px;
+	height: 24px;
+	display: inline-block;
+	padding: 0px 10px;
 }
 .button:hover span,
 .button.active span {
@@ -238,11 +236,16 @@ a.button:hover {
 	text-transform:capitalize;
 	line-height:24px;
 
-	padding:4px 8px;
 	margin:0;
 
 	position:relative;
 	z-index:10;
+}
+.views-menubar p {
+	padding: 4px 8px;
+}
+.views-menubar .menubar-button {
+	padding: 3px 8px;
 }
 
 .views-menubar .center {
