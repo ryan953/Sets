@@ -1,6 +1,6 @@
 /*globals $ Backbone */
 
-window.GameRouter = (function(Parent, Sets, Views) {
+window.GameRouter = (function(Parent, Sets, Stats, Views) {
 	"use strict";
 
 	return Parent.extend({
@@ -9,63 +9,47 @@ window.GameRouter = (function(Parent, Sets, Views) {
 			'': 'hideLightboxes'
 		},
 
-		_cachedLightboxes: {},
+		_lastLightbox: null,
 
 		initialize: function(options) {
 			this.options = options;
 
+			this.stats = new Stats({id: 1});
+
 			this.game = new Sets({
-				settings: options.settings
+				settings: options.settings,
+				stats: this.stats
 			});
 			this.gameBoard = new Views.Sets({
 				game: this.game
 			}).render();
 			options.$root.append(this.gameBoard.el);
 
-			this.wrapLightbox($('.lightbox'));
-
 			Backbone.history.start({root: window.location.pathname});
 		},
 
 		hideLightboxes: function() {
-			$('.lightbox').addClass('hide').detach();
+			if (this._lastLightbox) {
+				this._lastLightbox.remove();
+				this._lastLightbox = null;
+			}
 		},
 
 		lightbox: function(clazz) {
-			this.hideLightboxes();
-
-			var lightbox = this._cachedLightbox(clazz);
-			if (lightbox) {
-				$('body').append(lightbox.el);
-				lightbox.$el.removeClass('hide');
-			}
-		},
-
-		_cachedLightbox: function(clazz) {
 			if (!Views[clazz]) {
 				return null;
 			}
-			if (!this._cachedLightboxes[clazz]) {
-				var lightbox = new Views[clazz]({
-					game: this.game
-				}).render();
 
-				this.wrapLightbox(lightbox.$el);
+			this.hideLightboxes();
 
-				this._cachedLightboxes[clazz] = lightbox;
+			this._lastLightbox = new Views[clazz]({
+				game: this.game
+			}).render();
+
+			if (this._lastLightbox) {
+				$('body').append(this._lastLightbox.el);
+				this._lastLightbox.$el.removeClass('hide');
 			}
-
-			return this._cachedLightboxes[clazz];
-		},
-
-		wrapLightbox: function($el) {
-			$('<a>')
-				.addClass('right button lightbox-close')
-				.text('Close')
-				.prop('href', '#')
-				.wrapInner('<span>')
-				.appendTo( $el );
-			$el.wrapInner('<div>');
 		}
 	});
-})(Backbone.Router, window.Sets, window.Views);
+})(Backbone.Router, window.Sets, window.Models.Stats, window.Views);

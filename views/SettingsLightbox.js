@@ -41,12 +41,20 @@ window.Views.SettingsLightbox = (function(Parent) {
 
 		render: function() {
 			this.$el.html(this.template());
+			this.addCloseButton();
 
 			this.renderModeEasy();
 			this.renderHelpOn();
 			this.renderSlotDelay();
 
 			return this;
+		},
+
+		remove: function() {
+			Parent.prototype.remove.call(this);
+			this.settings.off('change:mode', this.renderModeEasy, this);
+			this.settings.off('change:help', this.renderHelpOn, this);
+			this.settings.off('change:invalid-slot-delay', this.renderSlotDelay(), this);
 		},
 
 		_cachedElem: function(elem) {
@@ -80,4 +88,4 @@ window.Views.SettingsLightbox = (function(Parent) {
 		}
 	});
 
-})(Backbone.View);
+})(window.Views.Bases.LightboxView);
