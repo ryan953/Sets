@@ -14,32 +14,27 @@ window.Views.StatsLightbox = (function(Parent) {
 
 		initialize: function() {
 			this.game = this.options.game;
+			this.stats = this.game.stats;
 
-			// this.game.settings.on('change:mode', this.renderValues, this);
-			// this.game.settings.on('change:help', this.renderValues, this);
+			this.stats.on('change', this.render, this);
 
 			this.template = _.template($('#tmpl-statslightbox').text());
 		},
 
 		render: function() {
-			this.$el.html(this.template());
-
-			// this.easy_mode = this.$('#settings-mode-easy');
-			// this.help_on = this.$('#settings-help-on');
-
-			// this.renderValues();
-
+			this.$el.html(this.template(this.stats.toJSON()));
+			this.addCloseButton();
 			return this;
 		},
 
-		renderValues: function() {
-			// this.easy_mode.prop('checked', this.game.settings.get('mode') === 'easy');
-			// this.help_on.prop('checked', this.game.settings.get('help'));
+		remove: function() {
+			Parent.prototype.remove.call(this);
+			this.stats.off('change', this.render, this);
 		},
 
 		resetStats: function(e) {
-			
+			this.stats.reset();
 		}
 	});
 
-})(Backbone.View);
+})(window.Views.Bases.LightboxView);

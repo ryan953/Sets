@@ -26,6 +26,7 @@ window.Sets = (function(Deck, Board) {
 
 		initialize: function(options) {
 			this.settings = options.settings;
+			this.stats = options.stats;
 
 			this.deck = new Deck();
 			this.board = new Board(null, {

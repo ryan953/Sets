@@ -106,10 +106,10 @@ css("./board.css");
 	<hr/>
 	<strong>Cards Remaining</strong>
 	<dl class="table">
-		<dt>No cards left over</dt><dd>{{ cards.0 }}</dd>
-		<dt>3 Remaining</dt><dd>{{ cards.3 }}</dd>
-		<dt>6 Remaining</dt><dd>{{ cards.6 }}</dd>
-		<dt>9 Remaining</dt><dd>{{ cards.9 }}</dd>
+		<dt>No cards left over</dt><dd>{{ cards.zero }}</dd>
+		<dt>3 Remaining</dt><dd>{{ cards.three }}</dd>
+		<dt>6 Remaining</dt><dd>{{ cards.six }}</dd>
+		<dt>9 Remaining</dt><dd>{{ cards.nine }}</dd>
 		<dt>more than 9</dt><dd>{{ cards.more }}</dd>
 	</dl>
 	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
@@ -183,6 +183,7 @@ js("./lib/jintervals-0.7-min.js");
 js("./lib/backbone.localStorage.js");
 
 js("./models/Settings.js");
+js("./models/Stats.js");
 js("./models/Card.js");
 js("./models/Slot.js");
 js("./collections/Deck.js");
