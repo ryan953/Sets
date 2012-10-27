@@ -8,47 +8,33 @@ window.Models.Stats = (function(Storage) {
 		localStorage: new Storage("stats"),
 
 		defaults: {
-			games: {
-				start: 0,
-				win: 0,
-				lose: 0,
-				incomplete: 0,
-				percent: 0
-			},
-			time: {
-				total: 0,
-				average: {
-					all: 0,
-					win: 0
-				},
-				shortest: {
-					win: 0
-				},
-				longest: {
-					win: 0
-				}
-			},
-			streak: {
-				current: {
-					count: 0,
-					type: ''
-				},
-				win: 0,
-				lose: 0
-			},
-			cards: {
-				zero: 0,
-				three: 0,
-				six: 0,
-				nine: 0,
-				more: 0
-			}
+			games_start: 0,
+			games_win: 0,
+			games_lose: 0,
+			games_incomplete: 0,
+			games_percent: 0,
+
+			time_total: 0,
+			time_average_all: 0,
+			time_average_win: 0,
+
+			time_shortest_win: 0,
+			time_longest_win: 0,
+
+			streak_current_count: 0,
+			streak_current_type: '',
+			streak_win: 0,
+			streak_lose: 0,
+
+			cards_zero: 0,
+			cards_three: 0,
+			cards_six: 0,
+			cards_nine: 0,
+			cards_more: 0
 		},
 
 		initialize: function() {
-			this.on('change', function() {
-				this.save();
-			}, this);
+			this.on('change', this.save, this);
 
 			this.fetch();
 		},
