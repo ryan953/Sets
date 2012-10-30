@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php
+function iterator_keys($iterator) {
+	$keys = array();
+	foreach($iterator as $key=>$value) {
+		$keys[] = $key;
+	}
+	return $keys;
+}
+?>
 	<meta charset="UTF-8" />
 	<title>Sets! QUnit Test Suite</title>
 	<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
@@ -8,16 +17,22 @@
 	<script src="../lib/qunit.js"></script>
 	<script src="../lib/qunit-composite.js"></script>
 
+	<?php
+	$dir = '.';
+
+	$files = new RecursiveIteratorIterator(
+		new RecursiveDirectoryIterator($dir));
+
+	$tests = array_values(
+		array_diff(
+			iterator_keys($files), array('./index.php')
+		)
+	);
+	?>
 	<script>
-	QUnit.testSuites([
-		"./event.html",
-		"./clock.html",
-		"./store.html",
-		"./sets.html",
-		"./game.html",
-		"./ui.html",
-		"./assistant.html"
-   	]);
+	QUnit.testSuites(
+		<?php echo json_encode($tests) . "\n"; ?>
+	);
 	</script>
 </head>
 <body>

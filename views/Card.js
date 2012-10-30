@@ -48,12 +48,12 @@ window.Views.Card = (function(Parent) {
 	var visuals = function(card) {
 		var fills = {
 			solid: {
-				lineWidth:0,
-				fillStyle:card.get('color')
+				lineWidth: 0,
+				fillStyle: card.get('color')
 			},
 			empty: {
-				lineWidth:4,
-				fillStyle:'transparent'
+				lineWidth: 4,
+				fillStyle: 'transparent'
 			},
 			striped: {
 				lineWidth: 1,
@@ -106,13 +106,13 @@ window.Views.Card = (function(Parent) {
 
 		render: function() {
 			var canvas = this.make("canvas", {width: 150, height: 150});
-			this.draw(canvas.getContext('2d'));
+			this._draw(canvas.getContext('2d'));
 			this.$el.html(canvas);
 
 			return this;
 		},
 
-		draw: function(ctx) {
+		_draw: function(ctx) {
 			ctx.clearRect(0, 0, 150, 150);
 			for(var i = 0; i < this.card.get('num'); i++) {
 				ctx.save();
