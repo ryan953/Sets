@@ -29,10 +29,10 @@ css("./board.css");
 <body>
 
 <script type="text/html" id="tmpl-menu">
-	<div class="left dropdown menubar-button">
-		<a href="#options" class="button">Sets!</a>
+	<div class="left dropdown ">
+		<a href="#options" class="button menubar-button">Sets!</a>
 		<div id="options">
-			<a href="#" class="button open">Sets!</a>
+			<a href="#" class="button open menubar-button">Sets!</a>
 			<ul>
 				<li><a href="#show/SettingsLightbox">Settings</a></li>
 				<li><a href="#show/StatsLightbox" class="needs-localstorage">Stats</a></li>
@@ -41,7 +41,7 @@ css("./board.css");
 		</div>
 	</div>
 	<div class="right menubar-button">
-		<a class="button game-reset"><span>Reset</span></a>
+		<a class="button game-reset">Reset</a>
 	</div>
 	<div class="scoreboard-placeholder"></div>
 </script>

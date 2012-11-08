@@ -145,8 +145,6 @@ a, a:hover, a:visited { cursor: pointer; text-decoration: none; }
 	color:white;
 	cursor:pointer;
 	text-shadow:none;
-}
-a.button:hover {
 	text-decoration:none;
 }
 .button {
@@ -159,8 +157,8 @@ a.button:hover {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#959595', endColorstr='#1b1b1b',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(149,149,149,1) 0%,rgba(13,13,13,1) 46%,rgba(1,1,1,1) 50%,rgba(10,10,10,1) 53%,rgba(78,78,78,1) 76%,rgba(56,56,56,1) 87%,rgba(27,27,27,1) 100%); /* W3C */
 
-	color:white;
-	border:1px solid;
+	color: white;
+	border: 1px solid;
 	border-color:#333 #333 #000;
 	-webkit-border-radius: .625em;
 	-moz-border-radius: .625em;
@@ -172,8 +170,8 @@ a.button:hover {
 	display: inline-block;
 	padding: 0px 10px;
 }
-.button:hover span,
-.button.active span {
+.button:hover,
+.button.active {
 	background: rgb(76,76,76); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 12%, rgba(102,102,102,1) 25%, rgba(71,71,71,1) 39%, rgba(44,44,44,1) 50%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(76,76,76,1)), color-stop(12%,rgba(89,89,89,1)), color-stop(25%,rgba(102,102,102,1)), color-stop(39%,rgba(71,71,71,1)), color-stop(50%,rgba(44,44,44,1)), color-stop(51%,rgba(0,0,0,1)), color-stop(60%,rgba(17,17,17,1)), color-stop(76%,rgba(43,43,43,1)), color-stop(91%,rgba(28,28,28,1)), color-stop(100%,rgba(19,19,19,1))); /* Chrome,Safari4+ */
@@ -182,18 +180,6 @@ a.button:hover {
 	background: -ms-linear-gradient(top, rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 50%,rgba(0,0,0,1) 51%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* IE10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(76,76,76,1) 0%,rgba(89,89,89,1) 12%,rgba(102,102,102,1) 25%,rgba(71,71,71,1) 39%,rgba(44,44,44,1) 50%,rgba(0,0,0,1) 51%,rgba(17,17,17,1) 60%,rgba(43,43,43,1) 76%,rgba(28,28,28,1) 91%,rgba(19,19,19,1) 100%); /* W3C */
-}
-.button.circle {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-}
-.button.circle span {
-	-webkit-border-radius:50%;
-	-moz-border-radius:50%;
-	border-radius: 50%;
-	height: 25px;
-	display: block;
 }
 
 .views-menubar {
@@ -228,7 +214,6 @@ a.button:hover {
 	-o-box-sizing:border-box;
 	box-sizing:border-box;
 }
-.views-menubar .button,
 .views-menubar p {
 	display:block;
 	font-size:14px;
@@ -245,7 +230,7 @@ a.button:hover {
 	padding: 4px 8px;
 }
 .views-menubar .menubar-button {
-	padding: 3px 8px;
+	margin: 3px 8px;
 }
 
 .views-menubar .center {
@@ -258,17 +243,6 @@ a.button:hover {
 	-moz-box-sizing:border-box;
 	-o-box-sizing:border-box;
 	box-sizing:border-box;
-}
-
-
-.dropdown .button span:after {
-	content:'\25ba';
-	border-left:1px solid #999;
-	margin-left:8px;
-	padding-left:8px;
-}
-.dropdown .button.open span:after {
-	content:'\25bc';
 }
 
 .dropdown div:target { display:block; }
@@ -293,7 +267,7 @@ a.button:hover {
 
 	list-style:none;
 
-	padding:.5em 4px .25em;
+	padding:.25em 4px;
 	margin:0;
 	margin-top:-1px;
 
