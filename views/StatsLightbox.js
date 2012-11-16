@@ -1,4 +1,4 @@
-/*global $ _ Backbone document */
+/*global confirm, $ _ Backbone document */
 window.Views = window.Views || {};
 
 window.Views.StatsLightbox = (function(Parent) {
@@ -33,7 +33,14 @@ window.Views.StatsLightbox = (function(Parent) {
 		},
 
 		resetStats: function(e) {
-			this.stats.reset();
+			var messages = [
+				"Are you sure you want all the current stats to be reset?",
+				"",
+				"This operation cannot be undone."
+			];
+			if (confirm(messages.join("\n"))) {
+				this.stats.reset();
+			}
 		}
 	});
 
