@@ -166,8 +166,8 @@ css("./board.css");
 		</ul>
 
 		<p>See <a href="http://setgame.com/set/">http://setgame.com/set/</a> for more information.</p>
+		<a href="#" class="right button lightbox-close">Close</a>
 	</div>
-	<a href="#" class="right button lightbox-close">Close</a>
 </div>
 
 <?php
