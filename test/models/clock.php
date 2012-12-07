@@ -27,8 +27,8 @@ $(document).ready(function () {
 
 	test('clock triggers event on start', function() {
 		var clock = new Clock(function() {
-				return false;
-			}, this.delay);
+			return false;
+		}, this.delay);
 		expect(1);
 		stop(1);
 
@@ -41,8 +41,8 @@ $(document).ready(function () {
 
 	test('clock triggers event on stop', function() {
 		var clock = new Clock(function() {
-				return false;
-			}, this.delay);
+			return false;
+		}, this.delay);
 		expect(1);
 		stop(1);
 

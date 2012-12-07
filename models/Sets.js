@@ -1,9 +1,9 @@
 /*globals _, Backbone */
 
-window.Sets = (function(Deck, Board) {
+window.Sets = (function(Parent, Deck, Board) {
 	"use strict";
 
-	return Backbone.Model.extend({
+	return Parent.extend({
 		defaults: {
 			mode: null,
 			baseSize: {rows: 0, cols: 0},
@@ -126,4 +126,4 @@ window.Sets = (function(Deck, Board) {
 		}
 
 	});
-}(window.Collections.Deck, window.Collections.Board));
+}(window.Backbone.Model, window.Collections.Deck, window.Collections.Board));
