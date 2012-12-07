@@ -92,6 +92,10 @@ window.Sets = (function(Deck, Board) {
 			this.set('start-time', new Date());
 		},
 
+		getTimeDiff: function() {
+			return new Date() - this.get('start-time');
+		},
+
 		recordFoundSet: function(slots) {
 			var found = this.get('foundSets');
 			found.push(_.map(slots, function(slot) {

@@ -1,8 +1,25 @@
-/*global $ _ Backbone document */
+/*global $ _ Backbone Clock moment */
 window.Views = window.Views || {};
 
-window.Views.Scoreboard = (function(Parent) {
+window.Views.Scoreboard = (function(Parent, Clock) {
 	"use strict";
+
+	var pad = function(num, padLeft, padRight) {
+			var str = "" + num;
+			padLeft = padLeft || "";
+			padRight = padRight || "";
+			return [
+				padLeft.substring(0, padLeft.length - str.length),
+				str,
+				padRight.substring(0, padRight.length - str.length)
+			].join('');
+		},
+		padLeft = function(num, padding) {
+			return pad(num, padding || "00");
+		},
+		padRight = function(num, padding) {
+			return pad(num, '', padding || "00");
+		};
 
 	return Parent.extend({
 		tagName: 'p',
@@ -10,6 +27,12 @@ window.Views.Scoreboard = (function(Parent) {
 
 		events: {
 			'click a': 'nextScoreboard'
+		},
+
+		delay: {
+			fastSpeed: 50,
+			slowSpeed: 500,
+			after: (60 * 1000)
 		},
 
 		initialize: function() {
@@ -20,26 +43,77 @@ window.Views.Scoreboard = (function(Parent) {
 			this.game.settings.on('change:scoreboard-display', this.render, this);
 
 			this.template = _.template($('#tmpl-scoreboard').text());
+
+			this.clock = this.makeClock();
 		},
 
 		render: function() {
 			var found = this.game.getFoundCardCount(),
-				deckSize = this.game.getStartingDeckSize();
+				deckSize = this.game.getStartingDeckSize(),
+				displayType = this.game.settings.get('scoreboard-display');
 
 			this.$el.html(this.template({
-				type: this.game.settings.get('scoreboard-display'),
+				type: displayType,
 				percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
 				remaining: deckSize - found,
 				found: found,
 				deckSize: deckSize
 			}));
 
+			if (displayType === 'time' && !this.game.isGameComplete()) {
+				this.clockFace = this.$('.time');
+				this.clock.on('click.start clock.tick', this.updateClockTick, this);
+				this.clock.start();
+			} else {
+				this.clock.stop();
+				this.clock.off(null, this.updateClockTick);
+			}
+
 			return this;
 		},
 
 		nextScoreboard: function() {
 			this.game.settings.setNextScoreboardDisplay();
+		},
+
+		makeClock: function() {
+			var clock = new Clock(
+				_.bind(this.clockTick, this),
+				this.delay.fastSpeed
+			);
+			clock.on('click.start clock.tick', this.updateClockTick, this);
+			return clock;
+		},
+
+		clockTick: function() {
+			this.clockFace.html(
+				this.formatTimeDiff(
+					this.game.getTimeDiff()
+				)
+			);
+			return true;
+		},
+
+		updateClockTick: function(clock) {
+			if (this.game.getTimeDiff() > this.delay.after) {
+				clock.delay = this.delay.slowSpeed;
+			} else {
+				clock.delay = this.delay.fastSpeed;
+			}
+		},
+
+		formatTimeDiff: function(diff) {
+			var dur = moment.duration(diff),
+				hours = dur.hours(),
+				mins = padLeft(dur.minutes(), '0'),
+				sec = padLeft(dur.seconds(), '00'),
+				milli = padRight(dur.milliseconds(), '000'),
+				time = mins + ":" + sec;
+			if (diff < this.delay.after) { // more precise when ticking faster
+				return time + '.' + milli;
+			}
+			return (hours ? hours : '') + time;
 		}
 	});
 
-})(Backbone.View);
+})(Backbone.View, window.Clock);

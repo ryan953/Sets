@@ -54,7 +54,7 @@ css("./board.css");
 	{% } else if (type === 'percent') { %}
 		<a href="#">Sets Found: {{percent}}%</a>
 	{% } else if (type === 'time') { %}
-		<a href="#">Time: <span class="time">0:00</span></a>
+		<a href="#">Time: <span class="time">0:00.000</span></a>
 	{% } %}
 </script>
 
@@ -174,6 +174,7 @@ css("./board.css");
 js("./lib/jquery-1.7.2.min.js");
 js("./lib/underscore-1.4.2.min.js");
 js("./lib/backbone-0.9.2.min.js");
+js("./lib/moment-1.7.2.min.js");
 
 js("./lib/NoClickDelay.js");
 js("./lib/event.js");
@@ -181,6 +182,8 @@ js("./lib/jintervals-0.7-min.js");
 // js("./lib/modernizr-2.5.3-custom-build.js");
 
 js("./lib/backbone.localStorage.js");
+
+js("./models/Clock.js");
 
 js("./models/Settings.js");
 js("./models/Stats.js");
