@@ -64,6 +64,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 				this.clockFace = this.$('.time');
 				this.clock.on('click.start clock.tick', this.updateClockTick, this);
 				this.clock.start();
+				this.clockTick();
 			} else {
 				this.clock.stop();
 				this.clock.off(null, this.updateClockTick);
@@ -112,7 +113,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 			if (diff < this.delay.after) { // more precise when ticking faster
 				return time + '.' + milli;
 			}
-			return (hours ? hours : '') + time;
+			return (hours ? hours + ':' : '') + time;
 		}
 	});
 
