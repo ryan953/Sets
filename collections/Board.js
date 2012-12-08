@@ -78,7 +78,8 @@ window.Collections.Board = (function(Slot) {
 						is_possible: false
 					});
 
-				if (notPossible.length == this.length) {
+				if (notPossible.length == this.length &&
+				this.selected().length === 0) {
 					this.trigger('none_possible');
 				} else {
 					this.revealNotPossible();
