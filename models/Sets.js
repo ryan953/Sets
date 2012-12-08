@@ -51,7 +51,7 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		start: function(mode) {
-			if (this.get('start-time')) {
+			if (this.isGameInProgress()) {
 				this.trigger('game:end', 'abandoned');
 			}
 			this.trigger('game:start', mode);
@@ -62,7 +62,7 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		endExisting: function() {
-			if (this.get('start-time')) {
+			if (this.isGameInProgress()) {
 				this.trigger('game-ended', this.get('start-time'), new Date());
 				this.set({'start-time': null});
 			}
@@ -121,6 +121,10 @@ window.Sets = (function(Parent, Deck, Board) {
 
 		getStartingDeckSize: function() {
 			return this.deck.startingLength;
+		},
+
+		isGameInProgress: function() {
+			return this.get('start-time') > 0;
 		},
 
 		isGameComplete: function() {
