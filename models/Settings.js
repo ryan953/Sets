@@ -18,7 +18,8 @@ window.Models.Settings = (function(Storage) {
 			'scoreboard-display': 'score',
 			'mode': 'easy',
 			'help': false,
-			'invalid-slot-delay': 3
+			'invalid-slot-delay': 3,
+			'end-game-on-non-possible': 'on'
 		},
 
 		initialize: function() {

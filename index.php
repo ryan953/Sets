@@ -62,7 +62,7 @@ css("./board.css");
 <div>
 	<h2>Settings</h2>
 	<div>
-		<input type="checkbox" id="settings-mode-easy" name="mode" value="easy" />
+		<input type="checkbox" id="settings-mode-easy" name="mode" value="easy" data-off="normal" />
 		<label for="settings-mode-easy">Quick Start</label>
 	</div>
 	<div>
@@ -72,6 +72,10 @@ css("./board.css");
 	<div>
 		<input type="text" id="settings-invalid-slot-delay" name="invalid-slot-delay" value="3" />
 		<label for="settings-invalid-slot-delay">Invalid Slot Animation Delay (seconds)</label>
+	</div>
+	<div>
+		<input type="checkbox" id="settings-end-on-non-possible-on" name="end-game-on-non-possible" value="on" />
+		<label for="settings-end-on-non-possible-on">End game when no sets are possible</label>
 	</div>
 </div>
 </script>

@@ -4,6 +4,17 @@ window.Views = window.Views || {};
 window.Views.SettingsLightbox = (function(Parent) {
 	"use strict";
 
+	/**
+	 * window.Models.Settings
+	 * defaults: { <model-field>:<default on or off val> }
+	 *
+	 * HTML
+	 * <input type="checkbox" id="<elemId>" name="<model-field>" value="<onVal>" data-off="<offVal" />
+	 *
+	 * View renderer
+	 * (elem, settingName, value) = (<elemId>, <model-field>, <onVal>)
+	 */
+
 	return Parent.extend({
 		tagName: 'div',
 		className: 'lightbox hide',
@@ -28,9 +39,11 @@ window.Views.SettingsLightbox = (function(Parent) {
 			this.renderModeEasy = _.bind(this.renderCheckbox, this,
 				'settings-mode-easy', 'mode', 'easy');
 			this.renderHelpOn = _.bind(this.renderCheckbox, this,
-				'settings-help-on', 'help', true);
+				'settings-help-on', 'help');
 			this.renderSlotDelay = _.bind(this.renderTextbox, this,
 				'settings-invalid-slot-delay', 'invalid-slot-delay');
+			this.renderEndGameOnNonPossible = _.bind(this.renderCheckbox, this,
+				'settings-end-on-non-possible-on', 'end-game-on-non-possible');
 		},
 
 		bindToSettings: function() {
@@ -46,6 +59,7 @@ window.Views.SettingsLightbox = (function(Parent) {
 			this.renderModeEasy();
 			this.renderHelpOn();
 			this.renderSlotDelay();
+			this.renderEndGameOnNonPossible();
 
 			return this;
 		},
@@ -65,6 +79,7 @@ window.Views.SettingsLightbox = (function(Parent) {
 		},
 
 		renderCheckbox: function(elem, settingName, value) {
+			value = value || 'on';
 			this._cachedElem(elem).prop('checked',
 				this.settings.get(settingName) === value);
 		},
@@ -75,8 +90,11 @@ window.Views.SettingsLightbox = (function(Parent) {
 
 		changeCheckbox: function(e) {
 			var elem = $(e.target),
-				update = {};
-			update[elem.attr('name')] = (elem.is(':checked') ? elem.val() : 'normal');
+				update = {},
+				onVal = elem.val() || 'on',
+				offVal = elem.data('off') || 'off';
+
+			update[elem.attr('name')] = (elem.is(':checked') ? onVal : offVal);
 			this.settings.set(update);
 		},
 
