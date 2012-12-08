@@ -40,6 +40,8 @@ window.Sets = (function(Parent, Deck, Board) {
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
 			this.board.on('none_possible', this.nonePossible, this);
+
+			this.stats.bindTo(this);
 		},
 
 		cardsRemoved: function() {
@@ -49,6 +51,9 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		start: function(mode) {
+			if (this.get('start-time')) {
+				this.trigger('game:end', 'abandoned');
+			}
 			this.trigger('game:start', mode);
 		},
 

@@ -35,12 +35,34 @@ window.Models.Stats = (function(Storage) {
 
 		initialize: function() {
 			this.on('change', this.save, this);
+			this.on('change', function() {
+				console.log(this.attributes);
+			}, this)
 
 			this.fetch();
 		},
 
 		reset: function() {
 			this.set(this.defaults);
+		},
+
+		setPlusOne: function(field) {
+			this.set(field, this.get(field) + 1);
+		},
+
+		bindTo: function(game) {
+			game.on('game:start', function() {
+				this.setPlusOne('games_start');
+			}, this);
+			game.on('game:end', function(outcome) {
+				if (outcome == 'win') {
+					this.setPlusOne('games_win');
+				} else if (outcome == 'lose' ) {
+					this.setPlusOne('game_lose');
+				} else {
+					this.setPlusOne('abandoned');
+				}
+			}, this);
 		}
 	});
 
