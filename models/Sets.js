@@ -58,7 +58,9 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		nonePossible: function() {
-			this.trigger('game:end', 'lose');
+			if (this.settings.get('end-game-on-non-possible') == 'on') {
+				this.trigger('game:end', 'lose');
+			}
 		},
 
 		endExisting: function() {
