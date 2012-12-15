@@ -97,12 +97,12 @@ window.Collections.Board = (function(Slot) {
 			});
 		},
 
-		drawCards: function(deck) {
+		drawCards: function() {
 			this.each(function(slot) {
-				if (slot.isEmpty() && deck.hasCards()) {
-					slot.placeCard(deck.drawRandomCard());
+				if (slot.isEmpty() && this.deck.hasCards()) {
+					slot.placeCard(this.deck.drawRandomCard());
 				}
-			});
+			}, this);
 		},
 
 		rebuild: function(rows, cols) {

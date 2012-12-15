@@ -175,7 +175,7 @@ $(document).ready(function () {
 			settings: {}
 		});
 
-		board.drawCards(deck);
+		board.drawCards();
 		return board;
 	}
 
