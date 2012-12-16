@@ -74,6 +74,7 @@ window.Models.Slot = (function(Card) {
 			if (state) {
 				_.delay(_.bind(this.setMatched, this), FOUND_ZOOM_ANIMATION_TIME, false);
 			} else {
+				this.set({card: null});
 				this.collection.trigger('card:removed', this);
 			}
 		},

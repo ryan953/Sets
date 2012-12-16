@@ -60,6 +60,8 @@ window.Sets = (function(Parent, Deck, Board) {
 		nonePossible: function() {
 			if (this.settings.get('end-game-on-non-possible') == 'on') {
 				this.trigger('game:end', 'lose');
+			} else {
+				this.board.expand();
 			}
 		},
 

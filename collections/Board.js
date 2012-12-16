@@ -70,7 +70,19 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.on('card:removed', function(slot) {
-				slot.placeCard(this.deck.drawRandomCard());
+				var emptySlots = this.emptySlots();
+				if (emptySlots.length != 3) {
+					return;
+				}
+				if (this.length > this.boardSize()) {
+					_.each(emptySlots, function(slot) {
+						this.remove(slot);
+					}, this);
+				} else {
+					_.each(emptySlots, function(slot) {
+						slot.placeCard(this.deck.drawRandomCard());
+					}, this);
+				}
 			});
 
 			this.on('filled:slots', function(board) {
@@ -121,6 +133,18 @@ window.Collections.Board = (function(Slot) {
 				cols: cols
 			};
 			this.reset(slots);
+		},
+
+		expand: function() {
+			if (this.deck.length < 3) {
+				return;
+			}
+			this.add(_.map(_.range(3), function() {
+				return new Slot(null, {
+					settings: this.settings
+				});
+			}, this));
+			this.drawCards();
 		},
 
 		revealNotPossible: function() {
