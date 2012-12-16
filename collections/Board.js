@@ -7,11 +7,15 @@ window.Collections.Board = (function(Slot) {
 	return Backbone.Collection.extend({
 		model: Slot,
 
-		boardSize: {rows: 0, cols: 0},
+		_boardSize: {rows: 0, cols: 0},
+
+		boardSize: function() {
+			return this._boardSize.rows * this._boardSize.cols;
+		},
 
 		toJSON: function() {
 			var attrs = Backbone.Collection.prototype.toJSON.call(this);
-			attrs.boardSize = _.clone(this.boardSize);
+			attrs.boardSize = _.clone(this._boardSize);
 			return attrs;
 		},
 
@@ -107,11 +111,15 @@ window.Collections.Board = (function(Slot) {
 
 		rebuild: function(rows, cols) {
 			var slots = [];
-			for (var i = 0; i < rows * cols; i++) {
+			_.times(rows * cols, function() {
 				slots.push(new Slot(null, {
 					settings: this.settings
 				}));
-			}
+			}, this);
+			this._boardSize = {
+				rows: rows,
+				cols: cols
+			};
 			this.reset(slots);
 		},
 
