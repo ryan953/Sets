@@ -39,6 +39,9 @@ window.Views.Board = (function(Parent, SlotView) {
 				for (var col = 0; col < this.MAX_COLS; col++) {
 					var position = (row * this.MAX_COLS) + col,
 						child = this.child_views[position];
+					if (!child) {
+						continue;
+					}
 					tr.appendChild(child.el);
 				}
 				table.appendChild(tr);
