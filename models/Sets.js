@@ -37,6 +37,11 @@ window.Sets = (function(Parent, Deck, Board) {
 			this.on('game:start', this.initGame, this);
 			this.on('game:end', this.endExisting, this);
 
+			this.board.on('change:is_selected', function() {
+				this.set({
+					has_interaction: true}
+				);
+			}, this);
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
 			this.board.on('none_possible', this.nonePossible, this);
@@ -93,7 +98,8 @@ window.Sets = (function(Parent, Deck, Board) {
 			);
 			this.set({
 				mode: mode,
-				baseSize: baseSize
+				baseSize: baseSize,
+				has_interaction: false
 			});
 
 			this.board.drawCards(this.deck);

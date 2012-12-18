@@ -49,12 +49,20 @@ window.Models.Stats = (function(Storage) {
 		setPlusOne: function(field) {
 			this.set(field, this.get(field) + 1);
 		},
+		setLessOne: function(field) {
+			this.set(field, this.get(field) - 1);
+		},
 
 		bindTo: function(game) {
 			game.on('game:start', function() {
 				this.setPlusOne('games_start');
 			}, this);
 			game.on('game:end', function(outcome) {
+				if (!game.get('has_interaction')) {
+					this.setLessOne('games_start');
+					return;
+				}
+
 				if (outcome == 'win') {
 					this.setPlusOne('games_win');
 				} else if (outcome == 'lose' ) {
