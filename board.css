@@ -1,7 +1,8 @@
-.board table {
-	padding-top:2em;
+.board {
 	background:url('./backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
-
+	padding-top:2em;
+}
+.board table {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
@@ -17,7 +18,7 @@
 }
 
 .board .card {
-	border:2px solid;
+	border: 2px solid;
 	border-color: white #DADADA #DADADA white;
 
 	-webkit-box-shadow:0 .6em 1em #333;
