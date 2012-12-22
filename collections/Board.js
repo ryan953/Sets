@@ -216,7 +216,6 @@ window.Collections.Board = (function(Slot) {
 	}, {
 		_propCounter: function(field) {
 			return function(prev, curr) {
-				if (!prev || !curr) { return; }
 				prev[curr[field]] = (curr[field] in prev ? prev[curr[field]] + 1 : 1);
 				return prev;
 			};
@@ -231,24 +230,18 @@ window.Collections.Board = (function(Slot) {
 				colors: _.reduce(cards, this._propCounter('color'), {})
 			};
 
-			this.lastErrors = [];
-
 			for(var field in totals) {
 				if (totals.hasOwnProperty(field)) {
 					for(var val in totals[field]) {
 						if (totals[field].hasOwnProperty(val)) {
 							if (totals[field][val] != 1 && totals[field][val] != 3) {
-								this.lastErrors.push({
-									field:field,
-									val:val,
-									count:totals[field][val]
-								});
+								return false;
 							}
 						}
 					}
 				}
 			}
-			return this.lastErrors.length === 0;
+			return true;
 		}
 	});
 
