@@ -97,9 +97,9 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 
 		updateClockTick: function(clock) {
 			if (this.game.getTimeDiff() > this.delay.after) {
-				clock.delay = this.delay.slowSpeed;
+				clock.setTickSpeed(this.delay.slowSpeed);
 			} else {
-				clock.delay = this.delay.fastSpeed;
+				clock.setTickSpeed(this.delay.fastSpeed);
 			}
 		},
 

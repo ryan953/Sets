@@ -18,6 +18,10 @@ window.Clock = (function(Parent) {
 			};
 		},
 
+		setTickSpeed: function(delay) {
+			this.delay = delay;
+		},
+
 		/**
 		 * Takes a delay between clock ticks, and an action to do each tick
 		 * when the action returns false the clock will turn itself off
