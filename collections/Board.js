@@ -135,8 +135,12 @@ window.Collections.Board = (function(Slot) {
 			this.reset(slots);
 		},
 
+		canExpand: function() {
+			return (this.deck.length >= 3);
+		},
+
 		expand: function() {
-			if (this.deck.length < 3) {
+			if (!this.canExpand()) {
 				return;
 			}
 			this.add(_.map(_.range(3), function() {

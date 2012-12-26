@@ -64,10 +64,10 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		nonePossible: function() {
-			if (this.settings.get('end-game-on-non-possible') == 'on') {
-				this.trigger('game:end', 'lose');
-			} else {
+			if (this.board.canExpand() && this.settings.get('end-game-on-non-possible') == 'off') {
 				this.board.expand();
+			} else {
+				this.trigger('game:end', 'lose');
 			}
 		},
 
