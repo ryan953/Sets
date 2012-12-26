@@ -7,7 +7,8 @@ window.Sets = (function(Parent, Deck, Board) {
 		defaults: {
 			mode: null,
 			baseSize: {rows: 0, cols: 0},
-			foundSets: []
+			foundSets: [],
+			paused: false
 		},
 
 		baseSizes: {
@@ -72,7 +73,7 @@ window.Sets = (function(Parent, Deck, Board) {
 
 		endExisting: function() {
 			if (this.isGameInProgress()) {
-				this.trigger('game-ended', this.get('start-time'), new Date());
+				this.trigger('game-ended');
 				this.set({'start-time': null});
 			}
 		},
@@ -104,11 +105,28 @@ window.Sets = (function(Parent, Deck, Board) {
 
 			this.board.drawCards(this.deck);
 
-			this.set('start-time', new Date());
+			this._times = [];
+			this.resume();
+		},
+
+		_getTimeDelta: function() {
+			return new Date() - this.get('start-time');
 		},
 
 		getTimeDiff: function() {
-			return new Date() - this.get('start-time');
+			return _.reduce(this._times, function(memo, num) {
+				return memo + num;
+			}, this._getTimeDelta());
+		},
+
+		pause: function() {
+			this._times.push(this._getTimeDelta());
+			this.set({paused: true});
+		},
+
+		resume: function() {
+			this.set({'start-time': new Date()});
+			this.set({paused: false});
 		},
 
 		recordFoundSet: function(slots) {

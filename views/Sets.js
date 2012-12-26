@@ -10,6 +10,12 @@ window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
 
 		initialize: function() {
 			this.game = this.options.game;
+
+			$(window).blur(
+				_.bind(this.game.pause, this.game)
+			).focus(
+				_.bind(this.game.resume, this.game)
+			);
 		},
 
 		renderChildren: function() {

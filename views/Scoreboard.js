@@ -40,6 +40,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 
 			this.game.on('game:start', this.render, this);
 			this.game.on('change:foundSets', this.render, this);
+			this.game.on('change:paused', this.pauseClock, this);
 			this.game.settings.on('change:scoreboard-display', this.render, this);
 
 			this.template = _.template($('#tmpl-scoreboard').text());
@@ -100,6 +101,14 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 				clock.setTickSpeed(this.delay.slowSpeed);
 			} else {
 				clock.setTickSpeed(this.delay.fastSpeed);
+			}
+		},
+
+		pauseClock: function(game, isPaused) {
+			if (isPaused) {
+				this.clock.stop();
+			} else {
+				this.clock.start();
 			}
 		},
 
