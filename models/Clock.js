@@ -6,16 +6,15 @@ window.Clock = (function(Parent) {
 
 	return Parent.extend({
 		initialize: function(tickAction, delay) {
-			var _this = this;
-			_this.delay = delay;
-			_this.clockTick = function() {
+			this.delay = delay;
+			this.clockTick = _.bind(function() {
 				if (tickAction()) {
-					_this.trigger('clock.tick', _this);
-					_this.timer = setTimeout(_this.clockTick, _this.delay);
+					this.trigger('clock.tick', this);
+					this.timer = setTimeout(this.clockTick, this.delay);
 				} else {
-					_this.stop();
+					this.stop();
 				}
-			};
+			}, this);
 		},
 
 		setTickSpeed: function(delay) {
