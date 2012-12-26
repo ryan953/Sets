@@ -109,18 +109,18 @@ window.Sets = (function(Parent, Deck, Board) {
 			this.resume();
 		},
 
-		_getTimeDelta: function() {
+		_getStartTimeDelta: function() {
 			return new Date() - this.get('start-time');
 		},
 
 		getTimeDiff: function() {
 			return _.reduce(this._times, function(memo, num) {
 				return memo + num;
-			}, this._getTimeDelta());
+			}, this._getStartTimeDelta());
 		},
 
 		pause: function() {
-			this._times.push(this._getTimeDelta());
+			this._times.push(this._getStartTimeDelta());
 			this.set({paused: true});
 		},
 
