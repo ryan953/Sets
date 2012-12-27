@@ -56,7 +56,7 @@
 	-webkit-animation: wiggle .25s 1;
 	-moz-animation:    wiggle .25s 1;
 	-ms-animation:     wiggle .25s 1;
-	-o-animation:     wiggle .25s 1;
+	-o-animation:      wiggle .25s 1;
 	animation:         wiggle .25s 1;
 }
 .board .is_selected .card {

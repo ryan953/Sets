@@ -29,7 +29,7 @@ css("./board.css");
 <body>
 
 <script type="text/html" id="tmpl-menu">
-	<div class="left dropdown ">
+	<div class="left dropdown">
 		<a href="#options" class="button menubar-button">Sets!</a>
 		<div id="options">
 			<a href="#" class="button open menubar-button">Sets!</a>
