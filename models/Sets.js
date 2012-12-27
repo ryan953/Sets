@@ -8,6 +8,7 @@ window.Sets = (function(Parent, Deck, Board) {
 			mode: null,
 			baseSize: {rows: 0, cols: 0},
 			foundSets: [],
+			'in-progress': false,
 			paused: false
 		},
 
@@ -74,7 +75,10 @@ window.Sets = (function(Parent, Deck, Board) {
 		endExisting: function() {
 			if (this.isGameInProgress()) {
 				this.trigger('game-ended');
-				this.set({'start-time': null});
+				this.set({
+					'in-progress': false,
+					'start-time': null
+				});
 			}
 		},
 
@@ -106,6 +110,7 @@ window.Sets = (function(Parent, Deck, Board) {
 			this.board.drawCards(this.deck);
 
 			this._times = [];
+			this.set({'in-progress': true});
 			this.resume();
 		},
 
@@ -158,7 +163,7 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		isGameInProgress: function() {
-			return this.get('start-time') > 0;
+			return this.get('in-progress');
 		},
 
 		isGameComplete: function() {
