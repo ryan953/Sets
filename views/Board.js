@@ -11,8 +11,7 @@ window.Views.Board = (function(Parent, SlotView) {
 		MAX_COLS: 3,
 
 		initialize: function() {
-			this.board = this.options.board;
-			this.board.on('reset add remove', this.render, this);
+			this.options.board.on('reset add remove', this.render, this);
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
 		},
@@ -24,16 +23,18 @@ window.Views.Board = (function(Parent, SlotView) {
 		},
 
 		renderChildren: function() {
-			var board = this.board;
-			return _.map(_.range(board.length), function(i) {
-				return new SlotView({slot: board.at(i)}).render();
+			var options = this.options;
+			return _.map(_.range(options.board.length), function(i) {
+				return new SlotView({
+					slot: options.board.at(i)
+				}).render();
 			});
 		},
 
 		renderGameTable: function() {
 			this.$el.empty();
 			var table = this.make('table'),
-				rows = Math.ceil(this.board.length / this.MAX_COLS);
+				rows = Math.ceil(this.options.board.length / this.MAX_COLS);
 			for (var row = 0; row < rows; row++) {
 				var tr = this.make('tr');
 				for (var col = 0; col < this.MAX_COLS; col++) {
