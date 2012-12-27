@@ -107,7 +107,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		pauseClock: function(game, isPaused) {
 			if (isPaused) {
 				this.clock.stop();
-			} else {
+			} else if (this.game.settings.get('scoreboard-display') === 'time') {
 				this.clock.start();
 			}
 		},
