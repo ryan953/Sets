@@ -120,11 +120,17 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		pause: function() {
+			if (!this.isGameInProgress()) {
+				return;
+			}
 			this._times.push(this._getStartTimeDelta());
 			this.set({paused: true});
 		},
 
 		resume: function() {
+			if (!this.isGameInProgress()) {
+				return;
+			}
 			this.set({'start-time': new Date()});
 			this.set({paused: false});
 		},
