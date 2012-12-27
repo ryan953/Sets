@@ -26,6 +26,7 @@ window.Views.Board = (function(Parent, SlotView) {
 			var options = this.options;
 			return _.map(_.range(options.board.length), function(i) {
 				return new SlotView({
+					settings: options.settings,
 					slot: options.board.at(i)
 				}).render();
 			});

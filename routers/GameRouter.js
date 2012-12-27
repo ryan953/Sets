@@ -12,8 +12,6 @@ window.GameRouter = (function(Parent, Sets, Stats, Views) {
 		_lastLightbox: null,
 
 		initialize: function(options) {
-			this.options = options;
-
 			this.stats = new Stats({id: 1});
 
 			this.game = new Sets({

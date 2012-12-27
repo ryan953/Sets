@@ -52,6 +52,9 @@ window.Views.Slot = (function(Parent, CardView) {
 					_this.$el.toggleClass(enabledStyleMap[key], model.get(key));
 				}
 			});
+			if (this.options.settings.get('debug-not-possible') == 'on') {
+				this.$el.toggleClass('debug-not-possible', !model.get('is_possible'));
+			}
 
 			if (model.get('is_possible_revealed')) {
 				this.$el.toggleClass('not-possible', !model.get('is_possible'));

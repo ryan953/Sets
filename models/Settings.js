@@ -19,7 +19,8 @@ window.Models.Settings = (function(Storage) {
 			'mode': 'easy',
 			'help': 'on',
 			'invalid-slot-delay': 3,
-			'end-game-on-non-possible': 'on'
+			'end-game-on-non-possible': 'on',
+			'debug-not-possible': 'off'
 		},
 
 		initialize: function() {

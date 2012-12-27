@@ -9,28 +9,29 @@ window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
 		className: 'sets-game',
 
 		initialize: function() {
-			this.game = this.options.game;
+			var game = this.options.game;
 
 			$(window).blur(
-				_.bind(this.game.pause, this.game)
+				_.bind(game.pause, game)
 			).focus(
-				_.bind(this.game.resume, this.game)
+				_.bind(game.resume, game)
 			);
 		},
 
 		renderChildren: function() {
-
-			var children = {};
+			var game = this.options.game,
+				children = {};
 			children.chrome = new Chrome({
-				game: this.game
+				game: game
 			}).render();
 
 			children.boardView = new BoardView({
-				board: this.game.board
+				settings: game.settings,
+				board: game.board
 			}).render();
 
 			children.endGameView = new EndGame({
-				game: this.game
+				game: game
 			}).render();
 
 			this.$el.append(_.pluck(children, 'el'));
