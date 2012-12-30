@@ -9,8 +9,52 @@ function __autoload($className) {
 }
 
 $builder = new AssetBuilder_Dynamic();
-$js = new Cache_JS($builder);
 $css = new Cache_CSS($builder);
+$js = new Cache_JS($builder);
+
+// CSS Building
+$css("./css/style.css");
+$css("./css/board.css");
+
+// JS Building
+$js("./lib/jquery-1.7.2.min.js");
+$js("./lib/underscore-1.4.2.min.js");
+$js("./lib/backbone-0.9.2.min.js");
+$js("./lib/moment-1.7.2.min.js");
+
+$js("./lib/NoClickDelay.js");
+$js("./lib/event.js");
+$js("./lib/jintervals-0.7-min.js");
+// $js("./lib/modernizr-2.5.3-custom-build.js");
+
+$js("./lib/backbone.localStorage.js");
+
+$js("./models/Clock.js");
+
+$js("./models/Settings.js");
+$js("./models/Stats.js");
+$js("./models/Card.js");
+$js("./models/Slot.js");
+$js("./collections/Deck.js");
+$js("./collections/Board.js");
+$js("./models/Sets.js");
+
+$js("./views/bases/ParentView.js");
+$js("./views/bases/LightboxView.js");
+$js("./views/Card.js");
+$js("./views/Slot.js");
+$js("./views/Board.js");
+$js("./views/EndGame.js");
+
+$js("./views/Scoreboard.js");
+$js("./views/Menubar.js");
+$js("./views/SettingsLightbox.js");
+$js("./views/StatsLightbox.js");
+$js("./views/Chrome.js");
+
+$js("./views/Sets.js");
+
+$js("./routers/GameRouter.js");
 ?>
 
 <title>Sets!</title>
@@ -20,11 +64,7 @@ $css = new Cache_CSS($builder);
 
 <meta name="viewport" content="width=device-width; user-scalable=no; initial-scale=1.0; maximum-scale=1.0;">
 
-<?php
-$css("./css/style.css");
-$css("./css/board.css");
-echo $css;
-?>
+<?php echo $css; ?>
 
 </head>
 <body>
@@ -175,47 +215,7 @@ echo $css;
 	</div>
 </div>
 
-<?php
-$js("./lib/jquery-1.7.2.min.js");
-$js("./lib/underscore-1.4.2.min.js");
-$js("./lib/backbone-0.9.2.min.js");
-$js("./lib/moment-1.7.2.min.js");
-
-$js("./lib/NoClickDelay.js");
-$js("./lib/event.js");
-$js("./lib/jintervals-0.7-min.js");
-// $js("./lib/modernizr-2.5.3-custom-build.js");
-
-$js("./lib/backbone.localStorage.js");
-
-$js("./models/Clock.js");
-
-$js("./models/Settings.js");
-$js("./models/Stats.js");
-$js("./models/Card.js");
-$js("./models/Slot.js");
-$js("./collections/Deck.js");
-$js("./collections/Board.js");
-$js("./models/Sets.js");
-
-$js("./views/bases/ParentView.js");
-$js("./views/bases/LightboxView.js");
-$js("./views/Card.js");
-$js("./views/Slot.js");
-$js("./views/Board.js");
-$js("./views/EndGame.js");
-
-$js("./views/Scoreboard.js");
-$js("./views/Menubar.js");
-$js("./views/SettingsLightbox.js");
-$js("./views/StatsLightbox.js");
-$js("./views/Chrome.js");
-
-$js("./views/Sets.js");
-
-$js("./routers/GameRouter.js");
-echo $js;
-?>
+<?php echo $js; ?>
 
 <script>
 "use strict";
