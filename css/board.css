@@ -1,5 +1,5 @@
 .board {
-	background:url('./backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
+	background:url('../backgrounds/ipad2-wood-retina-1.jpg') repeat 50% 50%;
 	padding-top:2em;
 }
 .board table {
