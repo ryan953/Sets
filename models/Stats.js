@@ -35,9 +35,6 @@ window.Models.Stats = (function(Storage) {
 
 		initialize: function() {
 			this.on('change', this.save, this);
-			this.on('change', function() {
-				console.log(this.attributes);
-			}, this)
 
 			this.fetch();
 		},

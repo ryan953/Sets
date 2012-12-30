@@ -225,7 +225,9 @@ window.Collections.Board = (function(Slot) {
 			};
 		},
 		isASet: function(cards) {
-			if (cards.length !== 3 ) { return false; }
+			if (cards.length !== 3 ) {
+				return false;
+			}
 
 			var totals = {
 				counts: _.reduce(cards, this._propCounter('num'), {}),
