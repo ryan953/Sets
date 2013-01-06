@@ -80,7 +80,7 @@ window.Collections.Board = (function(Slot) {
 					}, this);
 				} else {
 					_.each(emptySlots, function(slot) {
-						slot.placeCard(this.deck.drawRandomCard());
+						slot.placeCard(this.deck.drawCard());
 					}, this);
 				}
 			});
@@ -116,7 +116,7 @@ window.Collections.Board = (function(Slot) {
 		drawCards: function() {
 			this.each(function(slot) {
 				if (slot.isEmpty() && this.deck.hasCards()) {
-					slot.placeCard(this.deck.drawRandomCard());
+					slot.placeCard(this.deck.drawCard());
 				}
 			}, this);
 		},
