@@ -41,10 +41,18 @@ window.Collections.Deck = (function(Card) {
 		},
 
 		rebuild: function(mode) {
-			if (_.indexOf(_.values(modes), mode) === -1) {
-				this.reset();
-				return;
+			var cards = this.buildCards(mode);
+			console.log('rebuild', cards);
+			if (cards) {
+				this.reset(cards);
 			}
+		},
+
+		buildCards: function(mode) {
+			if (!_.contains(_.values(modes), mode)) {
+				return null;
+			}
+
 			var cards = [];
 			Card.counts.forEach(function(num) {
 				Card.shapes.forEach(function(shape) {
@@ -85,8 +93,7 @@ window.Collections.Deck = (function(Card) {
 					fill: Card.fills.slice(-1)
 				});
 			}
-
-			this.reset(cards);
+			return cards;
 		}
 
 	}, modes);
