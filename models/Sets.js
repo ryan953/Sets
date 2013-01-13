@@ -13,10 +13,12 @@ window.Sets = (function(Parent, Deck, Board) {
 		},
 
 		baseSizes: {
-			'unpossible': {rows: 2, cols: 3},
-			'test': {rows: 2, cols: 3},
-			'easy': {rows: 3, cols: 3},
-			'normal': {rows: 4, cols: 3}
+			unpossible: {rows: 2, cols: 3},
+			test: {rows: 2, cols: 3},
+			easy: {rows: 3, cols: 3},
+			normal: {rows: 4, cols: 3},
+			oneSetExpandFail: {rows: 3, cols: 3},
+			expandstillFails: {rows: 3, cols: 3}
 		},
 
 		toJSON: function() {
@@ -47,7 +49,6 @@ window.Sets = (function(Parent, Deck, Board) {
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
 			this.board.on('none_possible', this.nonePossible, this);
-
 			this.stats.bindTo(this);
 		},
 

@@ -85,10 +85,36 @@ window.Collections.Deck = (function(Card) {
 				return cards;
 			}
 		},
-		linear: {
+		oneSetExpandFail: {
 			drawCard: draw.nextCard,
 			buildCards: function() {
-				return []; // no cards
+				var cards = strategies.normal.buildCards(),
+					indexes = [
+						6, 16, 26,
+						0,  4, 12,
+						43, 20, 22,
+						40, 41, 44,
+						30, 31, 32
+					];
+				return _.map(indexes, function(index) {
+					return cards[index];
+				});
+			}
+		},
+		expandstillFails: {
+			drawCard: draw.nextCard,
+			buildCards: function() {
+				var cards = strategies.normal.buildCards(),
+					indexes = [
+						0,  4, 12,
+						43, 20, 22,
+						40, 41, 44,
+						30, 31, 33,
+						6, 16, 28
+					];
+				return _.map(indexes, function(index) {
+					return cards[index];
+				});
 			}
 		}
 	};
@@ -97,7 +123,9 @@ window.Collections.Deck = (function(Card) {
 		NORMAL: 'normal',
 		EASY: 'easy',
 		TEST: 'test',
-		UNPOSSIBLE: 'unpossible'
+		UNPOSSIBLE: 'unpossible',
+		oneSetExpandFail: 'oneSetExpandFail',
+		expandstillFails: 'expandstillFails'
 	};
 
 	return Backbone.Collection.extend({
@@ -111,6 +139,7 @@ window.Collections.Deck = (function(Card) {
 
 		drawCard: function() {
 			if (!_.contains(_.values(modes), this._mode)) {
+				console.error('Mode not found:', mode);
 				return null;
 			}
 			return strategies[this._mode].drawCard.call(this);
@@ -123,6 +152,7 @@ window.Collections.Deck = (function(Card) {
 
 		rebuild: function(mode) {
 			if (!_.contains(_.values(modes), mode)) {
+				console.error('Mode not found:', mode);
 				return null;
 			}
 			this._mode = mode;
