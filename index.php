@@ -8,7 +8,7 @@ function __autoload($className) {
     include './classes/' . $fileName . '.php';
 }
 
-$builder = new AssetBuilder_Dynamic();
+$builder = AssetBuilder::factory(true);
 $css = new Cache_CSS($builder);
 $js = new Cache_JS($builder);
 
