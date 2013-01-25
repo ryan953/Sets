@@ -43,8 +43,8 @@ window.Sets = (function(Parent, Deck, Board) {
 
 			this.board.on('change:is_selected', function() {
 				this.set({
-					has_interaction: true}
-				);
+					has_interaction: true
+				});
 			}, this);
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
@@ -68,6 +68,7 @@ window.Sets = (function(Parent, Deck, Board) {
 		nonePossible: function() {
 			if (this.board.canExpand() && this.settings.get('end-game-on-non-possible') == 'off') {
 				this.board.expand();
+				this.board.drawCards();
 			} else {
 				this.trigger('game:end', 'lose');
 			}

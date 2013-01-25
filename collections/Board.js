@@ -91,8 +91,8 @@ window.Collections.Board = (function(Slot) {
 
 			this.on('reset:not_possible', function(board) {
 				var notPossible = this.where({
-						is_possible: false
-					});
+					is_possible: false
+				});
 
 				if (notPossible.length == this.length &&
 				this.selected().length === 0) {
@@ -148,7 +148,6 @@ window.Collections.Board = (function(Slot) {
 					settings: this.settings
 				});
 			}, this));
-			this.drawCards();
 		},
 
 		revealNotPossible: function() {
@@ -210,7 +209,10 @@ window.Collections.Board = (function(Slot) {
 			});
 
 			this.each(function(slot) {
-				slot.set({is_possible: (!!slot.hasSet)});
+				slot.set({
+					is_possible: (!!slot.hasSet),
+					is_possible_revealed: false
+				});
 				delete slot.hasSet;
 			});
 

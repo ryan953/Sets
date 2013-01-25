@@ -100,6 +100,7 @@ window.Models.Slot = (function(Card) {
 		_clearRevealTimer: function() {
 			if (this._revealTimer) {
 				clearTimeout(this._revealTimer);
+				delete this._revealTimer;
 			}
 		}
 	});
