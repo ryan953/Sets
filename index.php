@@ -11,6 +11,8 @@ function __autoload($className) {
 $builder = AssetBuilder::factory();
 $css = new Cache_CSS($builder);
 $js = new Cache_JS($builder);
+$templateBuilder = new AssetBuilder_JSTemplate();
+$tmpl = new Cache_JSTemplate($templateBuilder);
 
 // CSS Building
 $css("./css/style.css");
@@ -54,6 +56,12 @@ $js("./views/Chrome.js");
 $js("./views/Sets.js");
 
 $js("./routers/GameRouter.js");
+
+$tmpl("./templates/tmpl-menu.template");
+$tmpl("./templates/tmpl-scoreboard.template");
+$tmpl("./templates/tmpl-settingslightbox.template");
+$tmpl("./templates/tmpl-statslightbox.template");
+$tmpl("./templates/tmpl-sets-view.template");
 ?>
 
 <title>Sets!</title>
@@ -68,114 +76,7 @@ $js("./routers/GameRouter.js");
 </head>
 <body>
 
-<script type="text/html" id="tmpl-menu">
-	<div class="left dropdown">
-		<a href="#options" class="button menubar-button">Sets!</a>
-		<div id="options">
-			<a href="#" class="button open menubar-button">Sets!</a>
-			<ul>
-				<li><a href="#show/SettingsLightbox">Settings</a></li>
-				<li><a href="#show/StatsLightbox" class="needs-localstorage">Stats</a></li>
-				<li><a href="#about">About</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="right menubar-button">
-		<a class="button game-reset">Reset</a>
-	</div>
-	<div class="scoreboard-placeholder"></div>
-</script>
-
-<script type="text/html" id="tmpl-scoreboard">
-	{% if (type === 'score') { %}
-		<a href="#">Deck: {{found}}/{{deckSize}}</a>
-	{% } else if (type === 'remaining') { %}
-		<a href="#">{{remaining}} cards remaining</a>
-	{% } else if (type === 'percent') { %}
-		<a href="#">Sets Found: {{percent}}%</a>
-	{% } else if (type === 'time') { %}
-		<a href="#">Time: <span class="time">0:00.000</span></a>
-	{% } %}
-</script>
-
-<script type="text/html" id="tmpl-settingslightbox">
-<div>
-	<h2>Settings</h2>
-	<div>
-		<input type="checkbox" id="settings-mode-easy" name="mode" value="easy" data-off="normal" />
-		<label for="settings-mode-easy">Quick Start</label>
-	</div>
-	<div>
-		<input type="checkbox" id="settings-help-on" name="help" value="on" />
-		<label for="settings-help-on">Show Helpful Hints</label>
-	</div>
-	<div>
-		<input type="text" id="settings-invalid-slot-delay" name="invalid-slot-delay" value="3" />
-		<label for="settings-invalid-slot-delay">Invalid Slot Animation Delay (seconds)</label>
-	</div>
-	<div>
-		<input type="checkbox" id="settings-end-on-non-possible-on" name="end-game-on-non-possible" value="on" />
-		<label for="settings-end-on-non-possible-on">End game when no sets are possible</label>
-	</div>
-</div>
-</script>
-
-<script type="text/html" id="tmpl-statslightbox">
-<div>
-	<h2>Stats</h2>
-	<strong>Games</strong>
-	<dl class="table">
-		<dt>Games Started</dt><dd>{{ games_start }}</dd>
-		<dt>Games Won</dt><dd>{{ games_win }}</dd>
-		<dt>Games Lost</dt><dd>{{ games_lose }}</dd>
-		<dt>Games Incomplete</dt><dd>{{ games_incomplete }}</dd>
-		<dt>Percent Won</dt><dd>{{ games_percent }}</dd>
-	</dl>
-	<hr/>
-	<strong>Time</strong>
-	<dl class="table">
-		<dt>Total Time Played</dt><dd>{{ time_total }}</dd>
-		<dt>Average Game Time</dt><dd>{{ time_average_all }}</dd>
-		<dt>Average Win Time</dt><dd>{{ time_average_win }}</dd>
-		<dt>Shortest Win Time</dt><dd>{{ time_shortest_win }}</dd>
-		<dt>Longest Win Time</dt><dd>{{ time_longest_win }}</dd>
-	</dl>
-	<hr/>
-	<strong>Streaks</strong>
-	<dl class="table">
-		<dt>Current Streak</dt><dd>{{ streak_current_count }} {{ streak_current_type }}</dd>
-		<dt>Longest Win Streak</dt><dd>{{ streak_win }}</dd>
-		<dt>Longest Lose Streak</dt><dd>{{ streak_lose }}</dd>
-	</dl>
-	<hr/>
-	<strong>Cards Remaining</strong>
-	<dl class="table">
-		<dt>No cards left over</dt><dd>{{ cards_zero }}</dd>
-		<dt>3 Remaining</dt><dd>{{ cards_three }}</dd>
-		<dt>6 Remaining</dt><dd>{{ cards_six }}</dd>
-		<dt>9 Remaining</dt><dd>{{ cards_nine }}</dd>
-		<dt>more than 9</dt><dd>{{ cards_more }}</dd>
-	</dl>
-	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
-</div>
-</script>
-
-<script type="text/html" id="tmpl-sets-view">
-<div class="popup hide" id="game-over-win">
-	<div>
-		<h3>Game Over!</h3>
-		<p>You won!</p>
-		<a href="#" class="button game-reset"><span>Play Again</span></a>
-	</div>
-</div>
-<div class="popup hide" id="game-over-lose">
-	<div>
-		<h3>Game Over!</h3>
-		<p>No more sets are possible.</p>
-		<a href="#" class="button game-reset"><span>Play Again</span></a>
-	</div>
-</div>
-</script>
+<?php echo $tmpl; ?>
 
 <div class="lightbox hide" id="help">
 	<h2>How to play Sets!</h2>

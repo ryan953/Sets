@@ -1,0 +1,9 @@
+	{% if (type === 'score') { %}
+		<a href="#">Deck: {{found}}/{{deckSize}}</a>
+	{% } else if (type === 'remaining') { %}
+		<a href="#">{{remaining}} cards remaining</a>
+	{% } else if (type === 'percent') { %}
+		<a href="#">Sets Found: {{percent}}%</a>
+	{% } else if (type === 'time') { %}
+		<a href="#">Time: <span class="time">0:00.000</span></a>
+	{% } %}
