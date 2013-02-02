@@ -23,7 +23,9 @@ window.GameRouter = (function(Parent, Sets, Stats, Views) {
 			}).render();
 			options.$root.append(this.gameBoard.el);
 
-			Backbone.history.start({root: window.location.pathname});
+			if (!Backbone.History.started) {
+				Backbone.history.start({root: window.location.pathname});
+			}
 		},
 
 		hideLightboxes: function() {
