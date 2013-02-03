@@ -83,7 +83,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 				_.bind(this.clockTick, this),
 				this.delay.fastSpeed
 			);
-			clock.on('click.start clock.tick', this.updateClockTick, this);
+			clock.on('clock.start clock.tick', this.updateClockTick, this);
 			return clock;
 		},
 
