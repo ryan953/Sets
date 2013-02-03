@@ -105,8 +105,9 @@ window.Views.Card = (function(Parent) {
 		},
 
 		render: function() {
-			var canvas = this.make("canvas", {width: 150, height: 150});
-			this._draw(canvas.getContext('2d'));
+			var canvas = $('<canvas>')
+				.attr({width: 150, height: 150});
+			this._draw(canvas[0].getContext('2d'));
 			this.$el.html(canvas);
 
 			return this;

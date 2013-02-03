@@ -33,22 +33,21 @@ window.Views.Board = (function(Parent, SlotView) {
 		},
 
 		renderGameTable: function() {
-			this.$el.empty();
-			var table = this.make('table'),
+			var table = $('<table></table>'),
 				rows = Math.ceil(this.options.board.length / this.MAX_COLS);
 			for (var row = 0; row < rows; row++) {
-				var tr = this.make('tr');
+				var tr = $('<tr></tr>');
 				for (var col = 0; col < this.MAX_COLS; col++) {
 					var position = (row * this.MAX_COLS) + col,
 						child = this.child_views[position];
 					if (!child) {
 						continue;
 					}
-					tr.appendChild(child.el);
+					tr.append(child.el);
 				}
-				table.appendChild(tr);
+				table.append(tr);
 			}
-			this.el.appendChild(table);
+			this.$el.html(table);
 		}
 	});
 

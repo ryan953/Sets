@@ -40,18 +40,13 @@ window.Views.Slot = (function(Parent, CardView) {
 			this.slot.toggleSelect();
 		},
 
-		handleSlotState: function(model, props) {
-			props = _.extend({changes:{}}, props);
-
-			var _this = this,
-				enabledStyleMap = this.enabledStyleMap,
+		handleSlotState: function(model) {
+			var enabledStyleMap = this.enabledStyleMap,
 				disabledStyleMap = this.disabledStyleMap;
 
-			_.each(props.changes, function(val, key) {
-				if (enabledStyleMap[key]) {
-					_this.$el.toggleClass(enabledStyleMap[key], model.get(key));
-				}
-			});
+			_.each(enabledStyleMap, function(className, key) {
+				this.$el.toggleClass(className, model.get(key));
+			}, this);
 			if (this.options.settings.get('debug-not-possible') == 'on') {
 				this.$el.toggleClass('debug-not-possible', !model.get('is_possible'));
 			}
