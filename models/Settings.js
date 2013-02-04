@@ -1,7 +1,7 @@
 /*globals _ Backbone */
 window.Models = window.Models || {};
 
-window.Models.Settings = (function(Storage) {
+window.Models.Settings = (function(Parent, Storage) {
 	"use strict";
 
 	var scoreboardDisplays = {
@@ -11,7 +11,7 @@ window.Models.Settings = (function(Storage) {
 		TIME: 'time'
 	};
 
-	return Backbone.Model.extend({
+	return Parent.extend({
 		localStorage: new Storage("settings"),
 
 		defaults: {
@@ -24,7 +24,7 @@ window.Models.Settings = (function(Storage) {
 		},
 
 		initialize: function() {
-			this.on('change', this.save, this);
+			this.on('change', function() { this.save(); }, this);
 			this.fetch();
 		},
 
@@ -42,4 +42,4 @@ window.Models.Settings = (function(Storage) {
 		}
 	});
 
-}(Backbone.LocalStorage));
+}(Backbone.Model, Backbone.LocalStorage));

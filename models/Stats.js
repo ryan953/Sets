@@ -1,10 +1,10 @@
 /*globals _ Backbone */
 window.Models = window.Models || {};
 
-window.Models.Stats = (function(Storage) {
+window.Models.Stats = (function(Parent, Storage) {
 	"use strict";
 
-	return Backbone.Model.extend({
+	return Parent.extend({
 		localStorage: new Storage("stats"),
 
 		defaults: {
@@ -34,7 +34,7 @@ window.Models.Stats = (function(Storage) {
 		},
 
 		initialize: function() {
-			this.on('change', this.save, this);
+			this.on('change', function() { this.save(); }, this);
 
 			this.fetch();
 		},
@@ -71,4 +71,4 @@ window.Models.Stats = (function(Storage) {
 		}
 	});
 
-}(Backbone.LocalStorage));
+}(Backbone.Model, Backbone.LocalStorage));
