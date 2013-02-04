@@ -3,10 +3,10 @@
 <head>
 <title>Test: clock.js</title>
 <link rel="stylesheet" href="../../lib/qunit.css" type="text/css" media="screen" />
-<script src="../../lib/qunit.js"></script>
 <script src="../../lib/jquery-1.7.2.min.js"></script>
+<script src="../../lib/qunit.js"></script>
 <script src="../../lib/underscore-1.4.2.min.js"></script>
-<script src="../../lib/backbone-0.9.2.min.js"></script>
+<script src="../../lib/backbone-0.9.10.min.js"></script>
 
 <script src="../../models/Clock.js"></script>
 
@@ -14,11 +14,6 @@
 "use strict";
 
 $(document).ready(function () {
-	// module('Clock::factory');
-	// test('requires `delay` param', function() {
-	// 	raises(function() { new Assistant(); }, Error, 'delay param is required');
-	// });
-
 	module('Clock', {
 		setup: function() {
 			this.delay = 50;
