@@ -39,25 +39,34 @@ window.Views.Card = (function(Parent) {
 		return ctx.createPattern(stripes, 'repeat');
 	};
 
+	var colorTranslation = {
+		red: '#bf4040',
+		green: '#40bf40',
+		blue: '#4040bf'
+	};
+
 	var stripedFills = {
-		red: getPattern('red', 4),
-		green: getPattern('green', 4),
-		blue: getPattern('blue', 4)
+		red: getPattern(colorTranslation.red, 4),
+		green: getPattern(colorTranslation.green, 4),
+		blue: getPattern(colorTranslation.blue, 4)
 	};
 
 	var visuals = function(card) {
 		var fills = {
 			solid: {
 				lineWidth: 0,
-				fillStyle: card.get('color')
+				fillStyle: colorTranslation[card.get('color')],
+				color: colorTranslation[card.get('color')]
 			},
 			empty: {
 				lineWidth: 4,
-				fillStyle: 'transparent'
+				fillStyle: 'transparent',
+				color: colorTranslation[card.get('color')]
 			},
 			striped: {
 				lineWidth: 1,
-				fillStyle: stripedFills[card.get('color')]
+				fillStyle: stripedFills[card.get('color')],
+				color: colorTranslation[card.get('color')]
 			}
 		};
 		return fills[card.get('fill')];
@@ -122,7 +131,7 @@ window.Views.Card = (function(Parent) {
 				var visualSettings = visuals(this.card);
 				ctx.lineWidth = visualSettings.lineWidth;
 				ctx.fillStyle = visualSettings.fillStyle;
-				ctx.strokeStyle = this.card.get('color');
+				ctx.strokeStyle = visualSettings.color;
 				ctx.stroke();
 				ctx.fill();
 				ctx.restore();
