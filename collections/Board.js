@@ -214,8 +214,7 @@ window.Collections.Board = (function(Slot) {
 
 			this.each(function(slot) {
 				slot.set({
-					is_possible: (!!slot.hasSet),
-					is_possible_revealed: false
+					is_possible: (!!slot.hasSet)
 				});
 				delete slot.hasSet;
 			});

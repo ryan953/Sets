@@ -24,6 +24,12 @@ window.Views.Slot = (function(Parent, CardView) {
 			this.slot.on('change', this.handleSlotState, this);
 		},
 
+		render: function() {
+			Parent.prototype.render.call(this);
+			this.handleSlotState(this.slot);
+			return this;
+		},
+
 		renderChildren: function() {
 			var card = this.slot.get('card');
 			if (_.isObject(card)) {
