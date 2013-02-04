@@ -161,6 +161,10 @@ window.Collections.Board = (function(Slot) {
 		},
 
 		resetNotPossibleSlots: function() {
+			if (this.settings.get('help') != 'on') {
+				return;
+			}
+
 			var isASet = _.bind(this.constructor.isASet, this.constructor),
 				getCardJson = _.bind(this.getCardJson, this),
 				selected = this.selected(),
