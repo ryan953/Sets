@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test: clock.js</title>
+<title>Test: models/settings.js</title>
 <link rel="stylesheet" href="../../lib/qunit.css" type="text/css" media="screen" />
 <script src="../../lib/jquery-1.7.2.min.js"></script>
 <script src="../../lib/qunit.js"></script>
@@ -17,8 +17,11 @@
 $(document).ready(function () {
 	module('Settings', {
 		setup: function() {
-			this.settings = new window.Models.Settings();
+			this.settings = new window.Models.Settings({id:'qunit-test'});
 			this.settings.save = function() { /* no op */ };
+		},
+		teardown: function() {
+			localStorage.removeItem('settings-qunit-test');
 		}
 	});
 
