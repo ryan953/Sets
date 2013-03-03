@@ -1,4 +1,4 @@
-/*global $ _ Backbone document */
+/*global confirm, $, _, Backbone */
 window.Views = window.Views || {};
 
 window.Views.Menubar = (function(Parent, Scoreboard) {
@@ -31,7 +31,11 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 		},
 
 		resetGame: function() {
-			this.game.start(this.game.settings.get('mode'));
+			if (this.game.get('has_interaction')) {
+				if (confirm('Are you sure you want to end this game?')) {
+					this.game.start(this.game.settings.get('mode'));
+				}
+			}
 		}
 	});
 
