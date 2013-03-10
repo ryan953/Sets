@@ -1,4 +1,4 @@
-/*globals $ Backbone */
+/*global $, Backbone */
 
 window.GameRouter = (function(Parent, Sets, Stats, Views) {
 	"use strict";

@@ -1,4 +1,4 @@
-/*globals _, Backbone */
+/*global _, Backbone */
 
 window.Sets = (function(Parent, Deck, Board) {
 	"use strict";
@@ -176,4 +176,4 @@ window.Sets = (function(Parent, Deck, Board) {
 		}
 
 	});
-}(window.Backbone.Model, window.Collections.Deck, window.Collections.Board));
+})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board);

@@ -1,5 +1,5 @@
 /*jshint smarttabs:true */
-/*global _ Backbone setTimeout clearTimeout */
+/*global _, Backbone, setTimeout, clearTimeout */
 
 window.Clock = (function(Parent) {
 	"use strict";

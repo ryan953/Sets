@@ -1,4 +1,4 @@
-/*globals Backbone */
+/*global Backbone */
 window.Collections = window.Collections || {};
 
 window.Collections.Board = (function(Slot) {

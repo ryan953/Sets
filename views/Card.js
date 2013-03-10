@@ -1,4 +1,4 @@
-/*global Backbone document */
+/*global Backbone, document */
 window.Views = window.Views || {};
 
 window.Views.Card = (function(Parent) {

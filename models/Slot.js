@@ -1,4 +1,4 @@
-/*globals _ Backbone */
+/*global _, Backbone */
 window.Models = window.Models || {};
 
 window.Models.Slot = (function(Card) {
@@ -105,4 +105,4 @@ window.Models.Slot = (function(Card) {
 		}
 	});
 
-}(window.Models.Card));
+})(window.Models.Card);

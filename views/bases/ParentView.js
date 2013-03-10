@@ -1,4 +1,4 @@
-/*global _ Backbone document */
+/*global _, Backbone, document */
 window.Views = window.Views || {};
 window.Views.Bases = window.Views.Bases || {};
 

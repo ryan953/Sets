@@ -1,4 +1,4 @@
-/*globals _ Backbone */
+/*global _, Backbone */
 window.Models = window.Models || {};
 
 window.Models.Stats = (function(Parent, Storage) {
@@ -71,4 +71,4 @@ window.Models.Stats = (function(Parent, Storage) {
 		}
 	});
 
-}(Backbone.Model, Backbone.LocalStorage));
+})(Backbone.Model, Backbone.LocalStorage);

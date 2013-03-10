@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test: clock.js</title>
+<title>Test: models/clock.js</title>
 <link rel="stylesheet" href="../../lib/qunit.css" type="text/css" media="screen" />
 <script src="../../lib/jquery-1.7.2.min.js"></script>
 <script src="../../lib/qunit.js"></script>

@@ -1,4 +1,4 @@
-/*globals Backbone */
+/*global Backbone */
 window.Models = window.Models || {};
 
 window.Models.Card = (function() {
@@ -20,4 +20,4 @@ window.Models.Card = (function() {
 		}
 	}, allowedTypes);
 
-}());
+})();

@@ -1,4 +1,4 @@
-/*global document $ _ Backbone */
+/*global document, $, _, Backbone */
 window.Views = window.Views || {};
 
 window.Views.EndGame = (function(Parent, Router, Menubar) {

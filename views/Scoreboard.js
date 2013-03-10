@@ -1,4 +1,4 @@
-/*global $ _ Backbone Clock moment */
+/*global $, _, Backbone, Clock, moment */
 window.Views = window.Views || {};
 
 window.Views.Scoreboard = (function(Parent, Clock) {
