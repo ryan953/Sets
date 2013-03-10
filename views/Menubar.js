@@ -35,6 +35,8 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 				if (confirm('Are you sure you want to end this game?')) {
 					this.game.start(this.game.settings.get('mode'));
 				}
+			} else {
+				this.game.start(this.game.settings.get('mode'));
 			}
 		}
 	});
