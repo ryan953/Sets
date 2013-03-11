@@ -1,7 +1,7 @@
 /*global Backbone */
 window.Models = window.Models || {};
 
-window.Models.Card = (function() {
+window.Models.Card = (function(Parent) {
 	"use strict";
 
 	var allowedTypes = {
@@ -11,7 +11,7 @@ window.Models.Card = (function() {
 		colors: ['red', 'green', 'blue']
 	};
 
-	return Backbone.Model.extend({
+	return Parent.extend({
 		defaults: {
 			num: allowedTypes.counts[0],
 			shape: allowedTypes.shapes[0],
@@ -20,4 +20,4 @@ window.Models.Card = (function() {
 		}
 	}, allowedTypes);
 
-})();
+})(Backbone.Model);

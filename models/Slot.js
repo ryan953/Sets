@@ -1,14 +1,14 @@
 /*global _, Backbone */
 window.Models = window.Models || {};
 
-window.Models.Slot = (function(Card) {
+window.Models.Slot = (function(Parent) {
 	"use strict";
 
 	var MICRO_TO_SECOND_FACTOR = 1000;
 	var FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR;
 	var INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
 
-	return Backbone.Model.extend({
+	return Parent.extend({
 		defaults: {
 			card: null,
 
@@ -105,4 +105,4 @@ window.Models.Slot = (function(Card) {
 		}
 	});
 
-})(window.Models.Card);
+})(Backbone.Model);

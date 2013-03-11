@@ -1,7 +1,7 @@
-/*global Backbone */
+/*global Backbone, console */
 window.Collections = window.Collections || {};
 
-window.Collections.Deck = (function(Card) {
+window.Collections.Deck = (function(Parent, Card) {
 	"use strict";
 
 	var draw = {
@@ -128,7 +128,7 @@ window.Collections.Deck = (function(Card) {
 		expandstillFails: 'expandstillFails'
 	};
 
-	return Backbone.Collection.extend({
+	return Parent.extend({
 		model: Card,
 
 		startingLength: 0,
@@ -139,7 +139,7 @@ window.Collections.Deck = (function(Card) {
 
 		drawCard: function() {
 			if (!_.contains(_.values(modes), this._mode)) {
-				console.error('Mode not found:', mode);
+				console.error('Mode not found:', this._mode);
 				return null;
 			}
 			return strategies[this._mode].drawCard.call(this);
@@ -168,4 +168,4 @@ window.Collections.Deck = (function(Card) {
 
 	}, modes);
 
-})(window.Models.Card);
+})(Backbone.Collection, window.Models.Card);
