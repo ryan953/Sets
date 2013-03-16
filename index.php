@@ -122,6 +122,7 @@ $(document).ready(function() {
 	_.templateSettings = {
 		interpolate : /\{\{(.+?)\}\}/g,
 		evaluate    : /\{%([\s\S]+?)%\}/g,
+		escape      : /\{-([\s\S]+?)\}/g
 	};
 
 	window.router = new GameRouter({
