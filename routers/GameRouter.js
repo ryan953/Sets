@@ -1,6 +1,6 @@
 /*global $, Backbone */
 
-window.GameRouter = (function(Parent, Sets, Stats, Views) {
+window.GameRouter = (function(Parent, Sets, Views) {
 	"use strict";
 
 	return Parent.extend({
@@ -12,11 +12,9 @@ window.GameRouter = (function(Parent, Sets, Stats, Views) {
 		_lastLightbox: null,
 
 		initialize: function(options) {
-			this.stats = new Stats({id: 1});
-
 			this.game = new Sets({
 				settings: options.settings,
-				stats: this.stats
+				stats: options.stats
 			});
 			this.gameBoard = new Views.Sets({
 				game: this.game
@@ -52,4 +50,4 @@ window.GameRouter = (function(Parent, Sets, Stats, Views) {
 			}
 		}
 	});
-})(Backbone.Router, window.Sets, window.Models.Stats, window.Views);
+})(Backbone.Router, window.Sets, window.Views);

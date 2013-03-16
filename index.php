@@ -128,7 +128,8 @@ $(document).ready(function() {
 
 	window.router = new GameRouter({
 		$root: $('body'),
-		settings: window.settings
+		stats: new Models.Stats({id: 1}),
+		settings: new Models.Settings({id: 1})
 	});
 });
 </script>
