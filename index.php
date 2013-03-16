@@ -124,8 +124,6 @@ $(document).ready(function() {
 		evaluate    : /\{%([\s\S]+?)%\}/g,
 	};
 
-	window.settings = new Models.Settings({id: 1});
-
 	window.router = new GameRouter({
 		$root: $('body'),
 		stats: new Models.Stats({id: 1}),
