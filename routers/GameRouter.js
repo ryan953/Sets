@@ -19,7 +19,7 @@ window.GameRouter = (function(Parent, Sets, Views) {
 			this.gameBoard = new Views.Sets({
 				game: this.game
 			}).render();
-			options.$root.append(this.gameBoard.el);
+			$(options.rootSelector).append(this.gameBoard.el);
 
 			if (!Backbone.History.started) {
 				Backbone.history.start({root: window.location.pathname});
