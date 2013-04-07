@@ -8,9 +8,9 @@ function __autoload($className) {
     include './classes/' . $fileName . '.php';
 }
 
-$builder = AssetBuilder::factory();
-$css = new Cache_CSS($builder);
-$js = new Cache_JS($builder);
+$assetbuilder = AssetBuilder::factory();
+$css = new Cache_CSS($assetbuilder);
+$js = new Cache_JS($assetbuilder);
 $templateBuilder = new AssetBuilder_JSTemplate();
 $tmpl = new Cache_JSTemplate($templateBuilder);
 

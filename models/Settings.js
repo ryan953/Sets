@@ -24,7 +24,7 @@ window.Models.Settings = (function(Parent, Storage) {
 		},
 
 		initialize: function() {
-			this.on('change', function() { this.save(); }, this);
+			this.on('change', this.save, this);
 			this.fetch();
 		},
 
