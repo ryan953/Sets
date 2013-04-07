@@ -4,9 +4,9 @@
 
 <link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/jquery-1.7.2.min.js"></script>
-<script src="../../lib/underscore-1.4.2.min.js"></script>
-<script src="../../lib/backbone-0.9.2.js"></script>
+<script src="../../lib/jquery-1.9.1.min.js"></script>
+<script src="../../lib/underscore-1.4.4.min.js"></script>
+<script src="../../lib/backbone-1.0.0.min.js"></script>
 
 <script src="../../models/Card.js"></script>
 <script src="../../models/Slot.js"></script>
@@ -165,14 +165,18 @@ $(document).ready(function () {
 			hasCards: function() {
 				return this._cardsData.length;
 			},
-			drawRandomCard: function() {
+			drawCard: function() {
 				return new Models.Card(this._cardsData.shift());
 			}
 		};
 
 		var board = new Collections.Board(slots, {
 			deck: deck,
-			settings: {}
+			settings: {
+				get: function() {
+					return 'on';
+				}
+			}
 		});
 
 		board.drawCards();
@@ -182,7 +186,7 @@ $(document).ready(function () {
 	function getUnmatched(board) {
 		board.resetNotPossibleSlots();
 		var unmatchedSlots = board.where({is_possible: false});
-		return board.getCardJson(unmatchedSlots).reverse();
+		return board.getCardJson(unmatchedSlots);
 	}
 
 	function getSimpleBoard() {
@@ -193,6 +197,28 @@ $(document).ready(function () {
 		];
 	}
 
+	function cardListComparator(left, right) {
+		if (left.color != right.color) {
+			return (left.color > right.color ? -1 : 1);
+		}
+		if (left.shape != right.shape) {
+			return (left.shape > right.shape ? -1 : 1);
+		}
+		if (left.num != right.num) {
+			return (left.num > right.num ? -1 : 1);
+		}
+		if (left.fill != right.fill) {
+			return (left.fill > right.fill ? -1 : 1);
+		}
+		return 0;
+	};
+
+	function assertCardList(actual, expected, message) {
+		actual = actual.sort(cardListComparator);
+		expected = expected.sort(cardListComparator);
+		deepEqual(actual, expected, message);
+	}
+
 	test('less than three cards, must not be a match', function() {
 		var cardData = getSimpleBoard();
 		cardData.pop();
@@ -200,7 +226,7 @@ $(document).ready(function () {
 		var unmatched = getUnmatched(loadBoard(cardData));
 
 		equal(unmatched.length, 2, 'not enough cards to make a match');
-		deepEqual(unmatched, [cardData[0], cardData[1]], 'not enough cards to make a match');
+		assertCardList(unmatched, [cardData[0], cardData[1]], 'not enough cards to make a match');
 	});
 
 	test('all have matches', function() {
@@ -209,7 +235,7 @@ $(document).ready(function () {
 		var unmatched = getUnmatched(loadBoard(cardData));
 
 		equal(unmatched.length, 0, 'all cards should have a match');
-		deepEqual(unmatched, [], 'all cards should have a match');
+		assertCardList(unmatched, [], 'all cards should have a match');
 	});
 
 	test('only the last should be unmatched', function() {
@@ -219,7 +245,7 @@ $(document).ready(function () {
 		var unmatched = getUnmatched(loadBoard(cardData));
 
 		equal(unmatched.length, 1, 'only one is not a match');
-		deepEqual(unmatched, [cardData[3]], 'the last card has no match');
+		assertCardList(unmatched, [cardData[3]], 'the last card has no match');
 	});
 
 	test('Finds unmatched: no selection', function() {
@@ -228,8 +254,8 @@ $(document).ready(function () {
 		_.each(tests, function(testcase, i) {
 			var unmatched = getUnmatched(loadBoard(testcase.board));
 
-			equal(unmatched.length, testcase.notPossible.length, 'failed on index '+i);
-			deepEqual(unmatched, testcase.notPossible);
+			equal(unmatched.length, testcase.notPossible.length, 'failed on index ' + i);
+			assertCardList(unmatched, testcase.notPossible, 'failed on index ' + i);
 		});
 	});
 
@@ -239,8 +265,8 @@ $(document).ready(function () {
 		_.each(tests, function(testcase, i) {
 			var unmatched = getUnmatched(loadBoard(testcase.board));
 
-			equal(unmatched.length, testcase.notPossible.length, 'failed on index '+i);
-			deepEqual(unmatched, testcase.notPossible);
+			// equal(unmatched.length, testcase.notPossible.length, 'failed on index ' + i);
+			assertCardList(unmatched, testcase.notPossible, 'failed on index ' + i);
 		});
 	});
 
@@ -250,8 +276,8 @@ $(document).ready(function () {
 		_.each(tests, function(testcase, i) {
 			var unmatched = getUnmatched(loadBoard(testcase.board));
 
-			equal(unmatched.length, testcase.notPossible.length, 'failed on index '+i);
-			deepEqual(unmatched, testcase.notPossible);
+			equal(unmatched.length, testcase.notPossible.length, 'failed on index ' + i);
+			assertCardList(unmatched, testcase.notPossible, 'failed on index ' + i);
 		});
 	});
 
@@ -495,6 +521,7 @@ $(document).ready(function () {
 				{num:2,shape:"Squiggle",fill:"solid",color:"green"},
 				{num:2,shape:"Squiggle",fill:"solid",color:"blue" }
 			], notPossible: [
+				{num:3,shape:"Squiggle",fill:"solid",color:"blue", isSelected: true},
 				{num:1,shape:"Oval",    fill:"solid",color:"green"},
 				{num:3,shape:"Oval",    fill:"solid",color:"blue" },
 				{num:1,shape:"Diamond", fill:"solid",color:"blue" },
@@ -671,6 +698,8 @@ $(document).ready(function () {
 				{num:2,shape:"Squiggle",fill:"solid",color:"green"},
 				{num:2,shape:"Squiggle",fill:"solid",color:"blue" }
 			], notPossible: [
+				{num:3,shape:"Squiggle",fill:"solid",color:"blue",  isSelected: true},
+				{num:1,shape:"Oval",    fill:"solid",color:"green", isSelected: true},
 				{num:3,shape:"Oval",    fill:"solid",color:"blue" },
 				{num:1,shape:"Diamond", fill:"solid",color:"blue" },
 				{num:2,shape:"Diamond", fill:"solid",color:"green"},
