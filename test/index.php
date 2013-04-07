@@ -25,7 +25,13 @@ function iterator_keys($iterator) {
 
 	$tests = array_values(
 		array_diff(
-			iterator_keys($files), array('./index.php')
+			iterator_keys($files), array(
+				'./index.php',
+				'./assistant.html',
+				'./cards.html',
+				'./game.html',
+				'./sets.html',
+			)
 		)
 	);
 	?>
