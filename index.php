@@ -20,9 +20,9 @@ $css("./css/board.css");
 
 // JS Building
 $js("./lib/NoClickDelay.js");
-$js("./lib/jquery-1.7.2.min.js");
-$js("./lib/underscore-1.4.2.min.js");
-$js("./lib/backbone-0.9.10.min.js");
+$js("./lib/jquery-1.9.1.min.js");
+$js("./lib/underscore-1.4.4.min.js");
+$js("./lib/backbone-1.0.0.min.js");
 $js("./lib/moment-1.7.2.min.js");
 $js("./lib/backbone.localStorage.js");
 
