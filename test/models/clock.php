@@ -21,9 +21,12 @@ $(document).ready(function () {
 	});
 
 	test('clock triggers event on start', function() {
-		var clock = new Clock(function() {
-			return false;
-		}, this.delay);
+		var clock = new Clock({}, {
+			tickAction: function() {
+				return false;
+			},
+			delay: this.delay
+		});
 		expect(1);
 		stop(1);
 
@@ -35,9 +38,12 @@ $(document).ready(function () {
 	});
 
 	test('clock triggers event on stop', function() {
-		var clock = new Clock(function() {
-			return false;
-		}, this.delay);
+		var clock = new Clock({}, {
+			tickAction: function() {
+				return false;
+			},
+			delay: this.delay
+		});
 		expect(1);
 		stop(1);
 
@@ -50,11 +56,14 @@ $(document).ready(function () {
 
 	test('clock ticks 3 times', function() {
 		var count = 3,
-			clock = new Clock(function() {
-				ok(true, 'Clock tick ' + count);
-				start();
-				return count--;
-			}, this.delay);
+			clock = new Clock({}, {
+				tickAction: function() {
+					ok(true, 'Clock tick ' + count);
+					start();
+					return count--;
+				},
+				delay: this.delay
+			});
 		expect(count);
 		stop(count);
 
@@ -63,10 +72,13 @@ $(document).ready(function () {
 
 	test('clock can be stopped early', function() {
 		var count = 3,
-			clock = new Clock(function() {
-				ok(false, 'Should not have a chance to tick');
-				return count--;
-			}, this.delay);
+			clock = new Clock({}, {
+				tickAction: function() {
+					ok(false, 'Should not have a chance to tick');
+					return count--;
+				},
+				delay: this.delay
+			});
 		expect(2);
 		stop(1);
 

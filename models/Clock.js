@@ -5,10 +5,10 @@ window.Clock = (function(Parent) {
 	"use strict";
 
 	return Parent.extend({
-		initialize: function(tickAction, delay) {
-			this.delay = delay;
+		initialize: function(attributes, options) {
+			this.delay = options.delay;
 			this.clockTick = _.bind(function() {
-				if (tickAction()) {
+				if (options.tickAction()) {
 					this.trigger('clock.tick', this);
 					this.timer = setTimeout(this.clockTick, this.delay);
 				} else {

@@ -79,10 +79,10 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		},
 
 		makeClock: function() {
-			var clock = new Clock(
-				_.bind(this.clockTick, this),
-				this.delay.fastSpeed
-			);
+			var clock = new Clock({}, {
+				tickAction: _.bind(this.clockTick, this),
+				delay: this.delay.fastSpeed
+			});
 			clock.on('clock.start clock.tick', this.updateClockTick, this);
 			return clock;
 		},
