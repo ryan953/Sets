@@ -47,6 +47,16 @@
 	width:100%;
 	height:100%;
 }
+
+.board .card canvas {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	margin:auto;
+}
+
 .board .error .card {
 	-webkit-box-shadow:0 0 1.5em red;
 	-moz-box-shadow:0 0 1.5em red;
@@ -152,11 +162,6 @@ keyframes zoom {
 	from { transform:scale(1); opacity:1; }
 	50% { transform:scale(1.1); opacity:.25; }
 	to { transform:scale(1); opacity:0; }
-}
-
-.card canvas {
-	position:absolute; top:0; bottom:0; left:0; right:0;
-	margin:auto;
 }
 
 /* iPad [portrait + landscape] */
