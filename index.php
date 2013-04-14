@@ -115,7 +115,6 @@ $tmpl("./templates/tmpl-sets-view.template");
 
 <script>
 "use strict";
-new NoClickDelay(document.getElementsByTagName('body')[0]);
 
 $(document).ready(function() {
 	// Mustache Style Templates: {{var}}
