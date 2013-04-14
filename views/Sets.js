@@ -1,4 +1,5 @@
-/*global document, _ */
+/*global document, _, NoClickDelay */
+/*jshint nonew:false */
 window.Views = window.Views || {};
 
 window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
@@ -16,6 +17,8 @@ window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
 			).focus(
 				_.bind(game.resume, game)
 			);
+
+			new NoClickDelay(this.el);
 		},
 
 		renderChildren: function() {
