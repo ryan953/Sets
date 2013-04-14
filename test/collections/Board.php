@@ -64,39 +64,6 @@ $(document).ready(function () {
 	// 	equal('class-one class-two', c.getClassAttr(), 'should have two classnames');
 	// });
 
-	// module('Collections.Board');
-	// test('A Deck is created', function() {
-
-	// 	var deck = new Collections.Board();
-	// 	equal(3*3*3*3, deck.size, 'the size of the deck is reported');
-	// 	equal(3*3*3*3, deck.cards.length, "All cards are here" );
-	// 	equal('regular', deck.mode, 'mode defaults to `regular`');
-
-	// 	deck = new Deck('regular');
-	// 	equal(3*3*3*3, deck.size, 'the size of the deck is reported');
-	// 	equal(3*3*3*3, deck.cards.length, 'all cards are here - regular mode');
-	// 	equal('regular', deck.mode, 'mode sets when passed');
-
-	// 	deck = new Deck('easy');
-	// 	equal(3*3*3, deck.size, 'the size of the deck is reported');
-	// 	equal(3*3*3, deck.cards.length, 'all cards are here - easy mode');
-	// 	equal('easy', deck.mode, 'mode sets when passed');
-	// });
-
-	// test('A card can be picked from a deck', function() {
-	// 	var deck = new Deck(),
-	// 		deckSize = (3*3*3*3),
-	// 		c = deck.pickCard(0);
-
-	// 	ok(c instanceof(Card), 'Picked the first card');
-	// 	equal( deckSize - 1, deck.cards.length, 'the picked card was removed from the deck');
-
-	// 	c = deck.pickRandomCard();
-	// 	ok(c instanceof(Card), 'Picked a random card');
-	// 	equal( deckSize - 2, deck.cards.length, 'the picked card was removed from the deck');
-	// });
-
-
 	module('Collection.Board::isASet');
 	test('isASet is detecting correctly', function() {
 		var diff_color = [
