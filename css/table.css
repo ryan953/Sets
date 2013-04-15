@@ -1,5 +1,5 @@
 .table {
-	width: 20.875em;
+	max-width: 20.875em;
 	margin: .5em 0 1em;
 }
 .table dt,
@@ -7,12 +7,10 @@
 	line-height: 1.6em;
 }
 .table dt {
-	width: 16em;
+	width: 77%;
 	float:left;
 }
 .table dd {
 	display: block;
-	width: 4em;
 	margin: 0;
-	padding-left: 16.875em;
 }
