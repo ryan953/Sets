@@ -17,26 +17,26 @@ window.Views.EndGame = (function(Parent, Router, Menubar) {
 			this.game.on('game:start', this.gameStarted, this);
 			this.game.on('game:end', this.gameEnded, this);
 
-			this.template = _.template($('#tmpl-sets-view').text());
+			this.template = _.template($('#tmpl-game-over').text());
 		},
 
 		render: function() {
-			this.$el.html(this.template());
-
 			return this;
 		},
 
 		gameStarted: function() {
-			this.$('.popup').addClass('hide');
+			this.$el.empty();
 		},
 
 		gameEnded: function(result) {
-			result = (result == 'win' ? 'win' : 'lose');
-			var selector = '#game-over-' + result;
-			this.$(selector).removeClass('hide');
+			var message = (result == 'win' ? 'You won!' : 'No more sets are possible.');
+			this.$el.html(this.template({
+				result: message
+			}));
 		},
 
 		resetGame: function() {
+			console.log('resetGame clicked');
 			this.game.start(this.game.settings.get('mode'));
 		}
 	});

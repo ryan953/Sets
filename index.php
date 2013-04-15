@@ -57,7 +57,7 @@ $tmpl("./templates/tmpl-menu.template");
 $tmpl("./templates/tmpl-scoreboard.template");
 $tmpl("./templates/tmpl-settingslightbox.template");
 $tmpl("./templates/tmpl-statslightbox.template");
-$tmpl("./templates/tmpl-sets-view.template");
+$tmpl("./templates/tmpl-game-over.template");
 ?>
 
 <title>Sets!</title>
