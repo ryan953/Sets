@@ -36,7 +36,6 @@ window.Views.EndGame = (function(Parent, Router, Menubar) {
 		},
 
 		resetGame: function() {
-			console.log('resetGame clicked');
 			this.game.start(this.game.settings.get('mode'));
 		}
 	});
