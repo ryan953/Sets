@@ -42,12 +42,10 @@ window.GameRouter = (function(Parent, Sets, Views) {
 
 			this._lastLightbox = new Views[clazz]({
 				game: this.game
-			}).render();
+			});
 
-			if (this._lastLightbox) {
-				$('body').append(this._lastLightbox.el);
-				this._lastLightbox.$el.removeClass('hide');
-			}
+			$('body').append(this._lastLightbox.el);
+			this._lastLightbox.render();
 		}
 	});
 })(Backbone.Router, window.Sets, window.Views);

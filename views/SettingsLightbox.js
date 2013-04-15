@@ -16,9 +16,6 @@ window.Views.SettingsLightbox = (function(Parent) {
 	 */
 
 	return Parent.extend({
-		tagName: 'div',
-		className: 'lightbox hide',
-
 		events: {
 			'change input[type=checkbox]': 'changeCheckbox',
 			'change input[type=text]': 'changeText'
@@ -62,6 +59,7 @@ window.Views.SettingsLightbox = (function(Parent) {
 			this.renderSlotDelay();
 			this.renderEndGameOnNonPossible();
 
+			this.afterRender();
 			return this;
 		},
 

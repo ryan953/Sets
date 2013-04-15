@@ -6,6 +6,9 @@ window.Views.Bases.LightboxView = (function(Parent) {
 	"use strict";
 
 	return Parent.extend({
+		tagName: 'div',
+		className: 'lightbox hide',
+
 		addCloseButton: function() {
 			$('<a>')
 				.addClass('right button lightbox-close')
@@ -13,6 +16,10 @@ window.Views.Bases.LightboxView = (function(Parent) {
 				.prop('href', '#')
 				.wrapInner('<span>')
 				.appendTo( this.$el.children('div') );
+		},
+
+		afterRender: function() {
+			this.$el.removeClass('hide');
 		}
 	});
 

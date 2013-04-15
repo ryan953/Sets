@@ -5,9 +5,6 @@ window.Views.StatsLightbox = (function(Parent) {
 	"use strict";
 
 	return Parent.extend({
-		tagName: 'div',
-		className: 'lightbox hide',
-
 		events: {
 			'click #stats-reset': 'resetStats'
 		},
@@ -24,6 +21,8 @@ window.Views.StatsLightbox = (function(Parent) {
 		render: function() {
 			this.$el.html(this.template(this.stats.toJSON()));
 			this.addCloseButton();
+
+			this.afterRender();
 			return this;
 		},
 
