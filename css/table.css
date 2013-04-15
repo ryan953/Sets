@@ -1,0 +1,18 @@
+.table {
+	width: 20.875em;
+	margin: .5em 0 1em;
+}
+.table dt,
+.table dd {
+	line-height: 1.6em;
+}
+.table dt {
+	width: 16em;
+	float:left;
+}
+.table dd {
+	display: block;
+	width: 4em;
+	margin: 0;
+	padding-left: 16.875em;
+}

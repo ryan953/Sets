@@ -17,6 +17,11 @@ $tmpl = new Cache_JSTemplate($templateBuilder);
 // CSS Building
 $css("./css/style.css");
 $css("./css/board.css");
+$css("./css/lightbox.css");
+$css("./css/button.css");
+$css("./css/menubar.css");
+$css("./css/dropdown.css");
+$css("./css/table.css");
 
 // JS Building
 $js("./lib/NoClickDelay.js");
