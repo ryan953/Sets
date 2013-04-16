@@ -55,7 +55,7 @@ window.Models.Stats = (function(Parent, Storage) {
 				this.setPlusOne('games_start');
 			}, this);
 			game.on('game:end', function(outcome) {
-				if (!game.get('has_interaction')) {
+				if (!game.board.has_interaction) {
 					this.setLessOne('games_start');
 					return;
 				}

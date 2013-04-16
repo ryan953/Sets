@@ -31,7 +31,7 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 		},
 
 		resetGame: function() {
-			if (this.game.get('has_interaction')) {
+			if (this.game.board.has_interaction) {
 				if (confirm('Are you sure you want to end this game?')) {
 					this.game.start(this.game.settings.get('mode'));
 				}

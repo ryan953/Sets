@@ -7,6 +7,7 @@ window.Collections.Board = (function(Slot) {
 	return Backbone.Collection.extend({
 		model: Slot,
 
+		has_interaction: false,
 		_boardSize: {rows: 0, cols: 0},
 
 		boardSize: function() {
@@ -33,6 +34,7 @@ window.Collections.Board = (function(Slot) {
 			this.settings = options.settings;
 
 			this.on('change:is_selected', function(model, value) {
+				this.has_interaction = true;
 				if (value) {
 					var selected = this.selected(),
 						cardJson = this.getCardJson(selected);
@@ -133,6 +135,7 @@ window.Collections.Board = (function(Slot) {
 				cols: cols
 			};
 			this.reset(slots);
+			this.has_interaction = false;
 		},
 
 		canExpand: function() {
