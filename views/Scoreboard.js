@@ -90,14 +90,14 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		clockTick: function() {
 			this.clockFace.html(
 				this.formatTimeDiff(
-					this.game.getTimeDiff()
+					this.game.stopWatch.milliseconds()
 				)
 			);
 			return true;
 		},
 
 		updateClockTick: function(clock) {
-			if (this.game.getTimeDiff() > this.delay.after) {
+			if (this.game.stopWatch.milliseconds() > this.delay.after) {
 				clock.setTickSpeed(this.delay.slowSpeed);
 			} else {
 				clock.setTickSpeed(this.delay.fastSpeed);

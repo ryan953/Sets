@@ -1,6 +1,6 @@
 /*global _, Backbone */
 
-window.Sets = (function(Parent, Deck, Board) {
+window.Sets = (function(Parent, Deck, Board, StopWatch) {
 	"use strict";
 
 	return Parent.extend({
@@ -37,6 +37,8 @@ window.Sets = (function(Parent, Deck, Board) {
 				settings: this.settings,
 				deck: this.deck
 			});
+
+			this.stopWatch = new StopWatch();
 
 			this.on('game:start', this.initGame, this);
 			this.on('game:end', this.endExisting, this);
@@ -111,26 +113,16 @@ window.Sets = (function(Parent, Deck, Board) {
 
 			this.board.drawCards(this.deck);
 
-			this._times = [];
+			this.stopWatch.reset();
 			this.set({'in-progress': true});
 			this.resume();
-		},
-
-		_getStartTimeDelta: function() {
-			return new Date() - this.get('start-time');
-		},
-
-		getTimeDiff: function() {
-			return _.reduce(this._times, function(memo, num) {
-				return memo + num;
-			}, this._getStartTimeDelta());
 		},
 
 		pause: function() {
 			if (!this.isGameInProgress()) {
 				return;
 			}
-			this._times.push(this._getStartTimeDelta());
+			this.stopWatch.pause();
 			this.set({paused: true});
 		},
 
@@ -138,7 +130,7 @@ window.Sets = (function(Parent, Deck, Board) {
 			if (!this.isGameInProgress()) {
 				return;
 			}
-			this.set({'start-time': new Date()});
+			this.stopWatch.start();
 			this.set({paused: false});
 		},
 
@@ -176,4 +168,4 @@ window.Sets = (function(Parent, Deck, Board) {
 		}
 
 	});
-})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board);
+})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board, window.StopWatch);

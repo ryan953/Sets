@@ -32,6 +32,7 @@ $js("./lib/moment-1.7.2.min.js");
 $js("./lib/backbone.localStorage.js");
 
 $js("./models/Clock.js");
+$js("./models/StopWatch.js");
 
 $js("./models/Settings.js");
 $js("./models/Stats.js");
