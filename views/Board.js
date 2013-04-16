@@ -11,7 +11,7 @@ window.Views.Board = (function(Parent, SlotView) {
 		MAX_COLS: 3,
 
 		initialize: function() {
-			this.options.board.on('reset add remove', this.render, this);
+			this.listenTo(this.options.board, 'reset add remove', this.render);
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
 		},

@@ -20,8 +20,8 @@ window.Views.Slot = (function(Parent, CardView) {
 
 		initialize: function() {
 			this.slot = this.options.slot;
-			this.slot.on('change:card', this.render, this);
-			this.slot.on('change', this.handleSlotState, this);
+			this.listenTo(this.slot, 'change:card', this.render);
+			this.listenTo(this.slot, 'change', this.handleSlotState);
 		},
 
 		render: function() {

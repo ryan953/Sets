@@ -38,10 +38,10 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		initialize: function() {
 			this.game = this.options.game;
 
-			this.game.on('game:start', this.render, this);
-			this.game.on('change:foundSets', this.render, this);
-			this.game.on('change:paused', this.pauseClock, this);
-			this.game.settings.on('change:scoreboard-display', this.render, this);
+			this.listenTo(this.game, 'game:start', this.render);
+			this.listenTo(this.game, 'change:foundSets', this.render);
+			this.listenTo(this.game, 'change:paused', this.pauseClock);
+			this.listenTo(this.game.settings, 'change:scoreboard-display', this.render);
 
 			this.template = _.template($('#tmpl-scoreboard').text());
 

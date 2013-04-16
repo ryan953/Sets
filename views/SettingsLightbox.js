@@ -44,10 +44,10 @@ window.Views.SettingsLightbox = (function(Parent) {
 		},
 
 		bindToSettings: function() {
-			this.settings.on('change:mode', this.renderModeEasy, this);
-			this.settings.on('change:help', this.renderHelpOn, this);
-			this.settings.on('change:invalid-slot-delay', this.renderSlotDelay, this);
-			this.settings.on('change:end-game-on-non-possible', this.renderEndGameOnNonPossible, this);
+			this.listenTo(this.settings, 'change:mode', this.renderModeEasy);
+			this.listenTo(this.settings, 'change:help', this.renderHelpOn);
+			this.listenTo(this.settings, 'change:invalid-slot-delay', this.renderSlotDelay);
+			this.listenTo(this.settings, 'change:end-game-on-non-possible', this.renderEndGameOnNonPossible);
 		},
 
 		render: function() {
@@ -61,14 +61,6 @@ window.Views.SettingsLightbox = (function(Parent) {
 
 			this.afterRender();
 			return this;
-		},
-
-		remove: function() {
-			Parent.prototype.remove.call(this);
-			this.settings.off('change:mode', this.renderModeEasy, this);
-			this.settings.off('change:help', this.renderHelpOn, this);
-			this.settings.off('change:invalid-slot-delay', this.renderSlotDelay(), this);
-			this.settings.off('change:end-game-on-non-possible', this.renderEndGameOnNonPossible, this);
 		},
 
 		_cachedElem: function(selector) {

@@ -14,8 +14,8 @@ window.Views.EndGame = (function(Parent, Router, Menubar) {
 
 		initialize: function() {
 			this.game = this.options.game;
-			this.game.on('game:start', this.gameStarted, this);
-			this.game.on('game:end', this.gameEnded, this);
+			this.listenTo(this.game, 'game:start', this.gameStarted);
+			this.listenTo(this.game, 'game:end', this.gameEnded);
 
 			this.template = _.template($('#tmpl-game-over').text());
 		},

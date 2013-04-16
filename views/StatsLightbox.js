@@ -13,7 +13,7 @@ window.Views.StatsLightbox = (function(Parent) {
 			this.game = this.options.game;
 			this.stats = this.game.stats;
 
-			this.stats.on('change', this.render, this);
+			this.listenTo(this.stats, 'change', this.render);
 
 			this.template = _.template($('#tmpl-statslightbox').text());
 		},
@@ -28,7 +28,6 @@ window.Views.StatsLightbox = (function(Parent) {
 
 		remove: function() {
 			Parent.prototype.remove.call(this);
-			this.stats.off('change', this.render, this);
 		},
 
 		resetStats: function(e) {
