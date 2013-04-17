@@ -15,10 +15,19 @@
 "use strict";
 
 $(document).ready(function () {
+	var bindSave = function(settings, func) {
+		settings.save = func;
+		settings.initialize(settings.attrs,
+			{localStorage: settings.localStorage}
+		);
+	};
+
 	module('Settings', {
 		setup: function() {
-			this.settings = new window.Models.Settings({id:'qunit-test'});
-			this.settings.save = function() { /* no op */ };
+			this.settings = new window.Models.Settings({id:'qunit-test'},
+				{localStorage: new Backbone.LocalStorage('test')}
+			);
+			bindSave(this.settings, function() { /* no op */ });
 		},
 		teardown: function() {
 			localStorage.removeItem('settings-qunit-test');
@@ -30,12 +39,9 @@ $(document).ready(function () {
 	});
 
 	test('auto-saves on update', function() {
-		this.settings.save = function() {
+		bindSave(this.settings, function() {
 			ok(true, 'saved');
-			start();
-		};
-		expect(1);
-		stop();
+		});
 		this.settings.set({foo: 'bar'});
 	});
 
