@@ -1,5 +1,6 @@
 /*global Date */
 window.StopWatch = (function(Parent) {
+	"use strict";
 
 	var states = {
 		COUNTING: 'counting',
