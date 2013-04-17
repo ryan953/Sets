@@ -132,8 +132,12 @@ $(document).ready(function() {
 
 	window.router = new GameRouter({
 		rootSelector: 'body',
-		stats: new Models.Stats({id: 1}),
-		settings: new Models.Settings({id: 1})
+		stats: new Models.Stats({id: 1},
+			{localStorage: new Backbone.LocalStorage("stats")}
+		),
+		settings: new Models.Settings({id: 1},
+			{localStorage: new Backbone.LocalStorage("settings")}
+		)
 	});
 });
 </script>

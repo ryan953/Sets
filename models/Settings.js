@@ -1,7 +1,7 @@
 /*global _, Backbone */
 window.Models = window.Models || {};
 
-window.Models.Settings = (function(Parent, Storage) {
+window.Models.Settings = (function(Parent) {
 	"use strict";
 
 	var scoreboardDisplays = {
@@ -12,8 +12,6 @@ window.Models.Settings = (function(Parent, Storage) {
 	};
 
 	return Parent.extend({
-		localStorage: new Storage("settings"),
-
 		defaults: {
 			'scoreboard-display': 'score',
 			'mode': 'easy',
@@ -23,7 +21,8 @@ window.Models.Settings = (function(Parent, Storage) {
 			'debug-not-possible': 'off'
 		},
 
-		initialize: function() {
+		initialize: function(attrs, options) {
+			this.localStorage = options.localStorage;
 			this.on('change', this.save, this);
 			this.fetch();
 		},
@@ -42,4 +41,4 @@ window.Models.Settings = (function(Parent, Storage) {
 		}
 	});
 
-})(Backbone.Model, Backbone.LocalStorage);
+})(Backbone.Model);

@@ -1,12 +1,10 @@
 /*global _, Backbone */
 window.Models = window.Models || {};
 
-window.Models.Stats = (function(Parent, Storage) {
+window.Models.Stats = (function(Parent) {
 	"use strict";
 
 	return Parent.extend({
-		localStorage: new Storage("stats"),
-
 		defaults: {
 			games_start: 0,
 			games_win: 0,
@@ -33,9 +31,9 @@ window.Models.Stats = (function(Parent, Storage) {
 			cards_more: 0
 		},
 
-		initialize: function() {
-			this.on('change', function() { this.save(); }, this);
-
+		initialize: function(attrs, options) {
+			this.localStorage = options.localStorage;
+			this.on('change', this.save, this);
 			this.fetch();
 		},
 
@@ -71,4 +69,4 @@ window.Models.Stats = (function(Parent, Storage) {
 		}
 	});
 
-})(Backbone.Model, Backbone.LocalStorage);
+})(Backbone.Model);
