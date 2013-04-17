@@ -12,15 +12,6 @@ window.Sets = (function(Parent, Deck, Board, StopWatch) {
 			paused: false
 		},
 
-		baseSizes: {
-			unpossible: {rows: 2, cols: 3},
-			test: {rows: 2, cols: 3},
-			easy: {rows: 3, cols: 3},
-			normal: {rows: 4, cols: 3},
-			oneSetExpandFail: {rows: 3, cols: 3},
-			expandstillFails: {rows: 3, cols: 3}
-		},
-
 		toJSON: function() {
 			var attrs = _.clone(this.attributes);
 			attrs.deck = this.deck.toJSON();
@@ -81,19 +72,12 @@ window.Sets = (function(Parent, Deck, Board, StopWatch) {
 			}
 		},
 
-		getBaseSize: function(mode) {
-			if (this.baseSizes[mode]) {
-				return this.baseSizes[mode];
-			}
-			throw new Error('cannot find board size for mode: ' + mode);
-		},
-
 		initGame: function(mode) {
 			this.endExisting();
 
 			this.setFoundSets([]);
 
-			var baseSize = this.getBaseSize(mode);
+			var baseSize = this.deck.getBoardSize(mode);
 
 			this.deck.rebuild(mode);
 			this.board.rebuild(

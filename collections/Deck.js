@@ -18,6 +18,7 @@ window.Collections.Deck = (function(Parent, Card) {
 
 	var strategies = {
 		normal: {
+			baseSize: {rows: 4, cols: 3},
 			drawCard: draw.randomCard,
 			buildCards: function() {
 				var cards = [];
@@ -39,6 +40,7 @@ window.Collections.Deck = (function(Parent, Card) {
 			}
 		},
 		easy: {
+			baseSize: {rows: 3, cols: 3},
 			drawCard: draw.randomCard,
 			buildCards: function() {
 				var cards = [];
@@ -57,6 +59,7 @@ window.Collections.Deck = (function(Parent, Card) {
 			}
 		},
 		test: {
+			baseSize: {rows: 2, cols: 3},
 			drawCard: draw.randomCard,
 			buildCards: function() {
 				var cards = [];
@@ -72,6 +75,7 @@ window.Collections.Deck = (function(Parent, Card) {
 			}
 		},
 		unpossible: {
+			baseSize: {rows: 2, cols: 3},
 			drawCard: draw.randomCard,
 			buildCards: function() {
 				var cards = strategies.test.buildCards();
@@ -86,6 +90,7 @@ window.Collections.Deck = (function(Parent, Card) {
 			}
 		},
 		oneSetExpandFail: {
+			baseSize: {rows: 3, cols: 3},
 			drawCard: draw.nextCard,
 			buildCards: function() {
 				var cards = strategies.normal.buildCards(),
@@ -101,7 +106,8 @@ window.Collections.Deck = (function(Parent, Card) {
 				});
 			}
 		},
-		expandstillFails: {
+		expandStillFails: {
+			baseSize: {rows: 3, cols: 3},
 			drawCard: draw.nextCard,
 			buildCards: function() {
 				var cards = strategies.normal.buildCards(),
@@ -125,13 +131,21 @@ window.Collections.Deck = (function(Parent, Card) {
 		TEST: 'test',
 		UNPOSSIBLE: 'unpossible',
 		oneSetExpandFail: 'oneSetExpandFail',
-		expandstillFails: 'expandstillFails'
+		expandstillFails: 'expandStillFails'
 	};
 
 	return Parent.extend({
 		model: Card,
 
 		startingLength: 0,
+
+		getBoardSize: function(mode) {
+			if (!_.contains(_.values(modes), mode)) {
+				console.error('Mode not found:', mode);
+				return null;
+			}
+			return strategies[mode].baseSize;
+		},
 
 		hasCards: function() {
 			return this.length > 0;
