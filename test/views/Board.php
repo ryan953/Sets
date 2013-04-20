@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Test: views/Board.js</title>
+
 <link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/jquery-1.7.2.min.js"></script>
-<script src="../../lib/underscore-1.4.2.min.js"></script>
-<script src="../../lib/backbone-0.9.2.min.js"></script>
+<script src="../../lib/jquery-1.9.1.min.js"></script>
+<script src="../../lib/underscore-1.4.4.min.js"></script>
+<script src="../../lib/backbone-1.0.0.min.js"></script>
 
 <script src="../../models/Card.js"></script>
 <script src="../../collections/Board.js"></script>

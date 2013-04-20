@@ -2,11 +2,12 @@
 <html>
 <head>
 <title>Test: models/clock.js</title>
-<link rel="stylesheet" href="../../lib/qunit.css" type="text/css" media="screen" />
-<script src="../../lib/jquery-1.7.2.min.js"></script>
+
+<link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/underscore-1.4.2.min.js"></script>
-<script src="../../lib/backbone-0.9.10.min.js"></script>
+<script src="../../lib/jquery-1.9.1.min.js"></script>
+<script src="../../lib/underscore-1.4.4.min.js"></script>
+<script src="../../lib/backbone-1.0.0.min.js"></script>
 
 <script src="../../models/Clock.js"></script>
 

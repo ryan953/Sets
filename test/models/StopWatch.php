@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test: models/StopWatch.js</title>
-<link rel="stylesheet" href="../../lib/qunit.css" type="text/css" media="screen" />
-<script src="../../lib/jquery-1.7.2.min.js"></script>
+<title>Test: collections/Deck.js</title>
+
+<link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/underscore-1.4.2.min.js"></script>
-<script src="../../lib/backbone-0.9.10.min.js"></script>
+<script src="../../lib/jquery-1.9.1.min.js"></script>
+<script src="../../lib/underscore-1.4.4.min.js"></script>
+<script src="../../lib/backbone-1.0.0.min.js"></script>
 <script src="../../lib/sinon-1.5.0.js"></script>
 <script src="../../lib/sinon-qunit.js"></script>
 
