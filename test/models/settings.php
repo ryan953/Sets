@@ -8,6 +8,7 @@
 <script src="../../lib/jquery.min.js"></script>
 <script src="../../lib/underscore.min.js"></script>
 <script src="../../lib/backbone.min.js"></script>
+
 <script src="../../lib/backbone.localStorage.js"></script>
 
 <script src="../../models/Settings.js"></script>

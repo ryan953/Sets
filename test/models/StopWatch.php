@@ -8,6 +8,7 @@
 <script src="../../lib/jquery.min.js"></script>
 <script src="../../lib/underscore.min.js"></script>
 <script src="../../lib/backbone.min.js"></script>
+
 <script src="../../lib/sinon.js"></script>
 <script src="../../lib/sinon-qunit.js"></script>
 
