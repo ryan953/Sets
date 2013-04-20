@@ -25,10 +25,10 @@ $css("./css/table.css");
 
 // JS Building
 $js("./lib/NoClickDelay.js");
-$js("./lib/jquery-1.9.1.min.js");
-$js("./lib/underscore-1.4.4.min.js");
-$js("./lib/backbone-1.0.0.min.js");
-$js("./lib/moment-1.7.2.min.js");
+$js("./lib/jquery.min.js");
+$js("./lib/underscore.min.js");
+$js("./lib/backbone.min.js");
+$js("./lib/moment.min.js");
 $js("./lib/backbone.localStorage.js");
 
 $js("./models/Clock.js");

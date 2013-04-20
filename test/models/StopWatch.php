@@ -5,10 +5,10 @@
 
 <link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/jquery-1.9.1.min.js"></script>
-<script src="../../lib/underscore-1.4.4.min.js"></script>
-<script src="../../lib/backbone-1.0.0.min.js"></script>
-<script src="../../lib/sinon-1.5.0.js"></script>
+<script src="../../lib/jquery.min.js"></script>
+<script src="../../lib/underscore.min.js"></script>
+<script src="../../lib/backbone.min.js"></script>
+<script src="../../lib/sinon.js"></script>
 <script src="../../lib/sinon-qunit.js"></script>
 
 <script src="../../models/StopWatch.js"></script>

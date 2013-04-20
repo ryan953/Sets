@@ -12,9 +12,9 @@ function iterator_keys($iterator) {
 ?>
 	<meta charset="UTF-8" />
 	<title>Sets! QUnit Test Suite</title>
-	<link rel="stylesheet" href="../lib/qunit-1.11.0.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="../lib/qunit-composite.css">
-	<script src="../lib/qunit-1.11.0.js"></script>
+	<script src="../lib/qunit.js"></script>
 	<script src="../lib/qunit-composite.js"></script>
 
 	<?php
