@@ -91,18 +91,7 @@ window.Collections.Board = (function(Slot) {
 				this.resetNotPossibleSlots();
 			});
 
-			this.on('reset:not_possible', function(board) {
-				var notPossible = this.where({
-					is_possible: false
-				});
-
-				if (notPossible.length == this.length &&
-				this.selected().length === 0) {
-					this.trigger('none_possible');
-				} else {
-					this.revealNotPossible();
-				}
-			});
+			this.on('reset:not_possible', this.revealNotPossible, this);
 		},
 
 		selected: function() {
@@ -153,14 +142,23 @@ window.Collections.Board = (function(Slot) {
 			}, this));
 		},
 
-		revealNotPossible: function() {
-			var notPossible = _.shuffle(this.where({
-				is_possible: false,
-				is_possible_revealed: false
-			}));
-			_.each(notPossible, function(slot, index) {
-				slot.delayReveal(slot.delayFromPosition(index));
+		revealNotPossible: function(board) {
+			var notPossible = this.where({
+				is_possible: false
 			});
+
+			if (notPossible.length == this.length &&
+			this.selected().length === 0) {
+				this.trigger('none_possible');
+			} else {
+				notPossible = _.shuffle(this.where({
+					is_possible: false,
+					is_possible_revealed: false
+				}));
+				_.each(notPossible, function(slot, index) {
+					slot.delayReveal(slot.delayFromPosition(index));
+				});
+			}
 		},
 
 		resetNotPossibleSlots: function() {
