@@ -16,6 +16,15 @@ window.Collections.Deck = (function(Parent, Card) {
 		}
 	};
 
+	var buildDeckByIndex = function(indexes) {
+		return function() {
+			var cards = strategies.normal.buildCards();
+			return _.map(indexes, function(index) {
+				return cards[index];
+			});
+		};
+	};
+
 	var strategies = {
 		normal: {
 			baseSize: {rows: 4, cols: 3},
@@ -92,36 +101,24 @@ window.Collections.Deck = (function(Parent, Card) {
 		oneSetExpandFail: {
 			baseSize: {rows: 3, cols: 3},
 			drawCard: draw.nextCard,
-			buildCards: function() {
-				var cards = strategies.normal.buildCards(),
-					indexes = [
-						6, 16, 26,
-						0,  4, 12,
-						43, 20, 22,
-						40, 41, 44,
-						30, 31, 32
-					];
-				return _.map(indexes, function(index) {
-					return cards[index];
-				});
-			}
+			buildCards: buildDeckByIndex([
+				6, 16, 26,
+				0,  4, 12,
+				43, 20, 22,
+				40, 41, 44,
+				30, 31, 32
+			])
 		},
 		expandStillFails: {
 			baseSize: {rows: 3, cols: 3},
 			drawCard: draw.nextCard,
-			buildCards: function() {
-				var cards = strategies.normal.buildCards(),
-					indexes = [
-						0,  4, 12,
-						43, 20, 22,
-						40, 41, 44,
-						30, 31, 33,
-						6, 16, 28
-					];
-				return _.map(indexes, function(index) {
-					return cards[index];
-				});
-			}
+			buildCards: buildDeckByIndex([
+				0,  4, 12,
+				43, 20, 22,
+				40, 41, 44,
+				30, 31, 33,
+				6, 16, 28
+			])
 		}
 	};
 
