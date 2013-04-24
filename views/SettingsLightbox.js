@@ -52,7 +52,6 @@ window.Views.SettingsLightbox = (function(Parent) {
 
 		render: function() {
 			this.$el.html(this.template());
-			this.addCloseButton();
 
 			this.renderModeEasy();
 			this.renderHelpOn();

@@ -19,6 +19,7 @@ window.Views.Bases.LightboxView = (function(Parent) {
 		},
 
 		afterRender: function() {
+			this.addCloseButton();
 			this.$el.removeClass('hide');
 		}
 	});
