@@ -34,6 +34,9 @@ function iterator_keys($iterator) {
 			)
 		)
 	);
+	foreach ($tests as &$testfile) {
+		$testfile = $testfile . '?' . filemtime($testfile);
+	}
 	?>
 	<script>
 	QUnit.testSuites(
