@@ -5,6 +5,7 @@
 			<ul>
 				<li><a href="#show/SettingsLightbox">Settings</a></li>
 				<li><a href="#show/StatsLightbox" class="needs-localstorage">Stats</a></li>
+				<li><a href="#show/HelpLightbox">How to play</a></li>
 				<li><a href="#about">About</a></li>
 			</ul>
 		</div>

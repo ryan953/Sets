@@ -53,6 +53,7 @@ $js("./views/Scoreboard.js");
 $js("./views/Menubar.js");
 $js("./views/SettingsLightbox.js");
 $js("./views/StatsLightbox.js");
+$js("./views/HelpLightbox.js");
 $js("./views/Chrome.js");
 
 $js("./views/Sets.js");
@@ -64,6 +65,7 @@ $tmpl("./templates/tmpl-scoreboard.template");
 $tmpl("./templates/tmpl-settingslightbox.template");
 $tmpl("./templates/tmpl-statslightbox.template");
 $tmpl("./templates/tmpl-game-over.template");
+$tmpl("./templates/tmpl-howToPlay.template");
 ?>
 
 <title>Sets!</title>

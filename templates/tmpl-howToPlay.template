@@ -1,0 +1,9 @@
+<div>
+	<h2>How To Play</h2>
+	<div class="page" data-id="page-1">
+		<p>hello world</p>
+	</div>
+	<div class="board-placeholder">
+
+	</div>
+</div>
