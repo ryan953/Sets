@@ -1,6 +1,6 @@
 /*global _, Backbone */
 
-window.Sets = (function(Parent, Deck, Board, StopWatch) {
+window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 	"use strict";
 
 	return Parent.extend({
@@ -28,6 +28,10 @@ window.Sets = (function(Parent, Deck, Board, StopWatch) {
 				settings: this.settings,
 				deck: this.deck
 			});
+			this.matcher = new Matcher(null, {
+				settings: this.settings
+			});
+			this.board.bindToMatcher(this.matcher);
 
 			this.stopWatch = new StopWatch();
 
@@ -146,4 +150,4 @@ window.Sets = (function(Parent, Deck, Board, StopWatch) {
 		}
 
 	});
-})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board, window.StopWatch);
+})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board, window.StopWatch, window.Matcher);

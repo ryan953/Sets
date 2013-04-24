@@ -40,6 +40,9 @@ $js("./models/Card.js");
 $js("./models/Slot.js");
 $js("./collections/Deck.js");
 $js("./collections/Board.js");
+
+$js("./models/Matcher.js");
+
 $js("./models/Sets.js");
 
 $js("./views/bases/ParentView.js");

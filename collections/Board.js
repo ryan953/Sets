@@ -44,11 +44,7 @@ window.Collections.Board = (function(Slot) {
 					} else if (selected.length === 3) {
 						_.defer(_.bind(this.trigger, this,
 							'selected:invalid-set', selected));
-					} else {
-						this.resetNotPossibleSlots();
 					}
-				} else {
-					this.resetNotPossibleSlots();
 				}
 			});
 
@@ -56,7 +52,6 @@ window.Collections.Board = (function(Slot) {
 				_.each(slots, function(slot) {
 					slot.setMatched(true);
 				});
-				this.resetNotPossibleSlots();
 			});
 
 			this.on('selected:invalid-set', function(slots) {
@@ -87,11 +82,25 @@ window.Collections.Board = (function(Slot) {
 				}
 			});
 
-			this.on('filled:slots', function(board) {
-				this.resetNotPossibleSlots();
+			this.on('reset:not_possible', this.revealNotPossible, this);
+		},
+
+		bindToMatcher: function(matcher) {
+			var board = this;
+			this.listenTo(matcher, 'reset:not_possible', this.revealNotPossible);
+			this.on('selected:valid-set', function() {
+				matcher.resetNotPossibleSlots(this);
+			});
+			this.on('change:is_selected', function(model, value) {
+				matcher.resetNotPossibleSlots(this);
 			});
 
-			this.on('reset:not_possible', this.revealNotPossible, this);
+			matcher.listenTo(this, 'filled:slots', matcher.resetNotPossibleSlots);
+		},
+
+		unbindFromMatcher: function(matcher) {
+			this.stopListening(matcher);
+			matcher.stopListening(this);
 		},
 
 		selected: function() {
@@ -159,69 +168,6 @@ window.Collections.Board = (function(Slot) {
 					slot.delayReveal(slot.delayFromPosition(index));
 				});
 			}
-		},
-
-		resetNotPossibleSlots: function() {
-			if (this.settings.get('help') != 'on') {
-				return;
-			}
-
-			var isASet = _.bind(this.constructor.isASet, this.constructor),
-				getCardJson = _.bind(this.getCardJson, this),
-				selected = this.selected(),
-				board1 = this.models,
-				board2 = this.models,
-				board3 = this.models,
-				jsonCards = getCardJson(this.models);
-
-			// Escape hatch for short lists
-			if (jsonCards.length < 3) {
-				this.each(function(slot) {
-					slot.set({is_possible: false});
-				});
-				return;
-			} else if (jsonCards.length === 3) {
-				if (!isASet(jsonCards)) {
-					this.each(function(slot) {
-						slot.set({is_possible: false});
-					});
-				}
-				return;
-			}
-
-			// Prep for having some already selected
-			if (selected.length === 1) {
-				board1 = [selected[0]];
-			} else if(selected.length === 2) {
-				board1 = [selected[0]];
-				board2 = [selected[1]];
-			}
-
-			_.each(board1, function(slot1) {
-				_.each(board2, function(slot2) {
-					if (slot1 === slot2) { return; }
-					_.each(board3, function(slot3) {
-						if (slot1 === slot3 || slot2 === slot3) { return; }
-						var slots = [slot1, slot2, slot3],
-							jsonCards = getCardJson(slots);
-						if (isASet(jsonCards)) {
-							_.each(slots, function(slot) {
-								slot.hasSet = true;
-							});
-						}
-					});
-				});
-			});
-
-			this.each(function(slot) {
-				slot.set({
-					is_possible: (!!slot.hasSet)
-				});
-				delete slot.hasSet;
-			});
-
-			this.trigger('reset:not_possible', this);
-			return;
 		}
 	}, {
 		_propCounter: function(field) {
