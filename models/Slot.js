@@ -87,11 +87,6 @@ window.Models.Slot = (function(Parent) {
 			}
 		},
 
-		delayFromPosition: function(order) {
-			var delay = this.settings.get('invalid-slot-delay') || 3;
-			return (order + 1) * delay * MICRO_TO_SECOND_FACTOR;
-		},
-
 		delayReveal: function(seconds) {
 			this._clearRevealTimer();
 			this._revealTimer = _.delay(function(model) {

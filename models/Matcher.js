@@ -3,6 +3,8 @@
 window.Matcher = (function(Parent, Board) {
 	"use strict";
 
+	var MICRO_TO_SECOND_FACTOR = 1000;
+
 	return Parent.extend({
 		initialize: function(models, options) {
 			this.settings = options.settings;
@@ -94,9 +96,14 @@ window.Matcher = (function(Parent, Board) {
 					is_possible_revealed: false
 				}));
 				_.each(notPossible, function(slot, index) {
-					slot.delayReveal(slot.delayFromPosition(index));
-				});
+					slot.delayReveal(this.delayFromPosition(index));
+				}, this);
 			}
+		},
+
+		delayFromPosition: function(index) {
+			var delay = this.settings.get('invalid-slot-delay') || 3;
+			return (index + 1) * delay * MICRO_TO_SECOND_FACTOR;
 		}
 	});
 })(window.Backbone.Model, window.Collections.Board);
