@@ -31,7 +31,7 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 			this.matcher = new Matcher(null, {
 				settings: this.settings
 			});
-			this.board.bindToMatcher(this.matcher);
+			this.matcher.bindToBoard(this.board);
 
 			this.stopWatch = new StopWatch();
 

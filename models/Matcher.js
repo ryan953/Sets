@@ -6,6 +6,15 @@ window.Matcher = (function(Parent, Board) {
 	return Parent.extend({
 		initialize: function(models, options) {
 			this.settings = options.settings;
+
+			this.on('reset:not_possible', this.revealNotPossible, this);
+		},
+
+		bindToBoard: function(board) {
+			this.stopListening();
+			this.listenTo(board, 'selected:valid-set change:is_selected filled:slots', _.bind(function() {
+				this.resetNotPossibleSlots(board);
+			}, this));
 		},
 
 		resetNotPossibleSlots: function(board) {
@@ -67,8 +76,27 @@ window.Matcher = (function(Parent, Board) {
 				delete slot.hasSet;
 			});
 
-			this.trigger('reset:not_possible', this);
+			this.trigger('reset:not_possible', board);
 			return;
+		},
+
+		revealNotPossible: function(board) {
+			var notPossible = board.where({
+				is_possible: false
+			});
+
+			if (notPossible.length == board.length &&
+			board.selected().length === 0) {
+				this.trigger('none_possible');
+			} else {
+				notPossible = _.shuffle(board.where({
+					is_possible: false,
+					is_possible_revealed: false
+				}));
+				_.each(notPossible, function(slot, index) {
+					slot.delayReveal(slot.delayFromPosition(index));
+				});
+			}
 		}
 	});
 })(window.Backbone.Model, window.Collections.Board);

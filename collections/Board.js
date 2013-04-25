@@ -81,21 +81,6 @@ window.Collections.Board = (function(Slot) {
 					}, this);
 				}
 			});
-
-			this.on('reset:not_possible', this.revealNotPossible, this);
-		},
-
-		bindToMatcher: function(matcher) {
-			var board = this;
-			this.listenTo(matcher, 'reset:not_possible', this.revealNotPossible);
-			this.on('selected:valid-set', function() {
-				matcher.resetNotPossibleSlots(this);
-			});
-			this.on('change:is_selected', function(model, value) {
-				matcher.resetNotPossibleSlots(this);
-			});
-
-			matcher.listenTo(this, 'filled:slots', matcher.resetNotPossibleSlots);
 		},
 
 		unbindFromMatcher: function(matcher) {
@@ -149,25 +134,6 @@ window.Collections.Board = (function(Slot) {
 					settings: this.settings
 				});
 			}, this));
-		},
-
-		revealNotPossible: function(board) {
-			var notPossible = this.where({
-				is_possible: false
-			});
-
-			if (notPossible.length == this.length &&
-			this.selected().length === 0) {
-				this.trigger('none_possible');
-			} else {
-				notPossible = _.shuffle(this.where({
-					is_possible: false,
-					is_possible_revealed: false
-				}));
-				_.each(notPossible, function(slot, index) {
-					slot.delayReveal(slot.delayFromPosition(index));
-				});
-			}
 		}
 	}, {
 		_propCounter: function(field) {
