@@ -25,16 +25,7 @@ window.Models.Slot = (function(Parent) {
 		initialize: function(attrs, options) {
 			this.settings = options.settings;
 
-			this.on('change:is_possible', function(model, value) {
-				if (value) {
-					// setting is_possible to true, must not be faded
-					this._clearRevealTimer();
-					this.set({is_possible_revealed: false});
-				} else {
-					// slot is not possible to make a set with
-					// leave it faded if it is, or solid if not
-				}
-			});
+			this.on('change:is_possible', this.resetRevealedStatus, this);
 		},
 
 		toJSON: function() {
@@ -83,6 +74,17 @@ window.Models.Slot = (function(Parent) {
 			this.set({
 				is_selected: !this.get('is_selected')
 			});
+		},
+
+		resetRevealedStatus: function(model, value) {
+			if (value) {
+				// set is_possible to true, must not be faded
+				model._clearRevealTimer();
+				model.set({is_possible_revealed: false});
+			} else {
+				// slot is not possible to make a set with
+				// leave it faded if it is, or solid if not
+			}
 		},
 
 		delayFromPosition: function(order) {
