@@ -23,8 +23,6 @@ window.Models.Slot = (function(Parent) {
 		},
 
 		initialize: function(attrs, options) {
-			this.settings = options.settings;
-
 			this.on('change:is_possible', this.resetRevealedStatus, this);
 		},
 

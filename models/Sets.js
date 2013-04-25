@@ -25,7 +25,6 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 
 			this.deck = new Deck();
 			this.board = new Board(null, {
-				settings: this.settings,
 				deck: this.deck
 			});
 			this.matcher = new Matcher(null, {

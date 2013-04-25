@@ -31,7 +31,6 @@ window.Collections.Board = (function(Slot) {
 
 		initialize: function(models, options) {
 			this.deck = options.deck;
-			this.settings = options.settings;
 
 			this.on('change:is_selected', function(model, value) {
 				this.has_interaction = true;
@@ -109,9 +108,7 @@ window.Collections.Board = (function(Slot) {
 		rebuild: function(rows, cols) {
 			var slots = [];
 			_.times(rows * cols, function() {
-				slots.push(new Slot(null, {
-					settings: this.settings
-				}));
+				slots.push(new Slot());
 			}, this);
 			this._boardSize = {
 				rows: rows,
@@ -130,9 +127,7 @@ window.Collections.Board = (function(Slot) {
 				return;
 			}
 			this.add(_.map(_.range(3), function() {
-				return new Slot(null, {
-					settings: this.settings
-				});
+				return new Slot();
 			}, this));
 		}
 	}, {
