@@ -8,14 +8,13 @@ window.Matcher = (function(Parent, Board) {
 	return Parent.extend({
 		initialize: function(models, options) {
 			this.settings = options.settings;
-
-			this.on('reset:not_possible', this.revealNotPossible, this);
 		},
 
 		bindToBoard: function(board) {
 			this.stopListening();
 			this.listenTo(board, 'selected:valid-set change:is_selected filled:slots', _.bind(function() {
 				this.resetNotPossibleSlots(board);
+				this.revealNotPossible(board);
 			}, this));
 		},
 
@@ -77,9 +76,6 @@ window.Matcher = (function(Parent, Board) {
 				});
 				delete slot.hasSet;
 			});
-
-			this.trigger('reset:not_possible', board);
-			return;
 		},
 
 		revealNotPossible: function(board) {
