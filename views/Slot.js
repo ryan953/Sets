@@ -18,6 +18,10 @@ window.Views.Slot = (function(Parent, CardView) {
 			is_valid_trio: 'found'
 		},
 
+		disabledStyleMap: {
+			is_possible: ''
+		},
+
 		initialize: function() {
 			this.slot = this.options.slot;
 			this.listenTo(this.slot, 'change:card', this.render);
@@ -50,18 +54,21 @@ window.Views.Slot = (function(Parent, CardView) {
 			var enabledStyleMap = this.enabledStyleMap,
 				disabledStyleMap = this.disabledStyleMap;
 
-			_.each(enabledStyleMap, function(className, key) {
-				this.$el.toggleClass(className, model.get(key));
-			}, this);
-			if (this.options.settings.get('debug-not-possible') == 'on') {
-				this.$el.toggleClass('debug-not-possible', !model.get('is_possible'));
-			}
-
 			if (model.get('is_possible_revealed')) {
-				this.$el.toggleClass('not-possible', !model.get('is_possible'));
+				disabledStyleMap.is_possible += ' not-possible';
 			} else {
 				this.$el.removeClass('not-possible');
 			}
+			if (this.options.settings.get('debug-not-possible') == 'on') {
+				disabledStyleMap.is_possible += ' debug-not-possible';
+			}
+
+			_.each(enabledStyleMap, function(className, key) {
+				this.$el.toggleClass(className, model.get(key));
+			}, this);
+			_.each(disabledStyleMap, function(className, key) {
+				this.$el.toggleClass(className, !model.get(key));
+			}, this);
 		}
 	});
 
