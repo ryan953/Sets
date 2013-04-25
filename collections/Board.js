@@ -82,11 +82,6 @@ window.Collections.Board = (function(Slot) {
 			});
 		},
 
-		unbindFromMatcher: function(matcher) {
-			this.stopListening(matcher);
-			matcher.stopListening(this);
-		},
-
 		selected: function() {
 			return this.where({is_selected: true});
 		},
