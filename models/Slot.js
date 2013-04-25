@@ -12,12 +12,12 @@ window.Models.Slot = (function(Parent) {
 		defaults: {
 			card: null,
 
-			// Add style when True
+			// Add style when value is True
 			is_selected: false, // Blue border: from user
 			is_invalid_trio: false, // Red border: on third selection
 			is_valid_trio: false, // Green border: on third selection
 
-			// Add style when False
+			// Add style when value is False
 			is_possible: true, // null when unknown
 			is_possible_revealed: false
 		},
