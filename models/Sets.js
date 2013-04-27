@@ -31,6 +31,7 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 				settings: this.settings
 			});
 			this.matcher.bindToBoard(this.board);
+			this.matcher.on('none_possible', this.nonePossible, this);
 
 			this.stopWatch = new StopWatch();
 
@@ -39,7 +40,6 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 
 			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
-			this.board.on('none_possible', this.nonePossible, this);
 			this.stats.bindTo(this);
 		},
 
