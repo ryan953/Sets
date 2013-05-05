@@ -78,25 +78,9 @@ $(document).ready(function () {
 		];
 	}
 
-	function cardListComparator(left, right) {
-		if (left.color != right.color) {
-			return (left.color > right.color ? -1 : 1);
-		}
-		if (left.shape != right.shape) {
-			return (left.shape > right.shape ? -1 : 1);
-		}
-		if (left.num != right.num) {
-			return (left.num > right.num ? -1 : 1);
-		}
-		if (left.fill != right.fill) {
-			return (left.fill > right.fill ? -1 : 1);
-		}
-		return 0;
-	};
-
 	function assertCardList(actual, expected, message) {
-		actual = actual.sort(cardListComparator);
-		expected = expected.sort(cardListComparator);
+		actual = actual.sort(Models.Card.comparator);
+		expected = expected.sort(Models.Card.comparator);
 		deepEqual(actual, expected, message);
 	}
 
