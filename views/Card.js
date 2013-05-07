@@ -51,25 +51,25 @@ window.Views.Card = (function(Parent) {
 		blue: getPattern(colorTranslation.blue, 4)
 	};
 
-	var visuals = function(card) {
+	var visuals = function(color, fill) {
 		var fills = {
 			solid: {
 				lineWidth: 0,
-				fillStyle: colorTranslation[card.get('color')],
-				color: colorTranslation[card.get('color')]
+				fillStyle: colorTranslation[color],
+				color: colorTranslation[color]
 			},
 			empty: {
 				lineWidth: 4,
 				fillStyle: 'transparent',
-				color: colorTranslation[card.get('color')]
+				color: colorTranslation[color]
 			},
 			striped: {
 				lineWidth: 1,
-				fillStyle: stripedFills[card.get('color')],
-				color: colorTranslation[card.get('color')]
+				fillStyle: stripedFills[color],
+				color: colorTranslation[color]
 			}
 		};
-		return fills[card.get('fill')];
+		return fills[fill];
 	};
 
 	var paths = {
@@ -128,7 +128,7 @@ window.Views.Card = (function(Parent) {
 				ctx.save();
 				ctx.translate(25, ([50, 25, 0])[this.card.get('num')-1] + (i*50));
 				paths[this.card.get('shape')](ctx);
-				var visualSettings = visuals(this.card);
+				var visualSettings = visuals(this.card.get('color'), this.card.get('fill'));
 				ctx.lineWidth = visualSettings.lineWidth;
 				ctx.fillStyle = visualSettings.fillStyle;
 				ctx.strokeStyle = visualSettings.color;
