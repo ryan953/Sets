@@ -42,6 +42,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 			this.listenTo(this.game, 'change:foundSets', this.render);
 			this.listenTo(this.game, 'change:paused', this.pauseClock);
 			this.listenTo(this.game.settings, 'change:scoreboard-display', this.render);
+			this.listenTo(this.game.foundSets, 'change', this.render);
 
 			this.template = _.template($('#tmpl-scoreboard').text());
 
@@ -49,7 +50,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		},
 
 		render: function() {
-			var found = this.game.getFoundCardCount(),
+			var found = this.game.foundSets.getCount(),
 				deckSize = this.game.getStartingDeckSize(),
 				displayType = this.game.settings.get('scoreboard-display');
 

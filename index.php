@@ -42,6 +42,7 @@ $js("./collections/Deck.js");
 $js("./collections/Board.js");
 
 $js("./models/Matcher.js");
+$js("./models/FoundSets.js");
 
 $js("./models/Sets.js");
 

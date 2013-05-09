@@ -1,13 +1,12 @@
 /*global _, Backbone */
 
-window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
+window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher, FoundSets) {
 	"use strict";
 
 	return Parent.extend({
 		defaults: {
 			mode: null,
 			baseSize: {rows: 0, cols: 0},
-			foundSets: [],
 			'in-progress': false,
 			paused: false
 		},
@@ -33,12 +32,14 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 			this.matcher.bindToBoard(this.board);
 			this.matcher.on('none_possible', this.nonePossible, this);
 
+			this.foundSets = new FoundSets();
+			this.foundSets.bindToBoard(this.board);
+
 			this.stopWatch = new StopWatch();
 
 			this.on('game:start', this.initGame, this);
 			this.on('game:end', this.endExisting, this);
 
-			this.board.on('selected:valid-set', this.recordFoundSet, this);
 			this.board.on('selected:valid-set', this.cardsRemoved, this);
 			this.stats.bindTo(this);
 		},
@@ -78,7 +79,7 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 		initGame: function(mode) {
 			this.endExisting();
 
-			this.setFoundSets([]);
+			this.foundSets.reset();
 
 			var baseSize = this.deck.getBoardSize(mode);
 
@@ -115,24 +116,6 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 			this.set({paused: false});
 		},
 
-		recordFoundSet: function(slots) {
-			var found = this.get('foundSets');
-			found.push(_.map(slots, function(slot) {
-				return slot.get('card');
-			}));
-			this.setFoundSets(found);
-		},
-
-		setFoundSets: function(found) {
-			this.set({foundSets: found});
-			this.trigger('change:foundSets'); // TODO: pass normal params for a change events
-			this.trigger('change');           // TODO: pass normal params for a change events
-		},
-
-		getFoundCardCount: function() {
-			return this.get('foundSets').length * 3 || 0;
-		},
-
 		getStartingDeckSize: function() {
 			return this.deck.startingLength;
 		},
@@ -142,11 +125,12 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher) {
 		},
 
 		isGameComplete: function() {
-			if (this.getFoundCardCount() === this.getStartingDeckSize()) {
+			if (this.foundSets.getCount() === this.getStartingDeckSize()) {
 				return true;
 			}
 			return false;
 		}
 
 	});
-})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board, window.StopWatch, window.Matcher);
+})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board,
+	window.StopWatch, window.Matcher, window.Models.FoundSets);
