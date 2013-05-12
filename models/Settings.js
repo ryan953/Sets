@@ -23,7 +23,9 @@ window.Models.Settings = (function(Parent) {
 
 		initialize: function(attrs, options) {
 			this.localStorage = options.localStorage;
-			this.on('change', this.save, this);
+			this.on('change', function() {
+				_.delay(_.bind(this.save, this));
+			});
 			this.fetch();
 		},
 
