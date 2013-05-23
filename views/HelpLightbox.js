@@ -1,7 +1,7 @@
 /*global confirm, $ _ Backbone document */
 window.Views = window.Views || {};
 
-window.Views.HelpLightbox = (function(Parent, Card, CardView) {
+window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 	"use strict";
 
 	return Parent.extend({
@@ -9,36 +9,27 @@ window.Views.HelpLightbox = (function(Parent, Card, CardView) {
 
 		initialize: function() {
 			this.template = _.template($('#tmpl-howToPlay').text());
+
+			this.model = helpModel.factory();
+
+			this.listenTo(this.model, 'change:page', this.render);
+
+			this.boardView = new BoardView({
+				settings: this.model.teachingSettings,
+				board: this.model.board
+			})
 		},
 
 		render: function() {
-			this.$el.html(this.template());
+			this.$el.html(this.template(this.model.toJSON()));
 
-			var teachingSettings = new Models.Settings({id: 'teaching'},
-				{localStorage: new Backbone.LocalStorage('settings-teaching')}
-			);
-			var teachingDeck = new Deck();
-			var board = new Board({
-				deck: teachingDeck,
-				settings: teachingSettings
-			});
-			var boardView = new BoardView({
-				settings: teachingSettings,
-				board: board
-			}).render();
+			this.boardView.render();
 
-			deck.rebuild(mode);
-			board.rebuild(
-				baseSize.rows,
-				baseSize.cols
-			);
-			board.drawCards(deck);
-
-			this.$('.board-placeholder').html(boardView.$el);
+			this.$('.board-placeholder').html(this.boardView.$el);
 
 			this.afterRender();
 			return this;
 		}
 	});
 
-})(window.Views.Bases.LightboxView, window.Models.Card, window.Views.Card);
+})(window.Views.Bases.LightboxView, window.Models.HelpGame, window.Views.Board);

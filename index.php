@@ -26,8 +26,8 @@ $css("./css/table.css");
 // JS Building
 $js("./lib/NoClickDelay.js");
 $js("./lib/jquery.min.js");
-$js("./lib/underscore.min.js");
-$js("./lib/backbone.min.js");
+$js("./lib/underscore.js");
+$js("./lib/backbone.js");
 $js("./lib/moment.min.js");
 $js("./lib/backbone.localStorage.js");
 
@@ -41,6 +41,8 @@ $js("./models/Slot.js");
 $js("./collections/Deck.js");
 $js("./collections/Board.js");
 $js("./models/Sets.js");
+
+$js("./models/HelpGame.js");
 
 $js("./views/bases/ParentView.js");
 $js("./views/bases/LightboxView.js");
