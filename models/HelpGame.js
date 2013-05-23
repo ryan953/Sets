@@ -41,7 +41,6 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 			this.board.drawCards(this.teachingDeck);
 
 			this.board.on('selected:valid-set', function() {
-				console.log('valid', this.get('page'));
 				this.set({
 					'page': Math.min(this.get('page') + 1, 5)
 				});
