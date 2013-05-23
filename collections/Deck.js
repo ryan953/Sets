@@ -67,6 +67,13 @@ window.Collections.Deck = (function(Parent, Card) {
 				return cards;
 			}
 		},
+		sorted: {
+			baseSize: {rows: 4, cols: 3},
+			drawCard: draw.nextCard,
+			buildCards: function() {
+				return strategies.normal.buildCards();
+			}
+		},
 		test: {
 			baseSize: {rows: 2, cols: 3},
 			drawCard: draw.randomCard,
@@ -125,6 +132,7 @@ window.Collections.Deck = (function(Parent, Card) {
 	var modes = {
 		NORMAL: 'normal',
 		EASY: 'easy',
+		SORTED: 'sorted',
 		TEST: 'test',
 		UNPOSSIBLE: 'unpossible',
 		oneSetExpandFail: 'oneSetExpandFail',
