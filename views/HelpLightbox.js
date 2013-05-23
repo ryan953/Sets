@@ -17,7 +17,7 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 			this.boardView = new BoardView({
 				settings: this.model.teachingSettings,
 				board: this.model.board
-			})
+			});
 		},
 
 		render: function() {
