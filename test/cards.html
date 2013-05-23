@@ -12,6 +12,14 @@
 canvas {
 	border: 1px solid blue;
 }
+span {
+	position: absolute;
+	width: 150px;
+	height:150px;
+	text-align: left;
+	border: 1px solid transparent;
+	display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -33,11 +41,17 @@ $(document).ready(function() {
 
 function drawAllCards() {
 	var deck = new Collections.Deck();
-	deck.rebuild(Collections.Deck.NORMAL);
+	deck.rebuild(Collections.Deck.SORTED);
 
+	var i = 0;
+	var container = $('#cards').detach();
 	while(card = deck.drawCard(0)) {
-		new Views.Card({card:card}).render().$el.appendTo('#cards');
+		container
+			.append(new Views.Card({card:card}).render().$el
+				.prepend($('<span>', {text: '' + i++}))
+			);
 	}
+	$('body').prepend(container);
 }
 </script>
 </body>

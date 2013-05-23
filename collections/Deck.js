@@ -67,6 +67,13 @@ window.Collections.Deck = (function(Parent, Card) {
 				return cards;
 			}
 		},
+		sorted: {
+			baseSize: {rows: 4, cols: 3},
+			drawCard: draw.nextCard,
+			buildCards: function() {
+				return strategies.normal.buildCards();
+			}
+		},
 		test: {
 			baseSize: {rows: 2, cols: 3},
 			drawCard: draw.randomCard,
@@ -82,6 +89,32 @@ window.Collections.Deck = (function(Parent, Card) {
 				});
 				return cards;
 			}
+		},
+		teaching: {
+			baseSize: {rows: 1, cols: 3},
+			drawCard: draw.nextCard,
+			buildCards: buildDeckByIndex([
+				29, 29, 29,
+				// red diamond stripe, 2
+				// red diamond stripe, 2
+				// red diamond stripe, 2
+
+				0, 3, 6,
+				// red diamond, solid 1
+				// green diamond solid 1
+				// blue diamond solid 1
+
+				1, 13, 25,
+				// red diamond empty 1
+				// green squiggle empty 1
+				// blue pill empty 1
+
+				74, 4, 42
+				// red pill stripe 3
+				// green diamond empty 1
+				// blue squiggle solid 2
+
+			])
 		},
 		unpossible: {
 			baseSize: {rows: 2, cols: 3},
@@ -125,7 +158,9 @@ window.Collections.Deck = (function(Parent, Card) {
 	var modes = {
 		NORMAL: 'normal',
 		EASY: 'easy',
+		SORTED: 'sorted',
 		TEST: 'test',
+		TEACHING: 'teaching',
 		UNPOSSIBLE: 'unpossible',
 		oneSetExpandFail: 'oneSetExpandFail',
 		expandstillFails: 'expandStillFails'

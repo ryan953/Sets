@@ -26,8 +26,8 @@ $css("./css/table.css");
 // JS Building
 $js("./lib/NoClickDelay.js");
 $js("./lib/jquery.min.js");
-$js("./lib/underscore.min.js");
-$js("./lib/backbone.min.js");
+$js("./lib/underscore.js");
+$js("./lib/backbone.js");
 $js("./lib/moment.min.js");
 $js("./lib/backbone.localStorage.js");
 
@@ -46,6 +46,8 @@ $js("./models/FoundSets.js");
 
 $js("./models/Sets.js");
 
+$js("./models/HelpGame.js");
+
 $js("./views/bases/ParentView.js");
 $js("./views/bases/LightboxView.js");
 $js("./views/Card.js");
@@ -57,6 +59,7 @@ $js("./views/Scoreboard.js");
 $js("./views/Menubar.js");
 $js("./views/SettingsLightbox.js");
 $js("./views/StatsLightbox.js");
+$js("./views/HelpLightbox.js");
 $js("./views/Chrome.js");
 
 $js("./views/Sets.js");
@@ -68,6 +71,7 @@ $tmpl("./templates/tmpl-scoreboard.template");
 $tmpl("./templates/tmpl-settingslightbox.template");
 $tmpl("./templates/tmpl-statslightbox.template");
 $tmpl("./templates/tmpl-game-over.template");
+$tmpl("./templates/tmpl-howToPlay.template");
 ?>
 
 <title>Sets!</title>

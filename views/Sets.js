@@ -24,14 +24,23 @@ window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
 		renderChildren: function() {
 			var game = this.options.game,
 				children = {};
+
 			children.chrome = new Chrome({
 				game: game
 			}).render();
 
-			children.boardView = new BoardView({
+			this.boardView = new BoardView({
+				className: 'board theme-wood',
 				settings: game.settings,
 				board: game.board
 			}).render();
+
+			children.boardView = {
+				'el': $('<div></div>', {
+					'class': 'sets-board-container',
+					html: this.boardView.el
+				})[0]
+			};
 
 			children.endGameView = new EndGame({
 				game: game
