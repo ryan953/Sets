@@ -1,25 +1,8 @@
 /*global $, _, Backbone, Clock, moment */
 window.Views = window.Views || {};
 
-window.Views.Scoreboard = (function(Parent, Clock) {
+window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 	"use strict";
-
-	var pad = function(num, padLeft, padRight) {
-			var str = "" + num;
-			padLeft = padLeft || "";
-			padRight = padRight || "";
-			return [
-				padLeft.substring(0, padLeft.length - str.length),
-				str,
-				padRight.substring(0, padRight.length - str.length)
-			].join('');
-		},
-		padLeft = function(num, padding) {
-			return pad(num, padding || "00");
-		},
-		padRight = function(num, padding) {
-			return pad(num, '', padding || "00");
-		};
 
 	return Parent.extend({
 		tagName: 'p',
@@ -34,6 +17,8 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 			slowSpeed: 500,
 			after: (60 * 1000)
 		},
+
+		timeDisplay: null,
 
 		initialize: function() {
 			this.game = this.options.game;
@@ -63,7 +48,9 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 			}));
 
 			if (displayType === 'time' && !this.game.isGameComplete()) {
-				this.clockFace = this.$('.time');
+				this.timeDisplay = new TimeDisplay({
+					el: this.$('.time')
+				});
 				this.clock.on('click.start clock.tick', this.updateClockTick, this);
 				this.clock.start();
 				this.clockTick();
@@ -89,11 +76,9 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 		},
 
 		clockTick: function() {
-			this.clockFace.html(
-				this.formatTimeDiff(
-					this.game.stopWatch.milliseconds()
-				)
-			);
+			var milliseconds = this.game.stopWatch.milliseconds(),
+				showMilli = milliseconds < this.delay.after;  // more precise when ticking faster
+			this.timeDisplay.render(milliseconds, showMilli);
 			return true;
 		},
 
@@ -111,20 +96,7 @@ window.Views.Scoreboard = (function(Parent, Clock) {
 			} else if (this.game.settings.get('scoreboard-display') === 'time') {
 				this.clock.start();
 			}
-		},
-
-		formatTimeDiff: function(diff) {
-			var dur = moment.duration(diff),
-				hours = dur.hours(),
-				mins = padLeft(dur.minutes(), '0'),
-				sec = padLeft(dur.seconds(), '00'),
-				milli = padRight(dur.milliseconds(), '000'),
-				time = mins + ":" + sec;
-			if (diff < this.delay.after) { // more precise when ticking faster
-				return time + '.' + milli;
-			}
-			return (hours ? hours + ':' : '') + time;
 		}
 	});
 
-})(Backbone.View, window.Clock);
+})(Backbone.View, window.Views.TimeDisplay, window.Clock);

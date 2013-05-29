@@ -49,14 +49,16 @@ $js("./models/Sets.js");
 $js("./models/HelpGame.js");
 
 $js("./views/bases/ParentView.js");
-$js("./views/bases/LightboxView.js");
 $js("./views/Card.js");
 $js("./views/Slot.js");
 $js("./views/Board.js");
 $js("./views/EndGame.js");
 
+$js("./views/TimeDisplay.js");
 $js("./views/Scoreboard.js");
 $js("./views/Menubar.js");
+
+$js("./views/bases/LightboxView.js");
 $js("./views/SettingsLightbox.js");
 $js("./views/StatsLightbox.js");
 $js("./views/HelpLightbox.js");
