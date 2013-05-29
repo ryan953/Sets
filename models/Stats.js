@@ -33,7 +33,9 @@ window.Models.Stats = (function(Parent) {
 
 		initialize: function(attrs, options) {
 			this.localStorage = options.localStorage;
-			this.on('change', this.save, this);
+			this.on('change', function() {
+				_.delay(_.bind(this.save, this));
+			});
 			this.fetch();
 		},
 
@@ -58,14 +60,26 @@ window.Models.Stats = (function(Parent) {
 					return;
 				}
 
-				if (outcome == 'win') {
-					this.setPlusOne('games_win');
-				} else if (outcome == 'lose' ) {
-					this.setPlusOne('game_lose');
-				} else {
-					this.setPlusOne('abandoned');
-				}
+				this.countOutcome(outcome);
+				this.updatePercent();
 			}, this);
+		},
+
+		countOutcome: function(outcome) {
+			if (outcome == 'win') {
+				this.setPlusOne('games_win');
+			} else if (outcome == 'lose' ) {
+				this.setPlusOne('games_lose');
+			} else {
+				this.setPlusOne('games_incomplete');
+			}
+		},
+
+		updatePercent: function() {
+			var percent = (this.get('games_win') / this.get('games_start')) || 0;
+			this.set({
+				games_percent: percent * 100
+			});
 		}
 	});
 

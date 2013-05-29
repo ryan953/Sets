@@ -19,14 +19,21 @@ window.Views.StatsLightbox = (function(Parent) {
 		},
 
 		render: function() {
-			this.$el.html(this.template(this.stats.toJSON()));
+			this.$el.html(this.template(this.getData()));
 
 			this.afterRender();
 			return this;
 		},
 
-		remove: function() {
-			Parent.prototype.remove.call(this);
+		getData: function() {
+			var json = this.stats.toJSON();
+
+			if (json.games_percent === parseInt(json.games_percent, 10)) {
+				json.games_percent = json.games_percent.toFixed(0);
+			} else {
+				json.games_percent = json.games_percent.toFixed(2);
+			}
+			return json;
 		},
 
 		resetStats: function(e) {

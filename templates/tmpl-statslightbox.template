@@ -6,7 +6,7 @@
 		<dt>Games Won</dt><dd>{{ games_win }}</dd>
 		<dt>Games Lost</dt><dd>{{ games_lose }}</dd>
 		<dt>Games Incomplete</dt><dd>{{ games_incomplete }}</dd>
-		<dt>Percent Won</dt><dd>{{ games_percent }}</dd>
+		<dt>Percent Won</dt><dd>{{ games_percent }}%</dd>
 	</dl>
 	<hr/>
 	<strong>Time</strong>
