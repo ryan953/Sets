@@ -5,7 +5,9 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 	"use strict";
 
 	return Parent.extend({
-		events: {},
+		events: {
+			'click #help-reset': 'resetHelp'
+		},
 
 		initialize: function() {
 			this.template = _.template($('#tmpl-howToPlay').text());
@@ -29,6 +31,10 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 
 			this.afterRender();
 			return this;
+		},
+
+		resetHelp: function(e) {
+			this.model.reset();
 		}
 	});
 

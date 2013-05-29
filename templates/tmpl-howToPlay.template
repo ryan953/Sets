@@ -32,4 +32,6 @@
 	{% if (page != 5) { %}
 		<div class="board-placeholder" style="height: 182px;"></div>
 	{% } %}
+
+	<a id="help-reset" class="button"><span>Restart</span></a>
 </div>

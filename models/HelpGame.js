@@ -4,6 +4,8 @@
 window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 	"use strict";
 
+	var mode = 'teaching';
+
 	var instance;
 
 	var statics = {
@@ -24,27 +26,43 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 			this.teachingSettings = new Settings({id: 'teaching'},
 				{localStorage: new Storage('settings-teaching')}
 			);
-			this.teachingDeck = new Deck();
+			this.deck = new Deck();
+			window.teachingDeck = this.deck;
 			this.board = new Board(null, {
-				deck: this.teachingDeck,
+				deck: this.deck,
 				settings: this.teachingSettings
 			});
+			window.teachingBoard = this.board;
 
-			var mode = 'teaching';
-
-			this.teachingDeck.rebuild(mode);
-			var baseSize = this.teachingDeck.getBoardSize(mode);
+			var baseSize = this.deck.getBoardSize(mode);
 			this.board.rebuild(
 				baseSize.rows,
 				baseSize.cols
 			);
-			this.board.drawCards(this.teachingDeck);
 
 			this.board.on('selected:valid-set', function() {
 				this.set({
 					'page': Math.min(this.get('page') + 1, 5)
 				});
 			}, this);
+
+			this.reset();
+		},
+
+		reset: function() {
+			this.deck.rebuild(mode);
+			if (this.board.emptySlots().length) {
+				this.board.drawCards();
+			} else {
+				this.board.each(function(slot) {
+					slot.set({
+						card: null,
+						is_selected: false
+					});
+					slot.collection.trigger('card:removed', slot);
+				});
+			}
+			this.set({page: 1});
 		}
 	}, statics);
 
