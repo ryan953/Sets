@@ -1,7 +1,7 @@
 /*global confirm, $ _ Backbone document */
 window.Views = window.Views || {};
 
-window.Views.StatsLightbox = (function(Parent) {
+window.Views.StatsLightbox = (function(Parent, TimeDisplay) {
 	"use strict";
 
 	return Parent.extend({
@@ -33,6 +33,12 @@ window.Views.StatsLightbox = (function(Parent) {
 			} else {
 				json.games_percent = json.games_percent.toFixed(2);
 			}
+
+			json.time_total = TimeDisplay.formatTimeDiff(json.time_total);
+			json.time_average_all = TimeDisplay.formatTimeDiff(json.time_average_all);
+			json.time_average_win = TimeDisplay.formatTimeDiff(json.time_average_win);
+			json.time_shortest_win = TimeDisplay.formatTimeDiff(json.time_shortest_win);
+			json.time_longest_win = TimeDisplay.formatTimeDiff(json.time_longest_win);
 			return json;
 		},
 
@@ -48,4 +54,4 @@ window.Views.StatsLightbox = (function(Parent) {
 		}
 	});
 
-})(window.Views.Bases.LightboxView);
+})(window.Views.Bases.LightboxView, window.Views.TimeDisplay);

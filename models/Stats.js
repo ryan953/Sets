@@ -43,11 +43,15 @@ window.Models.Stats = (function(Parent) {
 			this.set(this.defaults);
 		},
 
+		setPlus: function(field, amount) {
+			this.set(field, this.get(field) + amount);
+		},
+
 		setPlusOne: function(field) {
-			this.set(field, this.get(field) + 1);
+			this.setPlus(field, 1);
 		},
 		setLessOne: function(field) {
-			this.set(field, this.get(field) - 1);
+			this.setPlus(field, -1);
 		},
 
 		bindTo: function(game) {
@@ -60,8 +64,16 @@ window.Models.Stats = (function(Parent) {
 					return;
 				}
 
+				var duration = game.stopWatch.milliseconds(),
+					cardsRemaining = game.deck.length;
+
 				this.countOutcome(outcome);
 				this.updatePercent();
+
+				this.setPlus('time_total', duration);
+				this.updateWinningTimes(outcome, duration);
+				this.countStreaks(outcome);
+				this.countCardsRemaining(cardsRemaining);
 			}, this);
 		},
 
@@ -80,7 +92,58 @@ window.Models.Stats = (function(Parent) {
 			this.set({
 				games_percent: percent * 100
 			});
+		},
+
+		updateWinningTimes: function(outcome, duration) {
+			var win_count = this.get('games_win'),
+				game_count = this.get('games_start'),
+				values = {
+					time_average_all: (this.get('time_average_all') + duration) / game_count
+				};
+
+			if (outcome == 'win') {
+				values.time_average_win = (this.get('time_average_win') + duration) / win_count;
+				values.time_shortest_win = Math.min(this.get('time_shortest_win') || duration, duration);
+				values.time_longest_win = Math.max(this.get('time_longest_win'), duration);
+			}
+			this.set(values);
+		},
+
+		countStreaks: function(outcome) {
+			var current_type = this.get('streak_current_type') || outcome,
+				current_count = this.get('streak_current_count') || 0,
+				values = {streak_current_type: outcome};
+
+			if (current_type == outcome) {
+				current_count += 1;
+			} else {
+				current_count = 0;
+			}
+			values.streak_current_count = current_count;
+
+			if (outcome == 'win') {
+				values.streak_win = Math.max(this.get('streak_win'), current_count);
+			} else {
+				values.streak_lose = Math.max(this.get('streak_lose'), current_count);
+			}
+
+			this.set(values);
+		},
+
+		countCardsRemaining: function(numCards) {
+			if (numCards === 0) {
+				this.setPlusOne('cards_zero');
+			} else if (numCards <= 3) {
+				this.setPlusOne('cards_three');
+			} else if (numCards <= 6) {
+				this.setPlusOne('cards_six');
+			} else if (numCards <= 9) {
+				this.setPlusOne('cards_nine');
+			} else {
+				this.setPlusOne('cards_more');
+			}
 		}
+
 	});
 
 })(Backbone.Model);
