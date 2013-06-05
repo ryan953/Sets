@@ -90,11 +90,6 @@ $tmpl("./templates/tmpl-howToPlay.template");
 
 <?php echo $tmpl; ?>
 
-<div class="lightbox hide" id="help">
-	<h2>How to play Sets!</h2>
-	<p>blah blah blah</p>
-</div>
-
 <div class="lightbox hide" id="about">
 	<div>
 		<h2>About</h2>
