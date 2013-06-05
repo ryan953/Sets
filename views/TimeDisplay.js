@@ -23,7 +23,7 @@ window.Views.TimeDisplay = (function(Parent) {
 
 	var statics = {
 		formatTimeDiff: function(milliSeconds, showMilliseconds) {
-			var dur = moment.duration(milliSeconds),
+			var dur = moment.duration(milliSeconds || 0),
 				hours = dur.hours(),
 				mins = padLeft(dur.minutes(), '0'),
 				sec = padLeft(dur.seconds(), '00'),

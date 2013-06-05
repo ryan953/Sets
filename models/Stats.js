@@ -88,9 +88,9 @@ window.Models.Stats = (function(Parent) {
 		},
 
 		updatePercent: function() {
-			var percent = (this.get('games_win') / this.get('games_start')) || 0;
+			var percent = this.get('games_win') / this.get('games_start');
 			this.set({
-				games_percent: percent * 100
+				games_percent: (percent * 100) || 0
 			});
 		},
 
@@ -98,7 +98,7 @@ window.Models.Stats = (function(Parent) {
 			var win_count = this.get('games_win'),
 				game_count = this.get('games_start'),
 				values = {
-					time_average_all: (this.get('time_average_all') + duration) / game_count
+					time_average_all: ((this.get('time_average_all') + duration) / game_count) || 0
 				};
 
 			if (outcome == 'win') {
