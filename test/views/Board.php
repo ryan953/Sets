@@ -5,7 +5,7 @@
 
 <link href="../../lib/qunit.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="../../lib/qunit.js"></script>
-<script src="../../lib/jquery-1.min.js"></script>
+<script src="../../lib/jquery.min.js"></script>
 <script src="../../lib/underscore.min.js"></script>
 <script src="../../lib/backbone.min.js"></script>
 
