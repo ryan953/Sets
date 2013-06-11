@@ -8,6 +8,7 @@ class AssetBuilder_Dynamic extends AssetBuilder
 
 	public function append($fromPath, $toFile)
 	{
-		file_put_contents($toFile, file_get_contents($fromPath), FILE_APPEND);
+		$contents = file_get_contents($this->_resolvePath($fromPath));
+		file_put_contents($toFile, $contents, FILE_APPEND);
 	}
 }

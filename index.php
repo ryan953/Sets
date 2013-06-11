@@ -8,72 +8,71 @@ function __autoload($className) {
     include './classes/' . $fileName . '.php';
 }
 
-$assetbuilder = AssetBuilder::factory();
-$css = new Cache_CSS($assetbuilder);
-$js = new Cache_JS($assetbuilder);
-$templateBuilder = new AssetBuilder_JSTemplate();
+$css = new Cache_CSS(AssetBuilder::factory('./css/'));
+$js = new Cache_JS(AssetBuilder::factory('./'));
+$templateBuilder = new AssetBuilder_JSTemplate('./templates/');
 $tmpl = new Cache_JSTemplate($templateBuilder);
 
 // CSS Building
-$css("./css/style.css");
-$css("./css/board.css");
-$css("./css/lightbox.css");
-$css("./css/button.css");
-$css("./css/menubar.css");
-$css("./css/dropdown.css");
-$css("./css/table.css");
+$css("style.css");
+$css("board.css");
+$css("lightbox.css");
+$css("button.css");
+$css("menubar.css");
+$css("dropdown.css");
+$css("table.css");
 
 // JS Building
-$js("./lib/NoClickDelay.js");
-$js("./lib/jquery.min.js");
-$js("./lib/underscore.js");
-$js("./lib/backbone.js");
-$js("./lib/moment.min.js");
-$js("./lib/backbone.localStorage.js");
+$js("lib/NoClickDelay.js");
+$js("lib/jquery.min.js");
+$js("lib/underscore.js");
+$js("lib/backbone.js");
+$js("lib/moment.min.js");
+$js("lib/backbone.localStorage.js");
 
-$js("./models/Clock.js");
-$js("./models/StopWatch.js");
+$js("models/Clock.js");
+$js("models/StopWatch.js");
 
-$js("./models/Settings.js");
-$js("./models/Stats.js");
-$js("./models/Card.js");
-$js("./models/Slot.js");
-$js("./collections/Deck.js");
-$js("./collections/Board.js");
+$js("models/Settings.js");
+$js("models/Stats.js");
+$js("models/Card.js");
+$js("models/Slot.js");
+$js("collections/Deck.js");
+$js("collections/Board.js");
 
-$js("./models/Matcher.js");
-$js("./models/FoundSets.js");
+$js("models/Matcher.js");
+$js("models/FoundSets.js");
 
-$js("./models/Sets.js");
+$js("models/Sets.js");
 
-$js("./models/HelpGame.js");
+$js("models/HelpGame.js");
 
-$js("./views/bases/ParentView.js");
-$js("./views/Card.js");
-$js("./views/Slot.js");
-$js("./views/Board.js");
-$js("./views/EndGame.js");
+$js("views/bases/ParentView.js");
+$js("views/Card.js");
+$js("views/Slot.js");
+$js("views/Board.js");
+$js("views/EndGame.js");
 
-$js("./views/TimeDisplay.js");
-$js("./views/Scoreboard.js");
-$js("./views/Menubar.js");
+$js("views/TimeDisplay.js");
+$js("views/Scoreboard.js");
+$js("views/Menubar.js");
 
-$js("./views/bases/LightboxView.js");
-$js("./views/SettingsLightbox.js");
-$js("./views/StatsLightbox.js");
-$js("./views/HelpLightbox.js");
-$js("./views/Chrome.js");
+$js("views/bases/LightboxView.js");
+$js("views/SettingsLightbox.js");
+$js("views/StatsLightbox.js");
+$js("views/HelpLightbox.js");
+$js("views/Chrome.js");
 
-$js("./views/Sets.js");
+$js("views/Sets.js");
 
-$js("./routers/GameRouter.js");
+$js("routers/GameRouter.js");
 
-$tmpl("./templates/tmpl-menu.template");
-$tmpl("./templates/tmpl-scoreboard.template");
-$tmpl("./templates/tmpl-settingslightbox.template");
-$tmpl("./templates/tmpl-statslightbox.template");
-$tmpl("./templates/tmpl-game-over.template");
-$tmpl("./templates/tmpl-howToPlay.template");
+$tmpl("tmpl-menu.template");
+$tmpl("tmpl-scoreboard.template");
+$tmpl("tmpl-settingslightbox.template");
+$tmpl("tmpl-statslightbox.template");
+$tmpl("tmpl-game-over.template");
+$tmpl("tmpl-howToPlay.template");
 ?>
 
 <title>Sets!</title>
