@@ -14,7 +14,7 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 
 			this.model = helpModel.factory();
 
-			this.listenTo(this.model, 'change:page', this.render);
+			this.listenTo(this.model, 'change:page', this.renderPage);
 
 			this.boardView = new BoardView({
 				settings: this.model.teachingSettings,
@@ -31,6 +31,10 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 
 			this.afterRender();
 			return this;
+		},
+
+		renderPage: function(model, page) {
+			this.$('.page').hide().eq(page-1).show();
 		},
 
 		resetHelp: function(e) {

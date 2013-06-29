@@ -18,6 +18,7 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 	};
 
 	var clazz = Parent.extend({
+		maxPage: 5,
 		defaults: {
 			page: 1
 		},
@@ -41,8 +42,8 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 			);
 
 			this.board.on('selected:valid-set', function() {
-				this.set({
-					'page': Math.min(this.get('page') + 1, 5)
+				_.delay(_.bind(this.set, this), 1000, {
+					'page': Math.min(this.get('page') + 1, this.maxPage)
 				});
 			}, this);
 
