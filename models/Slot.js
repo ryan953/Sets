@@ -4,9 +4,9 @@ window.Models = window.Models || {};
 window.Models.Slot = (function(Parent) {
 	"use strict";
 
-	var MICRO_TO_SECOND_FACTOR = 1000;
-	var FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR;
-	var INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
+	var MICRO_TO_SECOND_FACTOR = 1000,
+		FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR,
+		INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
 
 	return Parent.extend({
 		defaults: {
@@ -98,6 +98,9 @@ window.Models.Slot = (function(Parent) {
 				delete this._revealTimer;
 			}
 		}
+	}, {
+		FOUND_ZOOM_ANIMATION_TIME: FOUND_ZOOM_ANIMATION_TIME,
+		INVALID_WIGGLE_ANIMATION_TIME: INVALID_WIGGLE_ANIMATION_TIME
 	});
 
 })(Backbone.Model);
