@@ -8,8 +8,6 @@ window.Views.Board = (function(Parent, SlotView) {
 		tagName: 'div',
 		className: 'board',
 
-		isPortrait: false,
-
 		MAX_PORTRAIT: 3,
 
 		initialize: function() {
@@ -17,31 +15,7 @@ window.Views.Board = (function(Parent, SlotView) {
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
 
-			if (window.matchMedia) {
-				this.listenForMediaMatch();
-			} else {
-				this.listenForScreenSizeChange();
-			}
-		},
-
-		setOrientation: function(isPortrait) {
-			this.isPortrait = isPortrait;
-			this.renderGameTable();
-		},
-
-		listenForMediaMatch: function() {
-			var mediaQueryListener = window.matchMedia("(orientation: portrait)");
-			mediaQueryListener.addListener(_.bind(function(m) {
-				this.setOrientation(m.matches);
-			}, this));
-			this.setOrientation(mediaQueryListener.matches);
-		},
-
-		listenForScreenSizeChange: function() {
-			$(window).on('resize', _.throttle(_.bind(function() {
-				this.setOrientation(window.innerHeight > window.innerWidth);
-			}, this), 250));
-			this.setOrientation(window.innerHeight > window.innerWidth);
+			Orientation.on('change', this.renderGameTable, this);
 		},
 
 		render: function() {
@@ -61,7 +35,7 @@ window.Views.Board = (function(Parent, SlotView) {
 		},
 
 		renderGameTable: function() {
-			var maxCols = this.getMaxCols(this.isPortrait),
+			var maxCols = this.getMaxCols(Orientation.isPortrait),
 				table = $('<table></table>'),
 				rows = Math.ceil(this.options.board.length / maxCols);
 			for (var row = 0; row < rows; row++) {

@@ -32,6 +32,7 @@ $js("lib/backbone.localStorage.js");
 
 $js("models/Clock.js");
 $js("models/StopWatch.js");
+$js("models/Orientation.js");
 
 $js("models/Settings.js");
 $js("models/Stats.js");
