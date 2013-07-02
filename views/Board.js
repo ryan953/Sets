@@ -8,12 +8,40 @@ window.Views.Board = (function(Parent, SlotView) {
 		tagName: 'div',
 		className: 'board',
 
-		MAX_COLS: 3,
+		isPortrait: false,
+
+		MAX_PORTRAIT: 3,
 
 		initialize: function() {
 			this.listenTo(this.options.board, 'reset add remove', this.render);
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
+
+			if (window.matchMedia) {
+				this.listenForMediaMatch();
+			} else {
+				this.listenForScreenSizeChange();
+			}
+		},
+
+		setOrientation: function(isPortrait) {
+			this.isPortrait = isPortrait;
+			this.renderGameTable();
+		},
+
+		listenForMediaMatch: function() {
+			var mediaQueryListener = window.matchMedia("(orientation: portrait)");
+			mediaQueryListener.addListener(_.bind(function(m) {
+				this.setOrientation(m.matches);
+			}, this));
+			this.setOrientation(mediaQueryListener.matches);
+		},
+
+		listenForScreenSizeChange: function() {
+			$(window).on('resize', _.throttle(_.bind(function() {
+				this.setOrientation(window.innerHeight > window.innerWidth);
+			}, this), 250));
+			this.setOrientation(window.innerHeight > window.innerWidth);
 		},
 
 		render: function() {
@@ -33,12 +61,13 @@ window.Views.Board = (function(Parent, SlotView) {
 		},
 
 		renderGameTable: function() {
-			var table = $('<table></table>'),
-				rows = Math.ceil(this.options.board.length / this.MAX_COLS);
+			var maxCols = this.getMaxCols(this.isPortrait),
+				table = $('<table></table>'),
+				rows = Math.ceil(this.options.board.length / maxCols);
 			for (var row = 0; row < rows; row++) {
 				var tr = $('<tr></tr>');
-				for (var col = 0; col < this.MAX_COLS; col++) {
-					var position = (row * this.MAX_COLS) + col,
+				for (var col = 0; col < maxCols; col++) {
+					var position = (row * maxCols) + col,
 						child = this.child_views[position];
 					if (!child) {
 						continue;
@@ -48,6 +77,12 @@ window.Views.Board = (function(Parent, SlotView) {
 				table.append(tr);
 			}
 			this.$el.html(table);
+		},
+
+		getMaxCols: function(isPortrait) {
+			var boardSize = this.options.board.boardSize(),
+				maxLandscape = (boardSize / this.MAX_PORTRAIT) || this.MAX_PORTRAIT;
+			return isPortrait ? this.MAX_PORTRAIT :  maxLandscape;
 		}
 	});
 
