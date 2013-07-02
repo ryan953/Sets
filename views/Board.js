@@ -15,7 +15,7 @@ window.Views.Board = (function(Parent, SlotView) {
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
 
-			Orientation.on('change', this.renderGameTable, this);
+			this.listenTo(Orientation, 'change', this.renderGameTable);
 		},
 
 		render: function() {
