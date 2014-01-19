@@ -1,10 +1,12 @@
 /*jshint smarttabs:true */
 /*global _, Backbone, setTimeout, clearTimeout */
 
-window.Clock = (function(Parent) {
+window.Clock = (function(Events) {
 	"use strict";
-
-	return Parent.extend({
+	var Clock = function() {
+		this.initialize.apply(this, [].slice.call(arguments));
+	};
+	_.extend(Clock.prototype, Events, {
 		initialize: function(attributes, options) {
 			this.delay = options.delay;
 			this.clockTick = _.bind(function() {
@@ -42,4 +44,6 @@ window.Clock = (function(Parent) {
 			}
 		}
 	});
-})(Backbone.Model);
+
+	return Clock;
+})(Backbone.Events);
