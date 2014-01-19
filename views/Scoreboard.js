@@ -31,7 +31,10 @@ window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 
 			this.template = _.template($('#tmpl-scoreboard').text());
 
-			this.clock = this.makeClock();
+			this.clock = new Clock({}, {
+				tickAction: _.bind(this.clockTick, this),
+				delay: this.delay.fastSpeed
+			});
 		},
 
 		render: function() {
@@ -64,15 +67,6 @@ window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 
 		nextScoreboard: function() {
 			this.game.settings.setNextScoreboardDisplay();
-		},
-
-		makeClock: function() {
-			var clock = new Clock({}, {
-				tickAction: _.bind(this.clockTick, this),
-				delay: this.delay.fastSpeed
-			});
-			clock.on('clock.start clock.tick', this.updateClockTick, this);
-			return clock;
 		},
 
 		clockTick: function() {
