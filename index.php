@@ -30,43 +30,43 @@ $js("lib/backbone.js");
 $js("lib/moment.min.js");
 $js("lib/backbone.localStorage.js");
 
-$js("models/Clock.js");
-$js("models/StopWatch.js");
-$js("models/Orientation.js");
+$js("models/clock.js");
+$js("models/stop-watch.js");
+$js("models/orientation.js");
 
-$js("models/Settings.js");
-$js("models/Stats.js");
-$js("models/Card.js");
-$js("models/Slot.js");
-$js("collections/Deck.js");
-$js("collections/Board.js");
+$js("models/settings.js");
+$js("models/stats.js");
+$js("models/card.js");
+$js("models/slot.js");
+$js("collections/deck.js");
+$js("collections/board.js");
 
-$js("models/Matcher.js");
-$js("models/FoundSets.js");
+$js("models/matcher.js");
+$js("models/found-sets.js");
 
-$js("models/Sets.js");
+$js("models/sets.js");
 
-$js("models/HelpGame.js");
+$js("models/help-game.js");
 
-$js("views/bases/ParentView.js");
-$js("views/Card.js");
-$js("views/Slot.js");
-$js("views/Board.js");
-$js("views/EndGame.js");
+$js("views/bases/parent-view.js");
+$js("views/card.js");
+$js("views/slot.js");
+$js("views/board.js");
+$js("views/end-game.js");
 
-$js("views/TimeDisplay.js");
-$js("views/Scoreboard.js");
-$js("views/Menubar.js");
+$js("views/time-display.js");
+$js("views/scoreboard.js");
+$js("views/menubar.js");
 
-$js("views/bases/LightboxView.js");
-$js("views/SettingsLightbox.js");
-$js("views/StatsLightbox.js");
-$js("views/HelpLightbox.js");
-$js("views/Chrome.js");
+$js("views/bases/lightbox-view.js");
+$js("views/settings-lightbox.js");
+$js("views/stats-lightbox.js");
+$js("views/help-lightbox.js");
+$js("views/chrome.js");
 
-$js("views/Sets.js");
+$js("views/sets.js");
 
-$js("routers/GameRouter.js");
+$js("routers/game-router.js");
 
 $tmpl("tmpl-menu.template");
 $tmpl("tmpl-scoreboard.template");
