@@ -1,7 +1,7 @@
 /*global document */
 window.Views = window.Views || {};
 
-window.Views.Board = (function(Parent, SlotView) {
+window.Views.Board = (function(Parent, SlotView, Orientation) {
 	"use strict";
 
 	return Parent.extend({
@@ -60,4 +60,4 @@ window.Views.Board = (function(Parent, SlotView) {
 		}
 	});
 
-})(window.Views.Bases.ParentView, window.Views.Slot);
+})(window.Views.Bases.ParentView, window.Views.Slot, window.Utils.Orientation);

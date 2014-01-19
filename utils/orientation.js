@@ -1,9 +1,11 @@
+window.Utils = window.Utils || {};
+
 /*
  * A shim class to provide consistent orientation change events
  * Tries to use mediaMatch events but falls back to window.resize events for
  * compatibility with old browsers
  */
-window.Orientation = (function(_, Backbone) {
+window.Utils.Orientation = (function(_, Backbone) {
 	"use strict";
 
 	var currentIsPortrait = null,

@@ -32,7 +32,7 @@ $js("lib/backbone.localStorage.js");
 
 $js("utils/clock.js");
 $js("utils/stop-watch.js");
-$js("models/orientation.js");
+$js("utils/orientation.js");
 
 $js("models/settings.js");
 $js("models/stats.js");
