@@ -22,7 +22,7 @@ $(document).ready(function () {
 	});
 
 	test('clock triggers event on start', function() {
-		var clock = new Clock({}, {
+		var clock = new Clock({
 			tickAction: function() {
 				return false;
 			},
@@ -39,7 +39,7 @@ $(document).ready(function () {
 	});
 
 	test('clock triggers event on stop', function() {
-		var clock = new Clock({}, {
+		var clock = new Clock({
 			tickAction: function() {
 				return false;
 			},
@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 	test('clock ticks 3 times', function() {
 		var count = 3,
-			clock = new Clock({}, {
+			clock = new Clock({
 				tickAction: function() {
 					ok(true, 'Clock tick ' + count);
 					start();
@@ -73,7 +73,7 @@ $(document).ready(function () {
 
 	test('clock can be stopped early', function() {
 		var count = 3,
-			clock = new Clock({}, {
+			clock = new Clock({
 				tickAction: function() {
 					ok(false, 'Should not have a chance to tick');
 					return count--;

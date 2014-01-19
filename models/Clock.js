@@ -1,28 +1,26 @@
 /*jshint smarttabs:true */
-/*global _, Backbone, setTimeout, clearTimeout */
+/*global setTimeout, clearTimeout */
 
 /*
- * Callbacks can register for the clock.* events and do stuff,
- * this is a different interface over what is essentially setInterval()
+ * An evented interface over what is essentially setInterval()
+ * Callbacks can register for the clock.* events and do stuff like update
+ * at a predictable rate
  */
-window.Clock = (function(Events) {
+window.Clock = (function(_, Backbone) {
 	"use strict";
-	var Clock = function() {
-		this.initialize.apply(this, [].slice.call(arguments));
+	var Clock = function(options) {
+		this.delay = options.delay;
+		this.clockTick = _.bind(function() {
+			if (options.tickAction()) {
+				this.trigger('clock.tick', this);
+				this.timer = setTimeout(this.clockTick, this.delay);
+			} else {
+				this.stop();
+			}
+		}, this);
 	};
-	_.extend(Clock.prototype, Events, {
-		initialize: function(attributes, options) {
-			this.delay = options.delay;
-			this.clockTick = _.bind(function() {
-				if (options.tickAction()) {
-					this.trigger('clock.tick', this);
-					this.timer = setTimeout(this.clockTick, this.delay);
-				} else {
-					this.stop();
-				}
-			}, this);
-		},
 
+	_.extend(Clock.prototype, Backbone.Events, {
 		setTickSpeed: function(delay) {
 			this.delay = delay;
 		},
@@ -49,4 +47,4 @@ window.Clock = (function(Events) {
 	});
 
 	return Clock;
-})(Backbone.Events);
+})(window._, window.Backbone);

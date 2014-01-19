@@ -31,7 +31,7 @@ window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 
 			this.template = _.template($('#tmpl-scoreboard').text());
 
-			this.clock = new Clock({}, {
+			this.clock = new Clock({
 				tickAction: _.bind(this.clockTick, this),
 				delay: this.delay.fastSpeed
 			});
