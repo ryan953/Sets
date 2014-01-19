@@ -1,5 +1,12 @@
 /*global Date */
-window.StopWatch = (function(Parent) {
+
+/*
+ * A pausable counter to keep track of how long something takes.
+ * Does not consume cpu when counting, duration is the diff between start() and
+ * stop() times. Can be paused and continued, and can have current total
+ * reported a while the clock is still running.
+ */
+window.StopWatch = (function(_) {
 	"use strict";
 
 	var states = {
@@ -15,16 +22,18 @@ window.StopWatch = (function(Parent) {
 		return _now() - startTime;
 	};
 
-	return Parent.extend({
+	var StopWatch = function() {
+		this._state = states.PAUSED;
+		this._times = [];
+		this._startTime = 0;
+	};
+
+	_.extend(StopWatch, states);
+
+	_.extend(StopWatch.prototype, {
 		_state: null,
 		_times: null,
 		_startTime: null,
-
-		initialize: function() {
-			this._state = states.PAUSED;
-			this._times = [];
-			this._startTime = 0;
-		},
 
 		start: function() {
 			if (this._state === states.COUNTING) {
@@ -67,5 +76,7 @@ window.StopWatch = (function(Parent) {
 		seconds: function() {
 			return this.milliseconds() / 1000;
 		}
-	}, states);
-})(window.Backbone.Model);
+	});
+
+	return StopWatch;
+})(window._);
