@@ -93,4 +93,4 @@ window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 		}
 	});
 
-})(Backbone.View, window.Views.TimeDisplay, window.Clock);
+})(Backbone.View, window.Views.TimeDisplay, window.Utils.Clock);

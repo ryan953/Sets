@@ -133,4 +133,4 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher, FoundSets) {
 
 	});
 })(window.Backbone.Model, window.Collections.Deck, window.Collections.Board,
-	window.StopWatch, window.Matcher, window.Models.FoundSets);
+	window.Utils.StopWatch, window.Matcher, window.Models.FoundSets);

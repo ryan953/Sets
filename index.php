@@ -30,8 +30,8 @@ $js("lib/backbone.js");
 $js("lib/moment.min.js");
 $js("lib/backbone.localStorage.js");
 
-$js("models/clock.js");
-$js("models/stop-watch.js");
+$js("utils/clock.js");
+$js("utils/stop-watch.js");
 $js("models/orientation.js");
 
 $js("models/settings.js");
