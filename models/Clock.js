@@ -1,6 +1,10 @@
 /*jshint smarttabs:true */
 /*global _, Backbone, setTimeout, clearTimeout */
 
+/*
+ * Callbacks can register for the clock.* events and do stuff,
+ * this is a different interface over what is essentially setInterval()
+ */
 window.Clock = (function(Events) {
 	"use strict";
 	var Clock = function() {
@@ -24,8 +28,7 @@ window.Clock = (function(Events) {
 		},
 
 		/**
-		 * Takes a delay between clock ticks, and an action to do each tick
-		 * when the action returns false the clock will turn itself off
+		 * Start a clock ticking at `this.delay` intervals
 		 */
 		start: function() {
 			this.stop();
@@ -34,7 +37,7 @@ window.Clock = (function(Events) {
 		},
 
 		/**
-		 * Stop the timer so we don't keep running anything
+		 * Stop the timer so we don't keep running any callbacks
 		 */
 		stop: function() {
 			if (this.timer) {
