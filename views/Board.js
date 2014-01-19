@@ -35,7 +35,7 @@ window.Views.Board = (function(Parent, SlotView) {
 		},
 
 		renderGameTable: function() {
-			var maxCols = this.getMaxCols(Orientation.isPortrait),
+			var maxCols = this.getMaxCols(Orientation.isPortrait()),
 				table = $('<table></table>'),
 				rows = Math.ceil(this.options.board.length / maxCols);
 			for (var row = 0; row < rows; row++) {

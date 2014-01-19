@@ -1,39 +1,52 @@
-/*global window, _, Backbone */
-
-window.Orientation = (function() {
+/*
+ * A shim class to provide consistent orientation change events
+ * Tries to use mediaMatch events but falls back to window.resize events for
+ * compatibility with old browsers
+ */
+window.Orientation = (function(_, Backbone) {
 	"use strict";
 
-	var emitter = _.extend({
-		isPortrait: false,
+	var currentIsPortrait = null,
+		emitter = _.extend({
+			isPortrait: function() {
+				return currentIsPortrait;
+			},
+			isLandscape: function() {
+				return !currentIsPortrait;
+			}
+		}, Backbone.Events),
 
-		setOrientation: function(isPortrait) {
-			this.isPortrait = isPortrait;
-			this.trigger('change', isPortrait);
-		}
-	}, Backbone.Events);
+		setOrientation = function(newIsPortrait) {
+			currentIsPortrait = newIsPortrait;
+			emitter.trigger('change', newIsPortrait);
+		},
 
-	(function() {
-		var listenForMediaMatch = function() {
+		listenForMediaMatch = function() {
 			var mediaQueryListener = window.matchMedia("(orientation: portrait)");
 			mediaQueryListener.addListener(function(m) {
-				emitter.setOrientation(m.matches);
+				setOrientation(m.matches);
 			});
-			emitter.setOrientation(mediaQueryListener.matches);
-		};
+			setOrientation(mediaQueryListener.matches);
+		},
 
-		var listenForScreenSizeChange = function() {
+		listenForScreenSizeChange = function() {
+			var checkWindowSize = function() {
+				var isPortraitNow = window.innerHeight > window.innerWidth;
+				if (currentIsPortrait !== isPortraitNow) {
+					setOrientation(isPortraitNow);
+				}
+			};
 			$(window).on('resize', _.throttle(function() {
-				emitter.setOrientation(window.innerHeight > window.innerWidth);
+				checkWindowSize();
 			}, 250));
-			emitter.setOrientation(window.innerHeight > window.innerWidth);
+			checkWindowSize();
 		};
 
-		if (window.matchMedia) {
-			listenForMediaMatch();
-		} else {
-			listenForScreenSizeChange();
-		}
-	})();
+	if (false && window.matchMedia) {
+		listenForMediaMatch();
+	} else {
+		listenForScreenSizeChange();
+	}
 
 	return emitter;
-})();
+})(window._, window.Backbone);
