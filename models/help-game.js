@@ -1,6 +1,3 @@
-/*global _, Backbone */
-/*jshint newcap:false */
-
 window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 	"use strict";
 
@@ -8,16 +5,7 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 
 	var instance;
 
-	var statics = {
-		factory: function() {
-			if (!instance) {
-				instance = new clazz();
-			}
-			return instance;
-		}
-	};
-
-	var clazz = Parent.extend({
+	var HelpGame = Parent.extend({
 		maxPage: 5,
 		defaults: {
 			page: 1
@@ -28,12 +16,10 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 				{localStorage: new Storage('settings-teaching')}
 			);
 			this.deck = new Deck();
-			window.teachingDeck = this.deck;
 			this.board = new Board(null, {
 				deck: this.deck,
 				settings: this.teachingSettings
 			});
-			window.teachingBoard = this.board;
 
 			var baseSize = this.deck.getBoardSize(mode);
 			this.board.rebuild(
@@ -65,7 +51,14 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 			}
 			this.set({page: 1});
 		}
-	}, statics);
+	});
 
-	return clazz;
+	return {
+		factory: function() {
+			if (!instance) {
+				instance = new HelpGame();
+			}
+			return instance;
+		}
+	};
 })(window.Backbone.Model, window.Models.Settings, window.Backbone.LocalStorage, window.Collections.Deck, window.Collections.Board);
