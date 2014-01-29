@@ -1,39 +1,43 @@
-window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
+window.Models.HelpGame = (function(Backbone, Settings, Storage, Deck, Board) {
 	"use strict";
 
-	var mode = 'teaching';
+	var mode = 'teaching',
+		maxPage = 5;
 
 	var instance;
 
-	var HelpGame = Parent.extend({
-		maxPage: 5,
-		defaults: {
-			page: 1
-		},
+	var HelpGame = function() {
+		this.teachingSettings = new Settings({id: 'teaching'},
+			{localStorage: new Storage('settings-teaching')}
+		);
+		this.deck = new Deck();
+		this.board = new Board(null, {
+			deck: this.deck,
+			settings: this.teachingSettings
+		});
 
-		initialize: function() {
-			this.teachingSettings = new Settings({id: 'teaching'},
-				{localStorage: new Storage('settings-teaching')}
-			);
-			this.deck = new Deck();
-			this.board = new Board(null, {
-				deck: this.deck,
-				settings: this.teachingSettings
-			});
+		var baseSize = this.deck.getBoardSize(mode);
+		this.board.rebuild(
+			baseSize.rows,
+			baseSize.cols
+		);
 
-			var baseSize = this.deck.getBoardSize(mode);
-			this.board.rebuild(
-				baseSize.rows,
-				baseSize.cols
-			);
+		this.board.on('selected:valid-set', function() {
+			_.delay(_.bind(function() {
+				this.page = Math.min(this.page + 1, maxPage);
+			}, this), 1000);
+		}, this);
 
-			this.board.on('selected:valid-set', function() {
-				_.delay(_.bind(this.set, this), 1000, {
-					'page': Math.min(this.get('page') + 1, this.maxPage)
-				});
-			}, this);
+		this.reset();
+	};
 
-			this.reset();
+	_.extend(HelpGame.prototype, Backbone.Events, {
+		page: 1,
+
+		toJSON: function() {
+			return {
+				page: this.page
+			};
 		},
 
 		reset: function() {
@@ -49,7 +53,7 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 					slot.collection.trigger('card:removed', slot);
 				});
 			}
-			this.set({page: 1});
+			this.page = 1;
 		}
 	});
 
@@ -61,4 +65,4 @@ window.Models.HelpGame = (function(Parent, Settings, Storage, Deck, Board) {
 			return instance;
 		}
 	};
-})(window.Backbone.Model, window.Models.Settings, window.Backbone.LocalStorage, window.Collections.Deck, window.Collections.Board);
+})(window.Backbone, window.Models.Settings, window.Backbone.LocalStorage, window.Collections.Deck, window.Collections.Board);
