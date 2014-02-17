@@ -1,6 +1,6 @@
 // (window.Backbone.Model, window.Collections.Board)
 
-define('matcher', [
+define('models/matcher', [
 	'underscore',
 	'backbone',
 	'collections/board'

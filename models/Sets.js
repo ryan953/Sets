@@ -4,7 +4,7 @@ define('sets', [
 	'collections/deck',
 	'collections/board',
 	'utils/stop-watch',
-	'matcher',
+	'models/matcher',
 	'models/found-sets'
 ], function(_, Backbone, Deck, Board, StopWatch, Matcher, FoundSets) {
 	"use strict";
