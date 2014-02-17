@@ -1,7 +1,8 @@
-/*global Backbone */
-window.Collections = window.Collections || {};
-
-window.Collections.Board = (function(Slot) {
+define('collections/board', [
+	'underscore',
+	'backbone',
+	'models/slot'
+], function(_, Backbone, Slot) {
 	"use strict";
 
 	return Backbone.Collection.extend({
@@ -65,7 +66,7 @@ window.Collections.Board = (function(Slot) {
 				}
 			});
 
-			this.on('card:removed', function(slot) {
+			this.on('card:removed', function(/*slot*/) {
 				var emptySlots = this.emptySlots();
 				if (emptySlots.length != 3) {
 					return;
@@ -159,4 +160,4 @@ window.Collections.Board = (function(Slot) {
 		}
 	});
 
-})(window.Models.Slot);
+});

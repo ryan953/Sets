@@ -1,7 +1,10 @@
-/*global Backbone, console */
-window.Collections = window.Collections || {};
+/*global console */
 
-window.Collections.Deck = (function(Parent, Card) {
+define('collections/deck', [
+	'underscore',
+	'backbone',
+	'models/card'
+], function(_, Backbone, Card) {
 	"use strict";
 
 	var draw = {
@@ -166,7 +169,7 @@ window.Collections.Deck = (function(Parent, Card) {
 		expandstillFails: 'expandStillFails'
 	};
 
-	return Parent.extend({
+	return Backbone.Collection.extend({
 		model: Card,
 
 		startingLength: 0,
@@ -214,4 +217,4 @@ window.Collections.Deck = (function(Parent, Card) {
 
 	}, modes);
 
-})(Backbone.Collection, window.Models.Card);
+});
