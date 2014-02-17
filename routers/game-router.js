@@ -1,4 +1,4 @@
-define('game-router', [
+define('routers/game-router', [
 	'backbone',
 	'models/sets',
 	'views/sets',
