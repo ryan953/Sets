@@ -1,7 +1,9 @@
-/*global document, $, _, Backbone */
-window.Views = window.Views || {};
-
-window.Views.Chrome = (function(Parent, Router, Menubar) {
+define('views/chrome', [
+	'underscore',
+	'views/bases/parent-view',
+	'router',
+	'views/menubar'
+], function(_, Parent, Router, Menubar) {
 	"use strict";
 
 	return Parent.extend({
@@ -24,4 +26,4 @@ window.Views.Chrome = (function(Parent, Router, Menubar) {
 		}
 	});
 
-})(window.Views.Bases.ParentView, window.Router, window.Views.Menubar);
+});

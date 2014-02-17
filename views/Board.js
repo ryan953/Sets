@@ -1,7 +1,10 @@
-/*global document */
-window.Views = window.Views || {};
-
-window.Views.Board = (function(Parent, SlotView, Orientation) {
+define('views/board', [
+	'jquery',
+	'underscore',
+	'views/bases/parent-view',
+	'views/slot',
+	'utils/orientation'
+], function($, _, Parent, SlotView, Orientation) {
 	"use strict";
 
 	return Parent.extend({
@@ -60,4 +63,4 @@ window.Views.Board = (function(Parent, SlotView, Orientation) {
 		}
 	});
 
-})(window.Views.Bases.ParentView, window.Views.Slot, window.Utils.Orientation);
+});

@@ -1,10 +1,14 @@
-/*global confirm, $, _, Backbone */
-window.Views = window.Views || {};
+/*global confirm */
 
-window.Views.Menubar = (function(Parent, Scoreboard) {
+define('views/menubar', [
+	'jquery',
+	'underscore',
+	'backbone',
+	'views/scoreboard'
+], function($, _, Backbone, Scoreboard) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'views-menubar',
 
@@ -41,4 +45,4 @@ window.Views.Menubar = (function(Parent, Scoreboard) {
 		}
 	});
 
-})(Backbone.View, window.Views.Scoreboard);
+});

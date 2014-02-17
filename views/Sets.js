@@ -1,8 +1,15 @@
-/*global document, _, NoClickDelay */
+/*global window */
 /*jshint nonew:false */
-window.Views = window.Views || {};
 
-window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
+define('views/sets', [
+	'no-click-delay',
+	'jquery',
+	'underscore',
+	'views/bases/parent-view',
+	'views/board',
+	'views/chrome',
+	'views/end-game'
+], function(NoClickDelay, $, _, Parent, BoardView, Chrome, EndGame) {
 	"use strict";
 
 	return Parent.extend({
@@ -52,4 +59,4 @@ window.Views.Sets = (function(Parent, BoardView, Chrome, EndGame) {
 		}
 	});
 
-})(window.Views.Bases.ParentView, window.Views.Board, window.Views.Chrome, window.Views.EndGame);
+});

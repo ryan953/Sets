@@ -1,10 +1,15 @@
-/*global $, _, Backbone, Clock */
-window.Views = window.Views || {};
+// (Backbone.View, window.Views.TimeDisplay, window.Utils.Clock);
 
-window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
+define('views/scoreboard', [
+	'jquery',
+	'underscore',
+	'backbone',
+	'views/time-display',
+	'utils/clock'
+], function($, _, Backbone, TimeDisplay, Clock) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		tagName: 'p',
 		className: 'center scoreboard-display',
 
@@ -93,4 +98,4 @@ window.Views.Scoreboard = (function(Parent, TimeDisplay, Clock) {
 		}
 	});
 
-})(Backbone.View, window.Views.TimeDisplay, window.Utils.Clock);
+});

@@ -1,10 +1,12 @@
-/*global document, $, _, Backbone */
-window.Views = window.Views || {};
-
-window.Views.EndGame = (function(Parent, Router, Menubar) {
+define('views/end-game', [
+	'jquery',
+	'underscore',
+	'backbone',
+	'router'
+], function($, _, Backbone) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'views-endgame',
 
@@ -40,4 +42,4 @@ window.Views.EndGame = (function(Parent, Router, Menubar) {
 		}
 	});
 
-})(Backbone.View, window.Router, window.Views.Menubar);
+});

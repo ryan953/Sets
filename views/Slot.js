@@ -1,7 +1,8 @@
-/*global */
-window.Views = window.Views || {};
-
-window.Views.Slot = (function(Parent, CardView) {
+define('views/slot', [
+	'underscore',
+	'views/bases/parent-view',
+	'views/card'
+], function(_, Parent, CardView) {
 	"use strict";
 
 	return Parent.extend({
@@ -72,4 +73,4 @@ window.Views.Slot = (function(Parent, CardView) {
 		}
 	});
 
-})(window.Views.Bases.ParentView, window.Views.Card);
+});

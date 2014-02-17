@@ -1,7 +1,9 @@
-/*global Backbone, document */
-window.Views = window.Views || {};
+/*global document */
 
-window.Views.Card = (function(Parent) {
+define('views/card', [
+	'jquery',
+	'backbone'
+], function($, Backbone) {
 	"use strict";
 
 	var patterns = {
@@ -105,7 +107,7 @@ window.Views.Card = (function(Parent) {
 		}
 	};
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'card',
 
@@ -138,4 +140,4 @@ window.Views.Card = (function(Parent) {
 			}
 		}
 	});
-})(Backbone.View);
+});

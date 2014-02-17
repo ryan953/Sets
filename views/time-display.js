@@ -1,7 +1,7 @@
-/*global Backbone, moment */
-window.Views = window.Views || {};
-
-window.Views.TimeDisplay = (function(Parent) {
+define('views/time-display', [
+	'backbone',
+	'moment'
+], function(Backbone, moment) {
 	"use strict";
 
 	var pad = function(num, padLeft, padRight) {
@@ -35,8 +35,7 @@ window.Views.TimeDisplay = (function(Parent) {
 			return (hours ? hours + ':' : '') + time;
 		}
 	};
-
-	return Parent.extend({
+	return Backbone.extend({
 		render: function(duration, showMilliseconds) {
 			this.$el.html(
 				statics.formatTimeDiff(duration, showMilliseconds)
@@ -44,4 +43,4 @@ window.Views.TimeDisplay = (function(Parent) {
 		}
 	}, statics);
 
-})(Backbone.View);
+});
