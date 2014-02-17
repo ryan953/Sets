@@ -26,11 +26,11 @@ $css("table.css");
 $js("utils/require.js");
 
 $js("lib/NoClickDelay.js");
-$js("lib/jquery.min.js");
-$js("lib/underscore.js");
-$js("lib/backbone.js");
-$js("lib/moment.min.js");
-$js("lib/backbone.localStorage.js");
+$js("bower_components/jquery/jquery.min.js");
+$js("bower_components/underscore/underscore-min.js");
+$js("bower_components/backbone/backbone-min.js");
+$js("bower_components//moment/min/moment.min.js");
+$js("bower_components/backbone.localStorage/backbone.localStorage-min.js");
 
 $js("utils/clock.js");
 $js("utils/stop-watch.js");

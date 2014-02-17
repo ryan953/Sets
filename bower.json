@@ -1,0 +1,18 @@
+{
+  "name": "Sets!",
+  "version": "0.0.0",
+  "authors": [
+    "Ryan Albrecht <ryan@ryanalbrecht.ca>"
+  ],
+  "private": true,
+  "ignore": [
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "components/jquery#1.9.1",
+    "underscore": "1.4.4",
+    "backbone": "1.0.0",
+    "backbone.localStorage": "1.*",
+    "moment": "1.7.2"
+  }
+}
