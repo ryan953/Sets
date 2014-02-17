@@ -23,6 +23,8 @@ $css("dropdown.css");
 $css("table.css");
 
 // JS Building
+$js("utils/require.js");
+
 $js("lib/NoClickDelay.js");
 $js("lib/jquery.min.js");
 $js("lib/underscore.js");
