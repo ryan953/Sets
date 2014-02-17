@@ -1,9 +1,10 @@
-/*global _, Backbone */
-
-window.Models.FoundSets = (function(Parent) {
+define('models/found-sets', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		foundSets: [],
 
 		bindToBoard: function(board) {
@@ -28,4 +29,4 @@ window.Models.FoundSets = (function(Parent) {
 		}
 
 	});
-})(window.Backbone.Model);
+});

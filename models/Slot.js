@@ -1,14 +1,16 @@
-/*global _, Backbone */
-window.Models = window.Models || {};
+/*global clearTimeout */
 
-window.Models.Slot = (function(Parent) {
+define('models/slot', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
 	var MICRO_TO_SECOND_FACTOR = 1000,
 		FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR,
 		INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		defaults: {
 			card: null,
 
@@ -22,7 +24,7 @@ window.Models.Slot = (function(Parent) {
 			is_possible_revealed: false
 		},
 
-		initialize: function(attrs, options) {
+		initialize: function(/* attrs, options */) {
 			this.on('change:is_possible', this.resetRevealedStatus, this);
 		},
 
@@ -103,4 +105,4 @@ window.Models.Slot = (function(Parent) {
 		INVALID_WIGGLE_ANIMATION_TIME: INVALID_WIGGLE_ANIMATION_TIME
 	});
 
-})(Backbone.Model);
+});

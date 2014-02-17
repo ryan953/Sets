@@ -1,7 +1,7 @@
-/*global Backbone */
-window.Models = window.Models || {};
-
-window.Models.Card = (function(Parent) {
+define('models/card', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
 	var allowedTypes = {
@@ -29,7 +29,7 @@ window.Models.Card = (function(Parent) {
 
 	var staticValues = _.extend({}, allowedTypes, {comparator:comparator});
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		defaults: {
 			num: allowedTypes.counts[0],
 			shape: allowedTypes.shapes[0],
@@ -38,4 +38,4 @@ window.Models.Card = (function(Parent) {
 		}
 	}, staticValues);
 
-})(Backbone.Model);
+});

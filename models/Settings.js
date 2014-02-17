@@ -1,7 +1,7 @@
-/*global _, Backbone */
-window.Models = window.Models || {};
-
-window.Models.Settings = (function(Parent) {
+define('models/settings', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
 	var scoreboardDisplays = {
@@ -11,7 +11,7 @@ window.Models.Settings = (function(Parent) {
 		TIME: 'time'
 	};
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		defaults: {
 			'scoreboard-display': 'score',
 			'mode': 'easy',
@@ -43,4 +43,4 @@ window.Models.Settings = (function(Parent) {
 		}
 	});
 
-})(Backbone.Model);
+});

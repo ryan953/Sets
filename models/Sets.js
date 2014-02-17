@@ -1,9 +1,15 @@
-/*global _, Backbone */
-
-window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher, FoundSets) {
+define('sets', [
+	'underscore',
+	'backbone',
+	'collections/deck',
+	'collections/board',
+	'utils/stop-watch',
+	'matcher',
+	'models/found-sets'
+], function(_, Backbone, Deck, Board, StopWatch, Matcher, FoundSets) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		defaults: {
 			mode: null,
 			baseSize: {rows: 0, cols: 0},
@@ -132,5 +138,4 @@ window.Sets = (function(Parent, Deck, Board, StopWatch, Matcher, FoundSets) {
 		}
 
 	});
-})(window.Backbone.Model, window.Collections.Deck, window.Collections.Board,
-	window.Utils.StopWatch, window.Matcher, window.Models.FoundSets);
+});

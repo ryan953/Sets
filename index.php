@@ -131,10 +131,11 @@ require([
 	'domReady!',
 	'underscore',
 	'backbone',
+	'backbone/local-storage',
 	'game-router',
 	'models/stats',
 	'models/settings'
-], function(doc, _, Backbone, GameRouter, StatsModel, SettingsModel) {
+], function(doc, _, Backbone, Storage, GameRouter, StatsModel, SettingsModel) {
 	"use strict";
 
 	// Mustache Style Templates: {{var}}
@@ -147,10 +148,10 @@ require([
 	window.router = new GameRouter({
 		rootSelector: 'body',
 		stats: new StatsModel({id: 1},
-			{localStorage: new Backbone.LocalStorage("stats")}
+			{localStorage: new Storage("stats")}
 		),
 		settings: new SettingsModel({id: 1},
-			{localStorage: new Backbone.LocalStorage("settings")}
+			{localStorage: new Storage("settings")}
 		)
 	});
 });

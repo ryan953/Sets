@@ -1,10 +1,10 @@
-/*global _, Backbone */
-window.Models = window.Models || {};
-
-window.Models.Stats = (function(Parent) {
+define('models/stats', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		defaults: {
 			games_start: 0,
 			games_win: 0,
@@ -146,4 +146,4 @@ window.Models.Stats = (function(Parent) {
 
 	});
 
-})(Backbone.Model);
+});

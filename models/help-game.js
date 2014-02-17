@@ -1,4 +1,13 @@
-window.Models.HelpGame = (function(Backbone, Settings, Storage, Deck, Board) {
+// (window.Backbone, window.Models.Settings, window.Backbone.LocalStorage, window.Collections.Deck, window.Collections.Board)
+
+define('models/help-game', [
+	'underscore',
+	'backbone',
+	'models/settings',
+	'backbone/local-storage',
+	'collections/deck',
+	'collections/board'
+], function(_, Backbone, Settings, Storage, Deck, Board) {
 	"use strict";
 
 	var mode = 'teaching',
@@ -65,4 +74,5 @@ window.Models.HelpGame = (function(Backbone, Settings, Storage, Deck, Board) {
 			return instance;
 		}
 	};
-})(window.Backbone, window.Models.Settings, window.Backbone.LocalStorage, window.Collections.Deck, window.Collections.Board);
+
+});

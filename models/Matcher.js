@@ -1,11 +1,15 @@
-/*global _, Backbone */
+// (window.Backbone.Model, window.Collections.Board)
 
-window.Matcher = (function(Parent, Board) {
+define('matcher', [
+	'underscore',
+	'backbone',
+	'collections/board'
+], function(_, Backbone, Board) {
 	"use strict";
 
 	var MICRO_TO_SECOND_FACTOR = 1000;
 
-	return Parent.extend({
+	return Backbone.Model.extend({
 		initialize: function(models, options) {
 			this.settings = options.settings;
 		},
@@ -102,4 +106,4 @@ window.Matcher = (function(Parent, Board) {
 			return (index + 1) * delay * MICRO_TO_SECOND_FACTOR;
 		}
 	});
-})(window.Backbone.Model, window.Collections.Board);
+});
