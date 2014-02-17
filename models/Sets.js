@@ -1,4 +1,4 @@
-define('sets', [
+define('models/sets', [
 	'underscore',
 	'backbone',
 	'collections/deck',

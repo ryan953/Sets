@@ -1,6 +1,6 @@
 define('game-router', [
 	'backbone',
-	'sets',
+	'models/sets',
 	'views/sets',
 	'views/help-lightbox',
 	'views/settings-lightbox',
