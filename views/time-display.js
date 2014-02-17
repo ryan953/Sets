@@ -35,7 +35,7 @@ define('views/time-display', [
 			return (hours ? hours + ':' : '') + time;
 		}
 	};
-	return Backbone.extend({
+	return Backbone.View.extend({
 		render: function(duration, showMilliseconds) {
 			this.$el.html(
 				statics.formatTimeDiff(duration, showMilliseconds)

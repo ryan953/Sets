@@ -1,7 +1,7 @@
 define('views/chrome', [
 	'underscore',
 	'views/bases/parent-view',
-	'router',
+	'routers/game-router',
 	'views/menubar'
 ], function(_, Parent, Router, Menubar) {
 	"use strict";

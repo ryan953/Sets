@@ -1,8 +1,7 @@
 define('views/end-game', [
 	'jquery',
 	'underscore',
-	'backbone',
-	'router'
+	'backbone'
 ], function($, _, Backbone) {
 	"use strict";
 
