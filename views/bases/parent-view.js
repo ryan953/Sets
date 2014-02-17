@@ -1,11 +1,10 @@
-/*global _, Backbone, document */
-window.Views = window.Views || {};
-window.Views.Bases = window.Views.Bases || {};
-
-window.Views.Bases.ParentView = (function(Parent) {
+define('views/bases/parent-view', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		child_views: [],
 
 		render: function() {
@@ -17,7 +16,7 @@ window.Views.Bases.ParentView = (function(Parent) {
 		},
 
 		remove: function() {
-			Parent.prototype.remove.call(this);
+			Backbone.View.prototype.remove.call(this);
 			this.removeChildren();
 		},
 
@@ -29,4 +28,4 @@ window.Views.Bases.ParentView = (function(Parent) {
 		}
 	});
 
-})(Backbone.View);
+});

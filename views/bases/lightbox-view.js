@@ -1,11 +1,10 @@
-/*global $, _, Backbone, document */
-window.Views = window.Views || {};
-window.Views.Bases = window.Views.Bases || {};
-
-window.Views.Bases.LightboxView = (function(Parent) {
+define('views/bases/lightbox-view', [
+	'jquery',
+	'backbone'
+], function($, Backbone) {
 	"use strict";
 
-	return Parent.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'lightbox hide',
 
@@ -24,4 +23,4 @@ window.Views.Bases.LightboxView = (function(Parent) {
 		}
 	});
 
-})(Backbone.View);
+});
