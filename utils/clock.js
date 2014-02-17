@@ -1,15 +1,17 @@
 /*jshint smarttabs:true */
 /*global setTimeout, clearTimeout */
 
-window.Utils = window.Utils || {};
-
 /*
  * An evented interface over what is essentially setInterval()
  * Callbacks can register for the clock.* events and do stuff like update
  * at a predictable rate
  */
-window.Utils.Clock = (function(_, Backbone) {
+define('utils/clock', [
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
 	"use strict";
+
 	var Clock = function(options) {
 		this.delay = options.delay;
 		this.clockTick = _.bind(function() {
@@ -49,4 +51,4 @@ window.Utils.Clock = (function(_, Backbone) {
 	});
 
 	return Clock;
-})(window._, window.Backbone);
+});

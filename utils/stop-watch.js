@@ -1,14 +1,14 @@
 /*global Date */
 
-window.Utils = window.Utils || {};
-
 /*
  * A pausable counter to keep track of how long something takes.
  * Does not consume cpu when counting, duration is the diff between start() and
  * stop() times. Can be paused and continued, and can have current total
  * reported a while the clock is still running.
  */
-window.Utils.StopWatch = (function(_) {
+define('utils/stop-watch', [
+	'underscore'
+], function(_) {
 	"use strict";
 
 	var states = {
@@ -81,4 +81,4 @@ window.Utils.StopWatch = (function(_) {
 	});
 
 	return StopWatch;
-})(window._);
+});
