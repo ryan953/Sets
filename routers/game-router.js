@@ -1,9 +1,20 @@
-/*global $, Backbone */
-
-window.GameRouter = (function(Parent, Sets, Views) {
+define('game-router', [
+	'backbone',
+	'sets',
+	'views/sets',
+	'views/help-lightbox',
+	'views/settings-lightbox',
+	'views/stats-lightbox'
+], function(Backbone, Sets, SetsView, HelpLightbox, SettingsLightbox, StatsLightbox) {
 	"use strict";
 
-	return Parent.extend({
+	var lightboxViews = {
+		'HelpLightbox': HelpLightbox,
+		'SettingsLightbox': SettingsLightbox,
+		'StatsLightbox': StatsLightbox
+	};
+
+	return Backbone.Router.extend({
 		routes: {
 			'show/:lightbox': 'lightbox',    // #help
 			'': 'hideLightboxes'
@@ -16,7 +27,7 @@ window.GameRouter = (function(Parent, Sets, Views) {
 				settings: options.settings,
 				stats: options.stats
 			});
-			this.gameBoard = new Views.Sets({
+			this.gameBoard = new SetsView({
 				game: this.game
 			}).render();
 			$(options.rootSelector).append(this.gameBoard.el);
@@ -34,13 +45,13 @@ window.GameRouter = (function(Parent, Sets, Views) {
 		},
 
 		lightbox: function(clazz) {
-			if (!Views[clazz]) {
+			if (!lightboxViews[clazz]) {
 				return null;
 			}
 
 			this.hideLightboxes();
 
-			this._lastLightbox = new Views[clazz]({
+			this._lastLightbox = new lightboxViews[clazz]({
 				game: this.game
 			});
 
@@ -48,4 +59,4 @@ window.GameRouter = (function(Parent, Sets, Views) {
 			this._lastLightbox.render();
 		}
 	});
-})(Backbone.Router, window.Sets, window.Views);
+});
