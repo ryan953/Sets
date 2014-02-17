@@ -127,9 +127,16 @@ $tmpl("tmpl-howToPlay.template");
 <?php echo $js; ?>
 
 <script>
-"use strict";
+require([
+	'domReady!',
+	'underscore',
+	'backbone',
+	'game-router',
+	'models/stats',
+	'models/settings'
+], function(doc, _, Backbone, GameRouter, StatsModel, SettingsModel) {
+	"use strict";
 
-$(document).ready(function() {
 	// Mustache Style Templates: {{var}}
 	_.templateSettings = {
 		interpolate : /\{\{(.+?)\}\}/g,
@@ -139,10 +146,10 @@ $(document).ready(function() {
 
 	window.router = new GameRouter({
 		rootSelector: 'body',
-		stats: new Models.Stats({id: 1},
+		stats: new StatsModel({id: 1},
 			{localStorage: new Backbone.LocalStorage("stats")}
 		),
-		settings: new Models.Settings({id: 1},
+		settings: new SettingsModel({id: 1},
 			{localStorage: new Backbone.LocalStorage("settings")}
 		)
 	});
