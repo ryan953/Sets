@@ -1,7 +1,10 @@
-/*global confirm, $ _ Backbone document */
-window.Views = window.Views || {};
-
-window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
+define('views/help-lightbox', [
+	'jquery',
+	'underscore',
+	'views/bases/lightbox-view',
+	'models/help-game',
+	'views/board'
+], function($, _, Parent, helpModel, BoardView) {
 	"use strict";
 
 	return Parent.extend({
@@ -37,9 +40,9 @@ window.Views.HelpLightbox = (function(Parent, helpModel, BoardView) {
 			this.$('.page').hide().eq(page-1).show();
 		},
 
-		resetHelp: function(e) {
+		resetHelp: function(/* e */) {
 			this.model.reset();
 		}
 	});
 
-})(window.Views.Bases.LightboxView, window.Models.HelpGame, window.Views.Board);
+});

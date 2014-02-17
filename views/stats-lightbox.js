@@ -1,7 +1,11 @@
-/*global confirm, $ _ Backbone document */
-window.Views = window.Views || {};
+/*global confirm */
 
-window.Views.StatsLightbox = (function(Parent, TimeDisplay) {
+define('views/stats-lightbox', [
+	'jquery',
+	'underscore',
+	'views/bases/lightbox-view',
+	'views/time-display'
+], function($, _, Parent, TimeDisplay) {
 	"use strict";
 
 	return Parent.extend({
@@ -42,7 +46,7 @@ window.Views.StatsLightbox = (function(Parent, TimeDisplay) {
 			return json;
 		},
 
-		resetStats: function(e) {
+		resetStats: function(/* e */) {
 			var messages = [
 				"Are you sure you want all the current stats to be reset?",
 				"",
@@ -54,4 +58,4 @@ window.Views.StatsLightbox = (function(Parent, TimeDisplay) {
 		}
 	});
 
-})(window.Views.Bases.LightboxView, window.Views.TimeDisplay);
+});

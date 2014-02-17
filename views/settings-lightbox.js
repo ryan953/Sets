@@ -1,7 +1,8 @@
-/*global $, _, Backbone, document */
-window.Views = window.Views || {};
-
-window.Views.SettingsLightbox = (function(Parent) {
+define('views/settings-lightbox', [
+	'jquery',
+	'underscore',
+	'views/bases/lightbox-view'
+], function($, _, Parent) {
 	"use strict";
 
 	/**
@@ -65,7 +66,7 @@ window.Views.SettingsLightbox = (function(Parent) {
 		_cachedElem: function(selector) {
 			return this.$(selector);
 			// if (!this._cachedElems[selector]) {
-			// 	this._cachedElems[selector] = this.$(selector);
+			//   this._cachedElems[selector] = this.$(selector);
 			// }
 			// return this._cachedElems[selector];
 		},
@@ -97,4 +98,4 @@ window.Views.SettingsLightbox = (function(Parent) {
 		}
 	});
 
-})(window.Views.Bases.LightboxView);
+});
