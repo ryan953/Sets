@@ -1,0 +1,14 @@
+{
+	"duplicate-properties": true,
+	"empty-rules": true,
+	"import": true,
+	"regex-selectors": true,
+	"universal-selector": true,
+	"zero-units": true,
+	"overqualified-elements": true,
+	"ids": true,
+	"important": true,
+
+	"adjoining-classes": false,
+	"box-model": false
+}

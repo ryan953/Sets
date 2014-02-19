@@ -1,0 +1,71 @@
+{
+	"application": {
+		"name": "Application",
+		"module": "base"
+	},
+	"modules": {
+		"libraries": {
+			"scripts": [
+				{"src": "bower_components/almond/almond.js", "global": true},
+				{"src": "bower_components/underscore/underscore.js", "global": true},
+				{"src": "bower_components/jquery/jquery.js", "global": true},
+				{"src": "bower_components/backbone/backbone.js", "global": true},
+				{"src": "bower_components/lumbar-loader/lib/script.js", "global": true},
+				{"src": "bower_components/lumbar-loader/lib/queue.js", "global": true},
+				{"src": "bower_components/lumbar-loader/local-cache.js", "global": true},
+				{"src": "bower_components/handlebars/handlebars.js", "global": true},
+				// {"src": "bower_components/bootstrap/js/bootstrap.js", "global": true},
+				"bower_components/thorax/thorax.js",
+				"bower_components/lumbar-loader/lumbar-loader.js",
+				// {"module-map": true},
+				"bower_components/lumbar-loader/lumbar-loader-events.js",
+				"bower_components/lumbar-loader/lumbar-loader-standard.js",
+				"bower_components/lumbar-loader/lumbar-loader-backbone.js",
+			]
+		},
+		"bootstrap": {
+			"scripts": [
+				"js/init.js"
+
+				// "js/model.js",
+				// "js/collection.js",
+				// "js/view.js"
+			],
+			"styles": [
+				"stylesheets/base.css",
+				"stylesheets/board.css",
+				"stylesheets/lightbox.css",
+				"stylesheets/button.css",
+				"stylesheets/menubar.css",
+				"stylesheets/dropdown.css",
+				"stylesheets/table.css"
+			],
+			"static": [
+				{"src": "index.html", "dest": "/../index.html"}
+			]
+		}
+	},
+	"templates": {
+		"template": "Handlebars.templates['{{{without-extension name}}}'] = {{handlebarsCall}}({{{data}}});",
+		"root": "templates/",
+		"auto-include": {
+			"js/views/(.*)\\.(js|coffee)": [
+				"templates/$1.handlebars",
+				"templates/$1-item.handlebars",
+				"templates/$1-empty.handlebars"
+			]
+		},
+		"knownHelpers": [
+			"layout-element",
+			"view",
+			"template",
+			"collection",
+			"empty",
+			"loading",
+			"url"
+		],
+		"js/init.js": [
+			// "templates/application.handlebars"
+		]
+	}
+}

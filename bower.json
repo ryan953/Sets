@@ -9,10 +9,19 @@
     "bower_components"
   ],
   "dependencies": {
+    "almond": "latest",
+    "requirejs": "2.1.9",
+    "requirejs-domready": "requirejs/domReady#2.0.1",
+    "requirejs-text": "requirejs/text#2.0.10",
+
     "jquery": "components/jquery#1.9.1",
     "underscore": "1.4.4",
     "backbone": "1.0.0",
     "backbone.localStorage": "1.*",
-    "moment": "1.7.2"
+    "moment": "1.7.2",
+
+    "handlebars": "1.*",
+    "thorax": "2.*",
+    "lumbar-loader": "walmartlabs/lumbar-loader#~1.1.2"
   }
 }
