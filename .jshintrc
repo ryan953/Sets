@@ -1,0 +1,51 @@
+{
+	"predef": [
+		"setTimeout", // Skip setInterval
+
+		"require",
+		"define",
+
+		"describe",
+		"before",
+		"beforeEach",
+		"it",
+		"expect",
+		"assert",
+		"after",
+		"afterEach",
+		
+		"AssertionError",
+		"chai",
+		"fixtures",
+		"hbsFixture"
+	],
+
+	"trailing": true, // Error to leave trailing whitespace
+	"asi": false, // Warn about missing semicolons
+
+	"multistr": true, // Warn when multiline strings look broken
+	"camelcase": true, // must use camelCase variable names
+	"smarttabs": true, // Allow spaces for alignment
+	"esnext": true, // Allow ES6 Syntax
+	
+	"eqeqeq": true, // Must use `===` instead of just `==`
+	"forin": true, // Must use hasOwnProperty inside for loops
+	"latedef": true, // Define variables with `var` before use
+	"newcap": true, // Capitalize constructor functions
+	"noarg": true, // Disallow arguments.caller and arguments.callee
+	"nonew": true, // Disallow instantiating classes for side-effects
+	"strict": true, // Must "use strict" inside method scope
+	"immed": true, // Must wrap functions with parans when making IIFE's
+
+	"undef": true, // No accidental global variables.
+	"unused": true, // Defined but never user variables.
+	"curly": true, // Always require braces
+	"bitwise": false, // No bitwise operators
+
+	// Disable environment globals
+	"browser": false,
+	"jquery": false,
+	"node": true,
+	"devel": false // alert, confirm, and console are disabled.
+	               // Declare with `/*global alert */` before use.
+}
