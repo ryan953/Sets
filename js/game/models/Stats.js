@@ -59,7 +59,7 @@ define([
 				this.setPlusOne('games_start');
 			}, this);
 			game.on('game:end', function(outcome) {
-				if (!game.board.has_interaction) {
+				if (!game.board.hasInteraction) {
 					this.setLessOne('games_start');
 					return;
 				}

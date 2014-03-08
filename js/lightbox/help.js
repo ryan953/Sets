@@ -3,17 +3,20 @@ define('lightbox/help', [
 	'underscore',
 	'./base',
 	'game/models/help-game',
-	'game/views/board'
-], function($, _, Parent, helpModel, BoardView) {
+	'game/views/board',
+	'hbs!./templates/how-to-play'
+], function($, _, Parent, helpModel, BoardView, template) {
 	"use strict";
 
 	return Parent.extend({
+		template: template,
+		
 		events: {
 			'click #help-reset': 'resetHelp'
 		},
 
 		initialize: function() {
-			this.template = _.template($('#tmpl-howToPlay').text());
+			// this.template = _.template($('#tmpl-howToPlay').text());
 
 			this.model = helpModel.factory();
 

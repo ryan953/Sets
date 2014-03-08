@@ -9,8 +9,8 @@ define([
 		tagName: 'div',
 		className: 'views-chrome',
 
-		initialize: function() {
-			this.game = this.options.game;
+		initialize: function(options) {
+			this.game = options.game;
 		},
 
 		renderChildren: function() {

@@ -13,8 +13,9 @@ define([
 
 		MAX_PORTRAIT: 3,
 
-		initialize: function() {
-			this.listenTo(this.options.board, 'reset add remove', this.render);
+		initialize: function(options) {
+			this.options = options;
+			this.listenTo(options.board, 'reset add remove', this.render);
 
 			this.el.ontouchmove = function(e) { e.preventDefault(); };
 

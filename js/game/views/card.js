@@ -111,8 +111,8 @@ define([
 		tagName: 'div',
 		className: 'card',
 
-		initialize: function() {
-			this.card = this.options.card;
+		initialize: function(options) {
+			this.card = options.card;
 		},
 
 		render: function() {

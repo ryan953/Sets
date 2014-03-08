@@ -23,8 +23,9 @@ define([
 			is_possible: ''
 		},
 
-		initialize: function() {
-			this.slot = this.options.slot;
+		initialize: function(options) {
+			this.slot = options.slot;
+			this.settings = options.settings;
 			this.listenTo(this.slot, 'change:card', this.render);
 			this.listenTo(this.slot, 'change', this.handleSlotState);
 		},
@@ -60,7 +61,7 @@ define([
 			} else {
 				this.$el.removeClass('not-possible');
 			}
-			if (this.options.settings.get('debug-not-possible') == 'on') {
+			if (this.settings.get('debug-not-possible') == 'on') {
 				disabledStyleMap.is_possible += ' debug-not-possible';
 			}
 

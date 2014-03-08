@@ -4,22 +4,25 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'./scoreboard'
-], function($, _, Backbone, Scoreboard) {
+	'./scoreboard',
+	'hbs!../templates/menubar'
+], function($, _, Backbone, Scoreboard, template) {
 	"use strict";
 
 	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'views-menubar',
 
+		template: template,
+
 		events: {
 			'click .game-reset': 'resetGame'
 		},
 
-		initialize: function() {
-			this.game = this.options.game;
+		initialize: function(options) {
+			this.game = options.game;
 
-			this.template = _.template($('#tmpl-menu').text());
+			// this.template = _.template($('#tmpl-menu').text());
 		},
 
 		render: function() {
@@ -35,7 +38,7 @@ define([
 		},
 
 		resetGame: function() {
-			if (this.game.board.has_interaction) {
+			if (this.game.board.hasInteraction) {
 				if (confirm('Are you sure you want to end this game?')) {
 					this.game.start(this.game.settings.get('mode'));
 				}

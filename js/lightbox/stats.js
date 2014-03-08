@@ -4,22 +4,25 @@ define('lightbox/stats', [
 	'jquery',
 	'underscore',
 	'./base',
-	'utils/time-display'
-], function($, _, Parent, TimeDisplay) {
+	'utils/time-display',
+	'hbs!./templates/stats'
+], function($, _, Parent, TimeDisplay, template) {
 	"use strict";
 
 	return Parent.extend({
+		template: template,
+		
 		events: {
 			'click #stats-reset': 'resetStats'
 		},
 
-		initialize: function() {
-			this.game = this.options.game;
+		initialize: function(options) {
+			this.game = options.game;
 			this.stats = this.game.stats;
 
 			this.listenTo(this.stats, 'change', this.render);
 
-			this.template = _.template($('#tmpl-statslightbox').text());
+			// this.template = _.template($('#tmpl-statslightbox').text());
 		},
 
 		render: function() {

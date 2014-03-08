@@ -1,0 +1,30 @@
+<div>
+	<h2>How To Play</h2>
+	<div class="page {{#if page1}}hide{{/if}}">
+		<p>Each card has four features: Color, Shape, Fill, and Count. The object is to match three cards where each feature in the set is either unique, or shared between all the cards.</p>
+		<p>Below is a set of three cards. Each card is the same so we know that each feature is shared between all three cards.</p>
+		<p>Click each card below to continue.</p>
+	</div>
+
+	<div class="page {{#if page2}}hide{{/if}}">
+		<p>Differentiate by one feature: Color. All other features are the same.</p>
+	</div>
+
+	<div class="page {{#if page3}}hide{{/if}}">
+		<p>Differentiate by Shape and Color while Fill and Count remain constant.</p>
+	</div>
+
+	<div class="page {{#if page4}}hide{{/if}}">
+		<p>Or mix up all the features to form a set.</p>
+	</div>
+
+	<div class="page {{#if page5}}hide{{/if}}">
+		<p>That's it! You're all ready to play!</p>
+	</div>
+
+	{{#if showBoard}}
+		<div class="board-placeholder" style="height: 182px;"></div>
+	{{/if}}
+
+	<a id="help-reset" class="button"><span>Restart</span></a>
+</div>

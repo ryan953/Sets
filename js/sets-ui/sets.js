@@ -3,7 +3,7 @@ require([
 	'underscore',
 	'backbone',
 	'backbone/local-storage',
-	'./routers/game-router',
+	'sets-ui/routers/game-router',
 	'game/models/stats',
 	'game/models/settings'
 ], function(doc, _, Backbone, Storage, GameRouter, StatsModel, SettingsModel) {

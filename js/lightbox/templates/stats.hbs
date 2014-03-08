@@ -1,0 +1,37 @@
+<div>
+	<h2>Stats</h2>
+	<strong>Games</strong>
+	<dl class="table">
+		<dt>Games Started</dt><dd>{{games_start}}</dd>
+		<dt>Games Won</dt><dd>{{games_win}}</dd>
+		<dt>Games Lost</dt><dd>{{games_lose}}</dd>
+		<dt>Games Incomplete</dt><dd>{{games_incomplete}}</dd>
+		<dt>Percent Won</dt><dd>{{games_percent}}%</dd>
+	</dl>
+	<hr/>
+	<strong>Time</strong>
+	<dl class="table">
+		<dt>Total Time Played</dt><dd>{{time_total}}</dd>
+		<dt>Average Game Time</dt><dd>{{time_average_all}}</dd>
+		<dt>Average Win Time</dt><dd>{{time_average_win}}</dd>
+		<dt>Shortest Win Time</dt><dd>{{time_shortest_win}}</dd>
+		<dt>Longest Win Time</dt><dd>{{time_longest_win}}</dd>
+	</dl>
+	<hr/>
+	<strong>Streaks</strong>
+	<dl class="table">
+		<dt>Current Streak</dt><dd>{{streak_current_count}} {{streak_current_type}}</dd>
+		<dt>Longest Win Streak</dt><dd>{{streak_win}}</dd>
+		<dt>Longest Lose Streak</dt><dd>{{streak_lose}}</dd>
+	</dl>
+	<hr/>
+	<strong>Cards Remaining</strong>
+	<dl class="table">
+		<dt>No cards left over</dt><dd>{{cards_zero}}</dd>
+		<dt>3 Remaining</dt><dd>{{cards_three}}</dd>
+		<dt>6 Remaining</dt><dd>{{cards_six}}</dd>
+		<dt>9 Remaining</dt><dd>{{cards_nine}}</dd>
+		<dt>more than 9</dt><dd>{{cards_more}}</dd>
+	</dl>
+	<a id="stats-reset" class="button"><span>Reset Stats</span></a>
+</div>

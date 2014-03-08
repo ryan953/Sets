@@ -1,8 +1,9 @@
 define('lightbox/settings', [
 	'jquery',
 	'underscore',
-	'./base'
-], function($, _, Parent) {
+	'./base',
+	'hbs!./templates/settings'
+], function($, _, Parent, template) {
 	"use strict";
 
 	/**
@@ -17,6 +18,8 @@ define('lightbox/settings', [
 	 */
 
 	return Parent.extend({
+		template: template,
+		
 		events: {
 			'change input[type=checkbox]': 'changeCheckbox',
 			'change input[type=text]': 'changeText'
@@ -27,7 +30,7 @@ define('lightbox/settings', [
 		initialize: function(options) {
 			this.settings = options.game.settings;
 
-			this.template = _.template($('#tmpl-settingslightbox').text());
+			// this.template = _.template($('#tmpl-settingslightbox').text());
 
 			this.createRenderFunctions();
 			this.bindToSettings();

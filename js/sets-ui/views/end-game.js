@@ -1,24 +1,27 @@
 define([
 	'jquery',
 	'underscore',
-	'backbone'
-], function($, _, Backbone) {
+	'backbone',
+	'hbs!../templates/end-game'
+], function($, _, Backbone, template) {
 	"use strict";
 
 	return Backbone.View.extend({
 		tagName: 'div',
 		className: 'views-endgame',
 
+		template: template,
+
 		events: {
 			'click .game-reset': 'resetGame'
 		},
 
-		initialize: function() {
-			this.game = this.options.game;
-			this.listenTo(this.game, 'game:start', this.gameStarted);
-			this.listenTo(this.game, 'game:end', this.gameEnded);
+		initialize: function(options) {
+			this.game = options.game;
+			this.listenTo(this.game, 'game:start', options.gameStarted);
+			this.listenTo(this.game, 'game:end', options.gameEnded);
 
-			this.template = _.template($('#tmpl-game-over').text());
+			// this.template = _.template($('#tmpl-game-over').text());
 		},
 
 		render: function() {

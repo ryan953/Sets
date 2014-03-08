@@ -16,8 +16,9 @@ define([
 		tagName: 'div',
 		className: 'sets-game',
 
-		initialize: function() {
-			var game = this.options.game;
+		initialize: function(options) {
+			this.options = options;
+			var game = options.game;
 
 			$(window).blur(
 				_.bind(game.pause, game)

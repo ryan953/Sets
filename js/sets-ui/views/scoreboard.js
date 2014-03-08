@@ -5,13 +5,16 @@ define([
 	'underscore',
 	'backbone',
 	'utils/time-display',
-	'utils/clock'
-], function($, _, Backbone, TimeDisplay, Clock) {
+	'utils/clock',
+	'hbs!../templates/scoreboard'
+], function($, _, Backbone, TimeDisplay, Clock, template) {
 	"use strict";
 
 	return Backbone.View.extend({
 		tagName: 'p',
 		className: 'center scoreboard-display',
+
+		template: template,
 
 		events: {
 			'click a': 'nextScoreboard'
@@ -25,8 +28,8 @@ define([
 
 		timeDisplay: null,
 
-		initialize: function() {
-			this.game = this.options.game;
+		initialize: function(options) {
+			this.game = options.game;
 
 			this.listenTo(this.game, 'game:start', this.render);
 			this.listenTo(this.game, 'change:foundSets', this.render);
@@ -34,7 +37,7 @@ define([
 			this.listenTo(this.game.settings, 'change:scoreboard-display', this.render);
 			this.listenTo(this.game.foundSets, 'change', this.render);
 
-			this.template = _.template($('#tmpl-scoreboard').text());
+			// this.template = _.template($('#tmpl-scoreboard').text());
 
 			this.clock = new Clock({
 				tickAction: _.bind(this.clockTick, this),
@@ -48,7 +51,13 @@ define([
 				displayType = this.game.settings.get('scoreboard-display');
 
 			this.$el.html(this.template({
-				type: displayType,
+				// type: displayType,
+				type: {
+					score: displayType === 'score',
+					remaining: displayType === 'remaining',
+					percent: displayType === 'percent',
+					time: displayType === 'time',
+				},
 				percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
 				remaining: deckSize - found,
 				found: found,

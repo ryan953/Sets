@@ -29,40 +29,132 @@
 
 var pathPrefix;
 if (window.__karma__) {
-  pathPrefix = '/base/';
+    pathPrefix = '/base/';
 } else {
-  pathPrefix = '../';
+    pathPrefix = '../';
 }
 
+
 require.config({
-  deps: ['main'],
-  paths: {
-    'jquery': pathPrefix + 'bower_components/jquery/jquery',
-    'underscore': pathPrefix + 'bower_components/underscore/underscore',
-    'handlebars': pathPrefix + 'bower_components/handlebars/handlebars',
-    'backbone': pathPrefix + 'bower_components/backbone/backbone',
-    'thorax': pathPrefix + 'bower_components/thorax/thorax',
-    'coffee-script': pathPrefix + 'bower_components/coffee-script/index',
-    'cs': pathPrefix + 'bower_components/require-cs/cs',
-    'text': pathPrefix + 'bower_components/text/text',
-    'hbs': pathPrefix + 'bower_components/requirejs-hbs/hbs',
-    'domReady': pathPrefix + 'bower_components/requirejs-domReady/domready',
-    'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min'
-  },
-  shim: {
-    'handlebars': {
-      exports: 'Handlebars'
+    dir: '/public/js',
+    deps: ['sets-ui/sets'],
+    paths: {
+        'jquery': pathPrefix + 'bower_components/jquery/jquery',
+        'underscore': pathPrefix + 'bower_components/underscore/underscore',
+        'backbone': pathPrefix + 'bower_components/backbone/backbone',
+        'handlebars': pathPrefix + 'bower_components/handlebars/handlebars',
+        'thorax': pathPrefix + 'bower_components/thorax/thorax',
+        'moment': pathPrefix + 'bower_components/moment/moment',
+        // 'coffee-script': pathPrefix + 'bower_components/coffee-script/index',
+        // 'cs': pathPrefix + 'bower_components/require-cs/cs',
+    
+        'domReady': pathPrefix + 'bower_components/requirejs-domReady/domready',
+        'text': pathPrefix + 'bower_components/text/text',
+        'hbs': pathPrefix + 'bower_components/requirejs-hbs/hbs',
+        
+        'no-click-delay': pathPrefix + 'js/lib/NoClickDelay',
+        'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min'
     },
-    'backbone': {
-      exports: 'Backbone',
-      deps: ['jquery', 'underscore']
+    shim: {
+        'underscore': {
+            exports: '_'
+        },
+        'backbone': {
+            deps: ['jquery', 'underscore'],
+            exports: 'Backbone'
+        },
+        'handlebars': {
+            exports: 'Handlebars'
+        },
+        'thorax': {
+            deps: ['backbone', 'handlebars'],
+            exports: 'Thorax'
+        },
+        'no-click-delay': {
+            deps: [],
+            exports: 'NoClickDelay'
+        },
+        'backbone/local-storage': {
+            deps: ['backbone'],
+            exports: 'Backbone.localStorage'
+        }
     },
-    'underscore': {
-      exports: '_'
-    },
-    'thorax': {
-      exports: 'Thorax',
-      deps: ['handlebars', 'backbone']
-    }
-  }
+    "modules": [
+        //First set up the common build layer.
+        {
+            //module names are relative to baseUrl
+            "name": "bootstrap",
+            "create": true,
+            //List common dependencies here. Only need to list
+            //top level dependencies, "include" will find
+            //nested dependencies.
+            "include": [
+                "almond",
+                "thorax",
+                "moment",
+                "domReady",
+                "hbs",
+                "no-click-delay",
+                "backbone/local-storage"
+                // "bootstrap.config"
+            ]
+        },
+
+        //Now set up a build layer for each main layer, but exclude
+        //the common one. "exclude" will exclude nested
+        //the nested, built dependencies from "common". Any
+        //"exclude" that includes built modules should be
+        //listed before the build layer that wants to exclude it.
+        //The "page1" and "page2" modules are **not** the targets of
+        //the optimization, because shim config is in play, and
+        //shimmed dependencies need to maintain their load order.
+        //In this example, common.js will hold jquery, so backbone
+        //needs to be delayed from loading until common.js finishes.
+        //That loading sequence is controlled in page1.js.
+        {
+            //module names are relative to baseUrl/paths config
+            "name": "utils",
+            "create": true,
+            "include": [
+                "utils/clock",
+                "utils/orientation",
+                "utils/stop-watch",
+                "utils/time-display",
+                "utils/parent-view"
+            ],
+            "exclude": ["bootstrap"]
+        },
+
+        {
+            "name": "game",
+            "create": true,
+            "include": [
+                "game/models/settings",
+                "game/models/help-game",
+                "game/models/sets",
+                "game/views/board"
+            ],
+            "exclude": ["bootstrap", "utils"]
+        },
+
+        {
+            "name": "lightbox",
+            "create": true,
+            "include": [
+                "lightbox/help",
+                "lightbox/settings",
+                "lightbox/stats"
+            ],
+            "exclude": ["bootstrap", "utils", "game"]
+        },
+
+        {
+            "name": "sets-ui",
+            "create": true,
+            "include": [
+                "sets-ui/routers/game-router"
+            ],
+            "exclude": ["bootstrap", "utils", "lightbox", "game"]
+        }
+    ]
 });

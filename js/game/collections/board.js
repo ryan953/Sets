@@ -8,7 +8,7 @@ define([
 	return Backbone.Collection.extend({
 		model: Slot,
 
-		has_interaction: false,
+		hasInteraction: false,
 		_boardSize: {rows: 0, cols: 0},
 
 		boardSize: function() {
@@ -34,7 +34,7 @@ define([
 			this.deck = options.deck;
 
 			this.on('change:is_selected', function(model, value) {
-				this.has_interaction = true;
+				this.hasInteraction = true;
 				if (value) {
 					var selected = this.selected(),
 						cardJson = this.getCardJson(selected);
@@ -68,7 +68,7 @@ define([
 
 			this.on('card:removed', function(/*slot*/) {
 				var emptySlots = this.emptySlots();
-				if (emptySlots.length != 3) {
+				if (emptySlots.length !== 3) {
 					return;
 				}
 				if (this.length > this.boardSize()) {
@@ -111,7 +111,7 @@ define([
 				cols: cols
 			};
 			this.reset(slots);
-			this.has_interaction = false;
+			this.hasInteraction = false;
 		},
 
 		canExpand: function() {
@@ -149,7 +149,7 @@ define([
 				if (totals.hasOwnProperty(field)) {
 					for(var val in totals[field]) {
 						if (totals[field].hasOwnProperty(val)) {
-							if (totals[field][val] != 1 && totals[field][val] != 3) {
+							if (totals[field][val] !== 1 && totals[field][val] !== 3) {
 								return false;
 							}
 						}

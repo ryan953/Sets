@@ -72,7 +72,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'ensure-installed',
-    'jshint:all'
+    // 'jshint:all'
   ]);
 
   /**
