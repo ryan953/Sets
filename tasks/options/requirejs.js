@@ -48,7 +48,11 @@ module.exports = {
                 'hbs': '../bower_components/requirejs-hbs/hbs',
 
                 'no-click-delay': './lib/NoClickDelay',
-                'backbone/local-storage': '../bower_components/backbone.localStorage/backbone.localStorage-min'
+                'backbone/local-storage': '../bower_components/backbone.localStorage/backbone.localStorage-min',
+
+                'model': './utils/parent-model',
+                'collection': './utils/parent-collection',
+                'view': './utils/parent-view'
             },
             shim: {
                 'underscore': {
@@ -119,7 +123,9 @@ module.exports = {
                         "utils/orientation",
                         "utils/stop-watch",
                         "utils/time-display",
-                        "utils/parent-view"
+                        "model",
+                        "collection",
+                        "view"
                     ],
                     "exclude": ["bootstrap"]
                 },

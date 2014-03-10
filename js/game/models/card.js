@@ -1,7 +1,7 @@
 define([
 	'underscore',
-	'backbone'
-], function(_, Backbone) {
+	'model'
+], function(_, Model) {
 	"use strict";
 
 	var allowedTypes = {
@@ -29,7 +29,8 @@ define([
 
 	var staticValues = _.extend({}, allowedTypes, {comparator:comparator});
 
-	return Backbone.Model.extend({
+	return window.Card = Model.extend({
+		name: 'Card',
 		defaults: {
 			num: allowedTypes.counts[0],
 			shape: allowedTypes.shapes[0],

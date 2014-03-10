@@ -1,7 +1,7 @@
 define([
 	'jquery',
 	'underscore',
-	'utils/parent-view',
+	'view',
 	'./slot',
 	'utils/orientation'
 ], function($, _, Parent, SlotView, Orientation) {

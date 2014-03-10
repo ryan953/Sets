@@ -5,7 +5,7 @@ define([
 	'no-click-delay',
 	'jquery',
 	'underscore',
-	'utils/parent-view',
+	'view',
 	'game/views/board',
 	'./chrome',
 	'./end-game'

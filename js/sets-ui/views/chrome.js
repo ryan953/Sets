@@ -1,6 +1,6 @@
 define([
 	'underscore',
-	'utils/parent-view',
+	'view',
 	'./menubar'
 ], function(_, Parent, Menubar) {
 	"use strict";

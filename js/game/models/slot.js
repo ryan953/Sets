@@ -2,15 +2,15 @@
 
 define([
 	'underscore',
-	'backbone'
-], function(_, Backbone) {
+	'model'
+], function(_, Model) {
 	"use strict";
 
 	var MICRO_TO_SECOND_FACTOR = 1000,
 		FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR,
 		INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
 
-	return Backbone.Model.extend({
+	return window.Slot = Model.extend({
 		defaults: {
 			card: null,
 

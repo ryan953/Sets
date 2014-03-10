@@ -1,6 +1,6 @@
 define([
 	'underscore',
-	'utils/parent-view',
+	'view',
 	'./card'
 ], function(_, Parent, CardView) {
 	"use strict";

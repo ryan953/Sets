@@ -53,7 +53,11 @@ require.config({
         'hbs': pathPrefix + 'bower_components/requirejs-hbs/hbs',
         
         'no-click-delay': pathPrefix + 'js/lib/NoClickDelay',
-        'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min'
+        'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min',
+
+        'model': pathPrefix + 'js/utils/parent-model',
+        'collection': pathPrefix + 'js/utils/parent-collection',
+        'view': pathPrefix + 'js/utils/parent-view'
     },
     shim: {
         'underscore': {
@@ -120,7 +124,9 @@ require.config({
                 "utils/orientation",
                 "utils/stop-watch",
                 "utils/time-display",
-                "utils/parent-view"
+                "model",
+                "collection",
+                "view"
             ],
             "exclude": ["bootstrap"]
         },
