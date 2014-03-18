@@ -5,8 +5,9 @@ require([
 	'backbone/local-storage',
 	'sets-ui/routers/game-router',
 	'game/models/stats',
-	'game/models/settings'
-], function(doc, _, Backbone, Storage, GameRouter, StatsModel, SettingsModel) {
+	'game/models/settings',
+	'utils/model-cache-cleaner'
+], function(doc, _, Backbone, Storage, GameRouter, StatsModel, SettingsModel, CacheCleaner) {
 	"use strict";
 
 	// Mustache Style Templates: {{var}}
@@ -25,4 +26,6 @@ require([
 			{localStorage: new Storage("settings")}
 		)
 	}).startHistory();
+
+	CacheCleaner.initialize();
 });

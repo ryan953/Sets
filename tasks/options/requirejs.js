@@ -125,7 +125,8 @@ module.exports = {
                         "utils/time-display",
                         "model",
                         "collection",
-                        "view"
+                        "view",
+                        "utils/model-cache-router"
                     ],
                     "exclude": ["bootstrap"]
                 },

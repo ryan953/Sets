@@ -29,7 +29,7 @@ define([
 
 	var staticValues = _.extend({}, allowedTypes, {comparator:comparator});
 
-	return window.Card = Model.extend({
+	return Model.factory({
 		name: 'Card',
 		defaults: {
 			num: allowedTypes.counts[0],

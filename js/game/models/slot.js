@@ -10,7 +10,7 @@ define([
 		FOUND_ZOOM_ANIMATION_TIME = 1 * MICRO_TO_SECOND_FACTOR,
 		INVALID_WIGGLE_ANIMATION_TIME = 0.25 * MICRO_TO_SECOND_FACTOR;
 
-	return window.Slot = Model.extend({
+	return Model.factory({
 		defaults: {
 			card: null,
 

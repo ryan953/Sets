@@ -55,6 +55,8 @@ require.config({
         'no-click-delay': pathPrefix + 'js/lib/NoClickDelay',
         'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min',
 
+        'backbone-identity-map': pathPrefix + 'bower_components/backbone-identity-map/backbone-identity-map',
+
         'model': pathPrefix + 'js/utils/parent-model',
         'collection': pathPrefix + 'js/utils/parent-collection',
         'view': pathPrefix + 'js/utils/parent-view'
@@ -66,6 +68,10 @@ require.config({
         'backbone': {
             deps: ['jquery', 'underscore'],
             exports: 'Backbone'
+        },
+        'backbone-identity-map': {
+            'deps': ['underscore', 'backbone'],
+            'exports': 'Backbone.IdentityMap',
         },
         'handlebars': {
             exports: 'Handlebars'
@@ -126,7 +132,8 @@ require.config({
                 "utils/time-display",
                 "model",
                 "collection",
-                "view"
+                "view",
+                "utils/model-cache-router"
             ],
             "exclude": ["bootstrap"]
         },
