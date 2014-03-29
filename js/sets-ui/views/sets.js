@@ -51,8 +51,8 @@ define([
 			};
 
 			children.endGameView = new EndGame({
-				game: game
-			}).render();
+				model: game
+			});
 
 			this.$el.append(_.pluck(children, 'el'));
 
