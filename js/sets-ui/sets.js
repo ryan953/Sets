@@ -1,13 +1,12 @@
 require([
 	'domReady!',
 	'underscore',
-	'backbone',
 	'backbone/local-storage',
 	'sets-ui/routers/game-router',
 	'game/models/stats',
 	'game/models/settings',
 	'utils/model-cache-cleaner'
-], function(doc, _, Backbone, Storage, GameRouter, StatsModel, SettingsModel, CacheCleaner) {
+], function(doc, _, Storage, GameRouter, StatsModel, SettingsModel, CacheCleaner) {
 	"use strict";
 
 	// Mustache Style Templates: {{var}}
