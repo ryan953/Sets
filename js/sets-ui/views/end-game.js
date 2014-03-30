@@ -5,19 +5,19 @@ define([
 ], function(Handlebars, Thorax, template) {
 	"use strict";
 
-	Handlebars.registerHelper('end-game:message', function (result) {
-		return new Handlebars.SafeString({
-			win: 'You won!',
-			lose: 'No more sets are possible.'
-		}[result]);
-	});
-
 	return Thorax.View.extend({
 		tagName: 'div',
 		className: 'views-endgame',
 		template: template,
 
 		gameResult: null,
+
+		'message': function (result) {
+			return new Handlebars.SafeString({
+				win: 'You won!',
+				lose: 'No more sets are possible.'
+			}[result] || '');
+		},
 
 		events: {
 			'click .game-reset': function() {
