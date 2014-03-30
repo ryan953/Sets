@@ -45,14 +45,17 @@ module.exports = {
 
                 'domReady': '../bower_components/requirejs-domready/domReady',
                 'text': '../bower_components/text/text',
-                'hbs': '../bower_components/requirejs-hbs/hbs',
+                'hbs-loader': '../bower_components/requirejs-hbs/hbs',
 
                 'no-click-delay': './lib/NoClickDelay',
                 'backbone/local-storage': '../bower_components/backbone.localStorage/backbone.localStorage-min',
 
                 'model': './utils/parent-model',
                 'collection': './utils/parent-collection',
-                'view': './utils/parent-view'
+                'view': './utils/parent-view',
+
+                'v': './utils/loaders/view-registry',
+                'hbs': './utils/loaders/hbs-registry'
             },
             shim: {
                 'underscore': {

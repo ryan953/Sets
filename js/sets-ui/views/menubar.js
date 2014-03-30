@@ -2,7 +2,7 @@
 
 define([
 	'thorax',
-	'./scoreboard',
+	'v!./scoreboard',
 	'hbs!../templates/menubar'
 ], function(Thorax, Scoreboard, template) {
 	"use strict";
@@ -15,12 +15,6 @@ define([
 
 		events: {
 			'click .game-reset': 'resetGame'
-		},
-
-		initialize: function() {
-			this.scoreboard = new Scoreboard({
-				model: this.game
-			});
 		},
 
 		resetGame: function() {

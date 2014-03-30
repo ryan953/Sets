@@ -50,7 +50,7 @@ require.config({
     
         'domReady': pathPrefix + 'bower_components/requirejs-domReady/domready',
         'text': pathPrefix + 'bower_components/text/text',
-        'hbs': pathPrefix + 'bower_components/requirejs-hbs/hbs',
+        'hbs-loader': pathPrefix + 'bower_components/requirejs-hbs/hbs',
         
         'no-click-delay': pathPrefix + 'js/lib/NoClickDelay',
         'backbone/local-storage': pathPrefix + 'bower_components/backbone.localStorage/backbone.localStorage-min',
@@ -59,7 +59,10 @@ require.config({
 
         'model': pathPrefix + 'js/utils/parent-model',
         'collection': pathPrefix + 'js/utils/parent-collection',
-        'view': pathPrefix + 'js/utils/parent-view'
+        'view': pathPrefix + 'js/utils/parent-view',
+
+        'v': pathPrefix + 'js/utils/loaders/view-registry',
+        'hbs': pathPrefix + 'js/utils/loaders/hbs-registry'
     },
     shim: {
         'underscore': {
