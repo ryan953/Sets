@@ -5,20 +5,22 @@ define([
 	'no-click-delay',
 	'jquery',
 	'underscore',
-	'view',
-	'game/views/board',
-	'./chrome',
-	'./end-game'
-], function(NoClickDelay, $, _, Parent, BoardView, Chrome, EndGame) {
+	'thorax',
+	'hbs!../templates/sets',
+	'v!game/views/board',
+	'v!./chrome',
+	'v!./end-game'
+], function(NoClickDelay, $, _, Thorax, template) {
 	"use strict";
 
-	return Parent.extend({
+	return Thorax.View.extend({
 		tagName: 'div',
 		className: 'sets-game',
 
-		initialize: function(options) {
-			this.options = options;
-			var game = options.game;
+		template: template,
+
+		initialize: function() {
+			var game = this.game;
 
 			$(window).blur(
 				_.bind(game.pause, game)
@@ -27,39 +29,6 @@ define([
 			);
 
 			new NoClickDelay(this.el);
-		},
-
-		renderChildren: function() {
-			var game = this.options.game,
-				children = {};
-
-			var chrome = new Chrome({
-				game: game
-			});
-			chrome.render();
-			chrome.appendTo(this.$el);
-
-			this.boardView = new BoardView({
-				className: 'board theme-wood',
-				settings: game.settings,
-				board: game.board
-			});
-			this.boardView.render();
-
-			children.boardView = {
-				'el': $('<div></div>', {
-					'class': 'sets-board-container',
-					html: this.boardView.el
-				})[0]
-			};
-
-			children.endGameView = new EndGame({
-				model: game
-			});
-
-			this.$el.append(_.pluck(children, 'el'));
-
-			return children;
 		}
 	});
 

@@ -1,0 +1,7 @@
+{{view 'sets-ui/views/chrome' game=game}}
+
+<div class="sets-board-container">
+	{{view 'game/views/board' className='board theme-wood' settings=game.settings board=game.board}}
+</div>
+
+{{view 'sets-ui/views/end-game' model=game}}

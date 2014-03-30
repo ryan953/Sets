@@ -32,8 +32,8 @@ define([
 			});
 			this.gameBoard = new SetsView({
 				game: this.game
-			}).render();
-			$(options.rootSelector).append(this.gameBoard.el);
+			});
+			this.gameBoard.appendTo(options.rootSelector);
 		},
 
 		startHistory: function() {
