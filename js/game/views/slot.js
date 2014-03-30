@@ -29,6 +29,12 @@ define([
 			is_possible: ''
 		},
 
+		initialize: function() {
+			this.setModel(
+				this.board.at(this.position)
+			);
+		},
+
 		render: function() {
 			Thorax.View.prototype.render.call(this);
 			this.handleSlotState(this.model);

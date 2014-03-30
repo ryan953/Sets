@@ -1,14 +1,14 @@
 define([
-	'jquery',
 	'underscore',
+	'handlebars',
 	'thorax',
 	'v!./slot',
 	'utils/orientation'
-], function($, _, Thorax, SlotView, Orientation) {
+], function(_, Handlebars, Thorax, SlotView, Orientation) {
 	"use strict";
 
 	return Thorax.View.extend({
-		tagName: 'div',
+		tagName: 'table',
 		className: 'board',
 
 		MAX_PORTRAIT: 3,
@@ -24,41 +24,34 @@ define([
 		},
 
 		render: function() {
+			var cols = this.getMaxCols(Orientation.isPortrait()),
+				rows = Math.ceil(this.board.length / cols);
+
+			this.template = Handlebars.compile(
+				this.constructBoardInnardsTemplate(rows, cols)
+			);
+
 			Thorax.View.prototype.render.call(this);
-			this.child_views = this.renderChildren();
-			this.renderGameTable();
 		},
 
-		renderChildren: function() {
-			var board = this.board,
-				settings = this.settings;
-			return _.map(_.range(board.length), function(i) {
-				var slot = new SlotView({
-					settings: settings,
-					model: board.at(i)
+		constructBoardInnardsTemplate: function(rows, cols) {
+			var eachRow = _.range(rows),
+				eachCol = _.range(cols),
+				helpers = _.map(_.range(rows * cols), function(i) {
+					return '{{view "game/views/slot" settings=settings board=board position="' + i + '"}}';
 				});
-				slot.render();
-				return slot;
-			});
-		},
 
-		renderGameTable: function() {
-			var maxCols = this.getMaxCols(Orientation.isPortrait()),
-				table = $('<table></table>'),
-				rows = Math.ceil(this.board.length / maxCols);
-			for (var row = 0; row < rows; row++) {
-				var tr = $('<tr></tr>');
-				for (var col = 0; col < maxCols; col++) {
-					var position = (row * maxCols) + col,
-						child = this.child_views[position];
-					if (!child) {
-						continue;
-					}
-					tr.append(child.el);
-				}
-				table.append(tr);
-			}
-			this.$el.html(table);
+			var concatRow = function(rowElems) {
+					return rowElems
+						.concat('<tr>')
+						.concat(_.reduce(eachCol, pushColumn, []))
+						.concat('</tr>');
+				},
+				pushColumn = function(colElems) {
+					return (colElems.push(helpers.shift()) && colElems);
+				};
+
+			return _.reduce(eachRow, concatRow, []).join('');
 		},
 
 		getMaxCols: function(isPortrait) {
