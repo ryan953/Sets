@@ -43,7 +43,8 @@ define([
 				className: 'board theme-wood',
 				settings: game.settings,
 				board: game.board
-			}).render();
+			});
+			this.boardView.render();
 
 			children.boardView = {
 				'el': $('<div></div>', {
