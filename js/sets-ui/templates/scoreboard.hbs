@@ -1,15 +1,23 @@
-{{#if scoreType}}
+{{#if type.score}}
 	<a href="#">Deck: {{found}}/{{deckSize}}</a>
 {{/if}}
 
-{{#if remainingType}}
+{{#if type.remaining}}
 	<a href="#">{{remaining}} cards remaining</a>
 {{/if}}
 
-{{#if percentType}}
+{{#if type.percent}}
 	<a href="#">Sets Found: {{percent}}%</a>
 {{/if}}
 
-{{#if timeType}}
-	<a href="#">Time: <span class="time">0:00.000</span></a>
+{{#if type.time}}
+	<a href="#">
+		{{#if inProgress}}
+			{{#animate}}
+				Time: {{format-duration milliseconds showMilliseconds=showMilli}}
+			{{/animate}}
+		{{else}}
+			Time: {{format-duration milliseconds showMilliseconds=showMilli}}
+		{{/if}}
+	</a>
 {{/if}}

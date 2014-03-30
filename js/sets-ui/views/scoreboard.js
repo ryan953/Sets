@@ -1,23 +1,25 @@
-// (Backbone.View, window.Views.TimeDisplay, window.Utils.Clock);
-
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'utils/time-display',
-	'utils/clock',
-	'hbs!../templates/scoreboard'
-], function($, _, Backbone, TimeDisplay, Clock, template) {
+	'thorax',
+	'hbs!../templates/scoreboard',
+	'utils/helpers/animate',
+	'utils/helpers/format-duration'
+], function(Thorax, template) {
 	"use strict";
 
-	return Backbone.View.extend({
+	return Thorax.View.extend({
 		tagName: 'p',
 		className: 'center scoreboard-display',
 
 		template: template,
 
 		events: {
-			'click a': 'nextScoreboard'
+			'click a': function() {
+				this.model.settings.setNextScoreboardDisplay();
+			},
+			model: {
+				'game:start': 'render',
+				'change:foundSets': 'render'
+			}
 		},
 
 		delay: {
@@ -28,82 +30,33 @@ define([
 
 		timeDisplay: null,
 
-		initialize: function(options) {
-			this.game = options.game;
-
-			this.listenTo(this.game, 'game:start', this.render);
-			this.listenTo(this.game, 'change:foundSets', this.render);
-			this.listenTo(this.game, 'change:paused', this.pauseClock);
-			this.listenTo(this.game.settings, 'change:scoreboard-display', this.render);
-			this.listenTo(this.game.foundSets, 'change', this.render);
-
-			// this.template = _.template($('#tmpl-scoreboard').text());
-
-			this.clock = new Clock({
-				tickAction: _.bind(this.clockTick, this),
-				delay: this.delay.fastSpeed
-			});
+		initialize: function() {
+			this.listenTo(this.model.settings, 'change:scoreboard-display', this.render);
+			this.listenTo(this.model.foundSets, 'change', this.render);
 		},
 
-		render: function() {
-			var found = this.game.foundSets.getCount(),
-				deckSize = this.game.getStartingDeckSize(),
-				displayType = this.game.settings.get('scoreboard-display');
-
-			this.$el.html(this.template({
-				// type: displayType,
+		context: function() {
+			var found = this.model.foundSets.getCount(),
+				deckSize = this.model.getStartingDeckSize(),
+				displayType = this.model.settings.get('scoreboard-display'),
+				milliseconds = this.model.stopWatch.milliseconds();
+			
+			return {
+				inProgress: this.model.get('in-progress'),
 				type: {
 					score: displayType === 'score',
 					remaining: displayType === 'remaining',
 					percent: displayType === 'percent',
 					time: displayType === 'time',
 				},
-				percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
-				remaining: deckSize - found,
 				found: found,
-				deckSize: deckSize
-			}));
+				deckSize: deckSize,
+				remaining: deckSize - found,
+				percent: Math.round(Math.max(found / deckSize * 100, 0)) || 0,
 
-			if (displayType === 'time' && !this.game.isGameComplete()) {
-				this.timeDisplay = new TimeDisplay({
-					el: this.$('.time')
-				});
-				this.clock.on('click.start clock.tick', this.updateClockTick, this);
-				this.clock.start();
-				this.clockTick();
-			} else {
-				this.clock.stop();
-				this.clock.off(null, this.updateClockTick);
-			}
-
-			return this;
-		},
-
-		nextScoreboard: function() {
-			this.game.settings.setNextScoreboardDisplay();
-		},
-
-		clockTick: function() {
-			var milliseconds = this.game.stopWatch.milliseconds(),
-				showMilli = milliseconds < this.delay.after;  // more precise when ticking faster
-			this.timeDisplay.render(milliseconds, showMilli);
-			return true;
-		},
-
-		updateClockTick: function(clock) {
-			if (this.game.stopWatch.milliseconds() > this.delay.after) {
-				clock.setTickSpeed(this.delay.slowSpeed);
-			} else {
-				clock.setTickSpeed(this.delay.fastSpeed);
-			}
-		},
-
-		pauseClock: function(game, isPaused) {
-			if (isPaused) {
-				this.clock.stop();
-			} else if (this.game.settings.get('scoreboard-display') === 'time') {
-				this.clock.start();
-			}
+				milliseconds: milliseconds,
+				showMilli: milliseconds < this.delay.after // more precise when ticking faster
+			};
 		}
 	});
 

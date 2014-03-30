@@ -4,7 +4,7 @@
 /*
  * An evented interface over what is essentially setInterval()
  * Callbacks can register for the clock.* events and do stuff like update
- * at a predictable rate
+ * at different rates
  */
 define([
 	'underscore',
@@ -13,20 +13,24 @@ define([
 	"use strict";
 
 	var Clock = function(options) {
-		this.delay = options.delay;
-		this.clockTick = _.bind(function() {
-			if (options.tickAction()) {
-				this.trigger('clock.tick', this);
-				this.timer = setTimeout(this.clockTick, this.delay);
-			} else {
-				this.stop();
-			}
-		}, this);
+		this.setTickSpeed(options.delay);
+		this.setTickAction(options.tickAction);
 	};
 
 	_.extend(Clock.prototype, Backbone.Events, {
 		setTickSpeed: function(delay) {
 			this.delay = delay;
+		},
+
+		setTickAction: function(tickAction) {
+			this.clockTick = _.bind(function() {
+				if (tickAction()) {
+					this.trigger('clock.tick', this);
+					this.timer = setTimeout(this.clockTick, this.delay);
+				} else {
+					this.stop();
+				}
+			}, this);
 		},
 
 		/**

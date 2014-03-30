@@ -28,11 +28,11 @@ define([
 		render: function() {
 			this.$el.html(this.template());
 
-			this.$('.scoreboard-placeholder').append(
-				new Scoreboard({
-					game: this.game
-				}).render().el
-			);
+			var scoreboard = new Scoreboard({
+				model: this.game
+			});
+			scoreboard.render();
+			this.$('.scoreboard-placeholder').append(scoreboard.el);
 
 			return this;
 		},
