@@ -1,15 +1,13 @@
 /*global confirm */
 
 define([
-	'jquery',
-	'underscore',
-	'backbone',
+	'thorax',
 	'./scoreboard',
 	'hbs!../templates/menubar'
-], function($, _, Backbone, Scoreboard, template) {
+], function(Thorax, Scoreboard, template) {
 	"use strict";
 
-	return Backbone.View.extend({
+	return Thorax.View.extend({
 		tagName: 'div',
 		className: 'views-menubar',
 
@@ -19,22 +17,10 @@ define([
 			'click .game-reset': 'resetGame'
 		},
 
-		initialize: function(options) {
-			this.game = options.game;
-
-			// this.template = _.template($('#tmpl-menu').text());
-		},
-
-		render: function() {
-			this.$el.html(this.template());
-
-			var scoreboard = new Scoreboard({
+		initialize: function() {
+			this.scoreboard = new Scoreboard({
 				model: this.game
 			});
-			scoreboard.render();
-			this.$('.scoreboard-placeholder').append(scoreboard.el);
-
-			return this;
 		},
 
 		resetGame: function() {

@@ -17,7 +17,8 @@ define([
 			var children = {};
 			children.menubar = new Menubar({
 				game: this.game
-			}).render();
+			});
+			children.menubar.render();
 
 			this.$el.append(_.pluck(children, 'el'));
 
