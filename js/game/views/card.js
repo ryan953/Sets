@@ -1,9 +1,8 @@
 /*global document */
 
 define([
-	'jquery',
-	'backbone'
-], function($, Backbone) {
+	'thorax'
+], function(Thorax) {
 	"use strict";
 
 	var patterns = {
@@ -107,30 +106,30 @@ define([
 		}
 	};
 
-	return Backbone.View.extend({
+	return Thorax.View.extend({
 		tagName: 'div',
 		className: 'card',
 
-		initialize: function(options) {
-			this.card = options.card;
+		template: function() { return ''; },
+
+		renderTemplate: function(file, context) {
+			context = context || this._getContext();
+
+			var canvas = document.createElement('canvas');
+			canvas.width = canvas.height = 150;
+			
+			this._draw(canvas.getContext('2d'), context);
+
+			return canvas;
 		},
 
-		render: function() {
-			var canvas = $('<canvas>')
-				.attr({width: 150, height: 150});
-			this._draw(canvas[0].getContext('2d'));
-			this.$el.html(canvas);
-
-			return this;
-		},
-
-		_draw: function(ctx) {
+		_draw: function(ctx, context) {
 			ctx.clearRect(0, 0, 150, 150);
-			for(var i = 0; i < this.card.get('num'); i++) {
+			for(var i = 0; i < context.num; i++) {
 				ctx.save();
-				ctx.translate(25, ([50, 25, 0])[this.card.get('num')-1] + (i*50));
-				paths[this.card.get('shape')](ctx);
-				var visualSettings = visuals(this.card.get('color'), this.card.get('fill'));
+				ctx.translate(25, ([50, 25, 0])[context.num-1] + (i*50));
+				paths[context.shape](ctx);
+				var visualSettings = visuals(context.color, context.fill);
 				ctx.lineWidth = visualSettings.lineWidth;
 				ctx.fillStyle = visualSettings.fillStyle;
 				ctx.strokeStyle = visualSettings.color;

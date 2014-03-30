@@ -1,7 +1,7 @@
 define([
 	'underscore',
 	'view',
-	'./card'
+	'v!./card'
 ], function(_, Parent, CardView) {
 	"use strict";
 
@@ -40,8 +40,9 @@ define([
 			var card = this.slot.get('card');
 			if (_.isObject(card)) {
 				var cardView = new CardView({
-					card: card
-				}).render();
+					model: card
+				});
+				cardView.render();
 				this.el.appendChild(cardView.el);
 				return [cardView];
 			}
