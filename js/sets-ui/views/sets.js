@@ -33,9 +33,11 @@ define([
 			var game = this.options.game,
 				children = {};
 
-			children.chrome = new Chrome({
+			var chrome = new Chrome({
 				game: game
-			}).render();
+			});
+			chrome.render();
+			chrome.appendTo(this.$el);
 
 			this.boardView = new BoardView({
 				className: 'board theme-wood',
