@@ -1,16 +1,22 @@
 define([
 	'underscore',
-	'view',
+	'thorax',
 	'v!./card'
-], function(_, Parent, CardView) {
+], function(_, Thorax, CardView) {
 	"use strict";
 
-	return Parent.extend({
+	return Thorax.LayoutView.extend({
 		tagName: 'td',
 		className: 'slot',
 
 		events: {
-			click: 'handleClick'
+			'nested click': function() {
+				this.model.toggleSelect();
+			},
+			model: {
+				'change:card': 'render',
+				'change': 'handleSlotState'
+			}
 		},
 
 		enabledStyleMap: {
@@ -23,34 +29,16 @@ define([
 			is_possible: ''
 		},
 
-		initialize: function(options) {
-			this.slot = options.slot;
-			this.settings = options.settings;
-			this.listenTo(this.slot, 'change:card', this.render);
-			this.listenTo(this.slot, 'change', this.handleSlotState);
-		},
-
 		render: function() {
-			Parent.prototype.render.call(this);
-			this.handleSlotState(this.slot);
-			return this;
-		},
+			Thorax.View.prototype.render.call(this);
+			this.handleSlotState(this.model);
 
-		renderChildren: function() {
-			var card = this.slot.get('card');
-			if (_.isObject(card)) {
-				var cardView = new CardView({
+			var card = this.model.get('card');
+			if (card) {
+				this.setView(new CardView({
 					model: card
-				});
-				cardView.render();
-				this.el.appendChild(cardView.el);
-				return [cardView];
+				}));
 			}
-			return [];
-		},
-
-		handleClick: function() {
-			this.slot.toggleSelect();
 		},
 
 		handleSlotState: function(model) {

@@ -2,7 +2,7 @@ define([
 	'jquery',
 	'underscore',
 	'view',
-	'./slot',
+	'v!./slot',
 	'utils/orientation'
 ], function($, _, Parent, SlotView, Orientation) {
 	"use strict";
@@ -31,10 +31,12 @@ define([
 		renderChildren: function() {
 			var options = this.options;
 			return _.map(_.range(options.board.length), function(i) {
-				return new SlotView({
+				var slot = new SlotView({
 					settings: options.settings,
-					slot: options.board.at(i)
-				}).render();
+					model: options.board.at(i)
+				});
+				slot.render();
+				return slot;
 			});
 		},
 
