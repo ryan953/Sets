@@ -31,8 +31,8 @@ define(['handlebars'], function(Handlebars) {
 
 	Handlebars.registerViewHelper('animate', function(helperView) {
 		(function animloop() {
-			helperView.render();
 			if (helperView._referenceCount) {
+				helperView.render();
 				window.requestAnimationFrame(animloop);
 			}
 		})();
