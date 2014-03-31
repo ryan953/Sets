@@ -56,7 +56,7 @@ define([
 			} else {
 				this.$el.removeClass('not-possible');
 			}
-			if (this.settings.get('debug-not-possible') == 'on') {
+			if (this.settings.get('debug-not-possible') === 'on') {
 				disabledStyleMap.is_possible += ' debug-not-possible';
 			}
 

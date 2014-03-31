@@ -1,7 +1,7 @@
 define([
 	'backbone',
-	'utils/clock',
-	'utils/parent-model'
+	'./clock',
+	'model'
 ], function(Backbone, Clock, Model) {
 	"use strict";
 

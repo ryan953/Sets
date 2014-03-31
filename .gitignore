@@ -5,3 +5,4 @@ public/js
 tmp
 coverage/
 .sass-cache
+dist

@@ -40,6 +40,7 @@ define([
 			if (!Backbone.History.started) {
 				Backbone.history.start({root: window.location.pathname});
 			}
+			return this;
 		},
 
 		hideLightboxes: function() {

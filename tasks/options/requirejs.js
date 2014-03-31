@@ -14,8 +14,9 @@ module.exports = {
             baseUrl: 'js',
             dir: 'dist/js',
 
-            "optimize": "none", // "uglify"
+            "optimize": "uglify2", // "none" || "uglify2"
             "skipDirOptimize": true,
+            "preserveLicenseComments": false,
             "generateSourceMaps": true,
             "skipPragmas": true,
             "skipModuleInsertion": false,
@@ -23,17 +24,12 @@ module.exports = {
             "wrap": false,
             "keepBuildDir": false,
             "enforceDefine": true,
-
-            // "wrapShim": true,
-
-            // removeCombined: true,
-            // findNestedDependencies: true,
-            // optimize: 'none',
+            "wrapShim": false, // Thorax doesn't like when wrapShim is true
 
             // these two are incompatible
             // preserveLicenseComments: false,
             // generateSourceMaps: true,
-            
+
             paths: {
                 'almond': '../bower_components/almond/almond',
                 'jquery': '../bower_components/jquery/jquery',
@@ -50,21 +46,29 @@ module.exports = {
                 'no-click-delay': './lib/NoClickDelay',
                 'backbone/local-storage': '../bower_components/backbone.localStorage/backbone.localStorage-min',
 
+                'backbone-identity-map': '../bower_components/backbone-identity-map/backbone-identity-map',
+
                 'model': './utils/parent-model',
                 'collection': './utils/parent-collection',
                 'view': './utils/parent-view',
 
-                'v': './utils/loaders/view-registry',
-                'hbs': './utils/loaders/hbs-registry'
+                'hbs': './utils/loaders/hbs-registry',
+                'v': './utils/loaders/view-registry'
             },
             shim: {
+                'jquery': {
+                    exports: 'jQuery'
+                },
                 'underscore': {
-                    deps: [],
                     exports: '_'
                 },
                 'backbone': {
                     deps: ['jquery', 'underscore'],
                     exports: 'Backbone'
+                },
+                'backbone-identity-map': {
+                    deps: ['underscore', 'backbone'],
+                    exports: 'Backbone.IdentityMap',
                 },
                 'handlebars': {
                     exports: 'Handlebars'
@@ -74,7 +78,6 @@ module.exports = {
                     exports: 'Thorax'
                 },
                 'no-click-delay': {
-                    deps: [],
                     exports: 'NoClickDelay'
                 },
                 'backbone/local-storage': {
@@ -93,16 +96,12 @@ module.exports = {
                     //nested dependencies.
                     "include": [
                         "almond",
-                        "underscore",
-                        "backbone",
                         "thorax",
                         "moment",
                         "domReady",
-                        "hbs",
+                        "hbs-loader",
                         "no-click-delay",
-                        "backbone/local-storage",
-                        "sets-ui/sets"
-                        // "bootstrap.config"
+                        "backbone/local-storage"
                     ]
                 },
 
@@ -122,18 +121,21 @@ module.exports = {
                     "name": "utils",
                     "create": true,
                     "include": [
-                        "utils/clock",
-                        "utils/orientation",
-                        "utils/stop-watch",
-                        "utils/time-display",
+                        "hbs",
+                        "v",
                         "model",
                         "collection",
                         "view",
-                        "utils/model-cache-router"
+                        "utils/clock",
+                        "utils/orientation",
+                        "utils/stop-watch",
+                        "utils/duration-display",
+                        "utils/model-cache-cleaner",
+                        "utils/helpers/animate",
+                        "utils/helpers/format-duration"
                     ],
                     "exclude": ["bootstrap"]
                 },
-
                 {
                     "name": "game",
                     "create": true,
@@ -141,30 +143,31 @@ module.exports = {
                         "game/models/settings",
                         "game/models/help-game",
                         "game/models/sets",
-                        "game/views/board"
+                        "v!game/views/board"
                     ],
                     "exclude": ["bootstrap", "utils"]
                 },
-
                 {
                     "name": "lightbox",
                     "create": true,
                     "include": [
-                        "lightbox/help",
-                        "lightbox/settings",
-                        "lightbox/stats"
+                        "v!lightbox/help",
+                        "v!lightbox/settings",
+                        "v!lightbox/stats"
                     ],
                     "exclude": ["bootstrap", "utils", "game"]
                 },
-
                 {
                     "name": "sets-ui",
                     "create": true,
                     "include": [
-                        "sets-ui/sets",
                         "sets-ui/routers/game-router"
                     ],
                     "exclude": ["bootstrap", "utils", "lightbox", "game"]
+                },
+                {
+                    "name": "sets",
+                    "exclude": ["bootstrap", "utils", "lightbox", "game", "sets-ui"]
                 }
             ]
         }

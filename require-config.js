@@ -37,7 +37,7 @@ if (window.__karma__) {
 
 require.config({
     dir: '/public/js',
-    deps: ['sets-ui/sets'],
+    deps: ['sets'],
     paths: {
         'jquery': pathPrefix + 'bower_components/jquery/jquery',
         'underscore': pathPrefix + 'bower_components/underscore/underscore',
@@ -61,10 +61,13 @@ require.config({
         'collection': pathPrefix + 'js/utils/parent-collection',
         'view': pathPrefix + 'js/utils/parent-view',
 
-        'v': pathPrefix + 'js/utils/loaders/view-registry',
-        'hbs': pathPrefix + 'js/utils/loaders/hbs-registry'
+        'hbs': pathPrefix + 'js/utils/loaders/hbs-registry',
+        'v': pathPrefix + 'js/utils/loaders/view-registry'
     },
     shim: {
+        'jquery': {
+            exports: 'jQuery'
+        },
         'underscore': {
             exports: '_'
         },
@@ -73,8 +76,8 @@ require.config({
             exports: 'Backbone'
         },
         'backbone-identity-map': {
-            'deps': ['underscore', 'backbone'],
-            'exports': 'Backbone.IdentityMap',
+            deps: ['underscore', 'backbone'],
+            exports: 'Backbone.IdentityMap',
         },
         'handlebars': {
             exports: 'Handlebars'
@@ -84,7 +87,6 @@ require.config({
             exports: 'Thorax'
         },
         'no-click-delay': {
-            deps: [],
             exports: 'NoClickDelay'
         },
         'backbone/local-storage': {
@@ -106,10 +108,11 @@ require.config({
                 "thorax",
                 "moment",
                 "domReady",
+                "hbs-loader",
                 "hbs",
+                "v",
                 "no-click-delay",
                 "backbone/local-storage"
-                // "bootstrap.config"
             ]
         },
 
@@ -129,18 +132,21 @@ require.config({
             "name": "utils",
             "create": true,
             "include": [
-                "utils/clock",
-                "utils/orientation",
-                "utils/stop-watch",
-                "utils/time-display",
+                "hbs",
+                "v",
                 "model",
                 "collection",
                 "view",
-                "utils/model-cache-router"
+                "utils/clock",
+                "utils/orientation",
+                "utils/stop-watch",
+                "utils/duration-display",
+                "utils/model-cache-cleaner",
+                "utils/helpers/animate",
+                "utils/helpers/format-duration"
             ],
             "exclude": ["bootstrap"]
         },
-
         {
             "name": "game",
             "create": true,
@@ -148,22 +154,20 @@ require.config({
                 "game/models/settings",
                 "game/models/help-game",
                 "game/models/sets",
-                "game/views/board"
+                "v!game/views/board"
             ],
             "exclude": ["bootstrap", "utils"]
         },
-
         {
             "name": "lightbox",
             "create": true,
             "include": [
-                "lightbox/help",
-                "lightbox/settings",
-                "lightbox/stats"
+                "v!lightbox/help",
+                "v!lightbox/settings",
+                "v!lightbox/stats"
             ],
             "exclude": ["bootstrap", "utils", "game"]
         },
-
         {
             "name": "sets-ui",
             "create": true,

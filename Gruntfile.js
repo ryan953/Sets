@@ -52,6 +52,7 @@ module.exports = function(grunt) {
       },
       js: 'js',
       css: 'css',
+      img: 'public/img',
       templates: 'js/templates',
       views: 'js/views',
       models: 'js/models',
@@ -110,6 +111,7 @@ module.exports = function(grunt) {
     'build',
     'styles:development',
     'cssmin',
+    'copy:images',
     'copy:prepareBuild',
     'requirejs:production',
     'connect:production'

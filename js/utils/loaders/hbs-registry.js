@@ -4,8 +4,13 @@ define(["handlebars"], function(Handlebars) {
     // http://requirejs.org/docs/plugins.html#apiload
     load: function (name, parentRequire, onload, config) {
       parentRequire(['hbs-loader!' + name], function(raw) {
-        Handlebars.templates[name] = raw;
-        onload(raw);
+        if (config.isBuild) {
+            onload();
+        } else {
+            Handlebars.templates = Handlebars.templates || {};
+            Handlebars.templates[name] = raw;
+            onload(raw);
+        }
       });
     }
   };

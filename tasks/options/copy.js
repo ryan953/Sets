@@ -21,6 +21,16 @@ module.exports = {
       }
     ]
   },
+  images: {
+    files: [
+      {
+        expand: true,
+        cwd: 'public/img',
+        src: '**',
+        dest: 'dist/img'
+      }
+    ]
+  },
   styles: {
     files: [
       {

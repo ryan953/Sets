@@ -16,7 +16,7 @@ require([
 		escape      : /\{-([\s\S]+?)\}/g
 	};
 
-	new GameRouter({
+	window.router = new GameRouter({
 		rootSelector: 'body',
 		stats: new StatsModel({id: 1},
 			{localStorage: new Storage("stats")}
