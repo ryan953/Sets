@@ -1,8 +1,8 @@
 /*global document */
 
 define([
-	'thorax'
-], function(Thorax) {
+	'view'
+], function(View) {
 	"use strict";
 
 	var patterns = {
@@ -106,7 +106,7 @@ define([
 		}
 	};
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'div',
 		className: 'card',
 

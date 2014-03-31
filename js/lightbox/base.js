@@ -1,10 +1,10 @@
 define('lightbox/base', [
 	'jquery',
-	'thorax'
-], function($, Thorax) {
+	'view'
+], function($, View) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'div',
 		className: 'lightbox hide',
 

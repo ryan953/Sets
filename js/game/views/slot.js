@@ -36,7 +36,7 @@ define([
 		},
 
 		render: function() {
-			Thorax.View.prototype.render.call(this);
+			Thorax.LayoutView.prototype.render.call(this);
 			this.handleSlotState(this.model);
 
 			var card = this.model.get('card');

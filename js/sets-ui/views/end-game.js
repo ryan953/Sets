@@ -1,11 +1,11 @@
 define([
 	'handlebars',
-	'thorax',
+	'view',
 	'hbs!../templates/end-game'
-], function(Handlebars, Thorax, template) {
+], function(Handlebars, View, template) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'div',
 		className: 'views-endgame',
 		template: template,

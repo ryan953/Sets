@@ -1,13 +1,13 @@
 define([
 	'underscore',
 	'handlebars',
-	'thorax',
+	'view',
 	'v!./slot',
 	'utils/orientation'
-], function(_, Handlebars, Thorax, SlotView, Orientation) {
+], function(_, Handlebars, View, SlotView, Orientation) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'table',
 		className: 'board',
 
@@ -31,7 +31,7 @@ define([
 				this.constructBoardInnardsTemplate(rows, cols)
 			);
 
-			Thorax.View.prototype.render.call(this);
+			View.prototype.render.call(this);
 		},
 
 		constructBoardInnardsTemplate: function(rows, cols) {

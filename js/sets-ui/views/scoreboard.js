@@ -1,12 +1,12 @@
 define([
-	'thorax',
+	'view',
 	'hbs!../templates/scoreboard',
 	'utils/helpers/animate',
 	'utils/helpers/format-duration'
-], function(Thorax, template) {
+], function(View, template) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'p',
 		className: 'center scoreboard-display',
 

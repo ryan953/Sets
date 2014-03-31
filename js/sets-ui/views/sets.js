@@ -5,15 +5,15 @@ define([
 	'no-click-delay',
 	'jquery',
 	'underscore',
-	'thorax',
+	'view',
 	'hbs!../templates/sets',
 	'v!game/views/board',
 	'v!./chrome',
 	'v!./end-game'
-], function(NoClickDelay, $, _, Thorax, template) {
+], function(NoClickDelay, $, _, View, template) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'div',
 		className: 'sets-game',
 

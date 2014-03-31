@@ -1,13 +1,13 @@
 /*global confirm */
 
 define([
-	'thorax',
+	'view',
 	'v!./scoreboard',
 	'hbs!../templates/menubar'
-], function(Thorax, Scoreboard, template) {
+], function(View, Scoreboard, template) {
 	"use strict";
 
-	return Thorax.View.extend({
+	return View.extend({
 		tagName: 'div',
 		className: 'views-menubar',
 
