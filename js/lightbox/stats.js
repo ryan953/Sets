@@ -4,7 +4,7 @@ define('lightbox/stats', [
 	'jquery',
 	'underscore',
 	'./base',
-	'utils/time-display',
+	'utils/duration-display',
 	'hbs!./templates/stats'
 ], function($, _, Parent, TimeDisplay, template) {
 	"use strict";
@@ -13,26 +13,25 @@ define('lightbox/stats', [
 		template: template,
 		
 		events: {
-			'click #stats-reset': 'resetStats'
+			'click #stats-reset': function(/* e */) {
+				var message = [
+					"Are you sure you want all the current stats to be reset?",
+					"",
+					"This operation cannot be undone."
+				].join("\n");
+				if (confirm(message)) {
+					this.stats.reset();
+				}
+			}
 		},
 
-		initialize: function(options) {
-			this.game = options.game;
+		initialize: function() {
 			this.stats = this.game.stats;
 
 			this.listenTo(this.stats, 'change', this.render);
-
-			// this.template = _.template($('#tmpl-statslightbox').text());
 		},
 
-		render: function() {
-			this.$el.html(this.template(this.getData()));
-
-			this.afterRender();
-			return this;
-		},
-
-		getData: function() {
+		context: function() {
 			var json = this.stats.toJSON();
 
 			if (json.games_percent === parseInt(json.games_percent, 10)) {
@@ -47,17 +46,6 @@ define('lightbox/stats', [
 			json.time_shortest_win = TimeDisplay.formatTimeDiff(json.time_shortest_win);
 			json.time_longest_win = TimeDisplay.formatTimeDiff(json.time_longest_win);
 			return json;
-		},
-
-		resetStats: function(/* e */) {
-			var messages = [
-				"Are you sure you want all the current stats to be reset?",
-				"",
-				"This operation cannot be undone."
-			];
-			if (confirm(messages.join("\n"))) {
-				this.stats.reset();
-			}
 		}
 	});
 

@@ -1,10 +1,10 @@
 define('lightbox/base', [
 	'jquery',
-	'backbone'
-], function($, Backbone) {
+	'thorax'
+], function($, Thorax) {
 	"use strict";
 
-	return Backbone.View.extend({
+	return Thorax.View.extend({
 		tagName: 'div',
 		className: 'lightbox hide',
 

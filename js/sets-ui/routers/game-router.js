@@ -4,10 +4,10 @@ define([
 	'jquery',
 	'backbone',
 	'game/models/sets',
-	'../views/sets',
-	'lightbox/help',
-	'lightbox/settings',
-	'lightbox/stats'
+	'v!../views/sets',
+	'v!lightbox/help',
+	'v!lightbox/settings',
+	'v!lightbox/stats'
 ], function($, Backbone, Sets, SetsView, HelpLightbox, SettingsLightbox, StatsLightbox) {
 	"use strict";
 
@@ -31,7 +31,7 @@ define([
 				stats: options.stats
 			});
 			this.gameBoard = new SetsView({
-				game: this.game
+				game: this.game,
 			});
 			this.gameBoard.appendTo(options.rootSelector);
 		},
@@ -60,8 +60,9 @@ define([
 				game: this.game
 			});
 
-			$('body').append(this._lastLightbox.el);
+			this._lastLightbox.appendTo('body');
 			this._lastLightbox.render();
+			this._lastLightbox.afterRender();
 		}
 	});
 });

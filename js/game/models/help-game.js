@@ -32,6 +32,7 @@ define([
 		this.board.on('selected:valid-set', function() {
 			_.delay(_.bind(function() {
 				this.page = Math.min(this.page + 1, maxPage);
+				this.trigger('change:page', this, this.page);
 			}, this), 1000);
 		}, this);
 

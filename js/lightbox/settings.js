@@ -27,10 +27,8 @@ define('lightbox/settings', [
 
 		_cachedElems: {},
 
-		initialize: function(options) {
-			this.settings = options.game.settings;
-
-			// this.template = _.template($('#tmpl-settingslightbox').text());
+		initialize: function() {
+			this.settings = this.game.settings;
 
 			this.createRenderFunctions();
 			this.bindToSettings();
@@ -62,7 +60,6 @@ define('lightbox/settings', [
 			this.renderSlotDelay();
 			this.renderEndGameOnNonPossible();
 
-			this.afterRender();
 			return this;
 		},
 
